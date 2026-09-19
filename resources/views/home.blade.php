@@ -217,6 +217,59 @@
                 </div>
             </section>
 
+            <section class="section-wrapper testimonial-panel reveal">
+                <div class="section-heading">
+                    <span class="eyebrow">Client feedback</span>
+                    <h2>Trusted by teams that want clarity, control, and growth.</h2>
+                </div>
+
+                <div class="testimonial-grid">
+                    <article class="testimonial-card">
+                        <p>“DhakaFin gave us a cleaner financial operating model in weeks, not months.”</p>
+                        <div class="person">
+                            <strong>Arif Rahman</strong>
+                            <span>Founder, Nova Advisory</span>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <p>“The product experience feels premium and the workflows are incredibly efficient.”</p>
+                        <div class="person">
+                            <strong>Shahana Noor</strong>
+                            <span>COO, Atlas Works</span>
+                        </div>
+                    </article>
+                    <article class="testimonial-card">
+                        <p>“A rare mix of design, compliance, and real business utility in one platform.”</p>
+                        <div class="person">
+                            <strong>Rafid Karim</strong>
+                            <span>Finance Lead, Green Path</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-wrapper faq-panel reveal">
+                <div class="section-heading">
+                    <span class="eyebrow">FAQ</span>
+                    <h2>Everything you need to know before launch.</h2>
+                </div>
+
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3>Is this a custom product website?</h3>
+                        <p>Yes. The design system, messaging, and structure are custom-built to match a premium fintech identity.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can it handle SaaS product features later?</h3>
+                        <p>Absolutely. The architecture is designed to expand into dashboards, portals, CRM, calculators, and secure client workflows.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Will it deploy to cPanel?</h3>
+                        <p>Yes. We are structuring the project with cPanel-friendly Laravel deployment patterns in mind.</p>
+                    </div>
+                </div>
+            </section>
+
             <section id="pricing" class="section-wrapper pricing-panel reveal">
                 <div class="section-heading">
                     <span class="eyebrow">Simple pricing</span>
