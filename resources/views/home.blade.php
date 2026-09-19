@@ -23,6 +23,7 @@
                 <a href="#platform">Platform</a>
                 <a href="#services">Services</a>
                 <a href="#roadmap">Roadmap</a>
+                <a href="#pricing">Pricing</a>
                 <a href="#contact">Contact</a>
             </nav>
             <a class="nav-cta" href="#contact">Book Demo</a>
@@ -157,6 +158,32 @@
                 </div>
             </section>
 
+            <section class="section-wrapper proof-panel reveal">
+                <div class="section-heading">
+                    <span class="eyebrow">Why teams choose DhakaFin</span>
+                    <h2>High trust. Better visibility. Faster decisions.</h2>
+                </div>
+
+                <div class="proof-grid">
+                    <div class="proof-card">
+                        <strong>0%</strong>
+                        <span>Manual bottlenecks</span>
+                    </div>
+                    <div class="proof-card">
+                        <strong>3x</strong>
+                        <span>faster monthly close</span>
+                    </div>
+                    <div class="proof-card">
+                        <strong>24/7</strong>
+                        <span>monitoring & alerts</span>
+                    </div>
+                    <div class="proof-card">
+                        <strong>99.9%</strong>
+                        <span>data integrity</span>
+                    </div>
+                </div>
+            </section>
+
             <section id="roadmap" class="section-wrapper roadmap-panel reveal">
                 <div class="section-heading">
                     <span class="eyebrow">Execution roadmap</span>
@@ -187,6 +214,48 @@
                         <li>Motion-first storytelling</li>
                         <li>Luxury fintech UX patterns</li>
                     </ul>
+                </div>
+            </section>
+
+            <section id="pricing" class="section-wrapper pricing-panel reveal">
+                <div class="section-heading">
+                    <span class="eyebrow">Simple pricing</span>
+                    <h2>Choose the model that matches your growth stage.</h2>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="price-card">
+                        <span class="plan-label">Starter</span>
+                        <h3>$49<span>/mo</span></h3>
+                        <ul>
+                            <li>Basic accounting</li>
+                            <li>Tax reminders</li>
+                            <li>Essential reports</li>
+                        </ul>
+                        <a href="#contact" class="secondary-btn">Get Started</a>
+                    </div>
+                    <div class="price-card featured">
+                        <span class="plan-label">Growth</span>
+                        <h3>$129<span>/mo</span></h3>
+                        <ul>
+                            <li>Everything in Starter</li>
+                            <li>Compliance automation</li>
+                            <li>Client portal access</li>
+                            <li>Advanced dashboards</li>
+                        </ul>
+                        <a href="#contact" class="primary-btn">Most Popular</a>
+                    </div>
+                    <div class="price-card">
+                        <span class="plan-label">Enterprise</span>
+                        <h3>Custom</h3>
+                        <ul>
+                            <li>Dedicated onboarding</li>
+                            <li>Advanced CRMs</li>
+                            <li>Custom workflows</li>
+                            <li>Priority support</li>
+                        </ul>
+                        <a href="#contact" class="secondary-btn">Talk to us</a>
+                    </div>
                 </div>
             </section>
         </main>
