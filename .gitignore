@@ -1,0 +1,21 @@
+# Laravel
+/vendor/
+/node_modules/
+.env
+.env.backup
+.phpunit.result.cache
+.phpstorm.meta.php
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+/public/build/
+/storage/*.key
+/storage/logs/*.log
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
