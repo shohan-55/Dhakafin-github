@@ -167,17 +167,22 @@ button, a {
     margin-top: 22px;
 }
 
-.hero-actions {
+.hero-actions,
+.hero-metrics,
+.proof-grid,
+.pricing-grid,
+.testimonial-grid,
+.faq-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 18px;
+}
+
+.hero-actions {
     margin-top: 26px;
 }
 
 .hero-metrics {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 22px;
     margin-top: 32px;
 }
 
@@ -359,10 +364,16 @@ button, a {
     color: rgba(237, 243, 247, 0.86);
 }
 
-.features-grid {
+.features-grid,
+.pricing-grid,
+.testimonial-grid,
+.faq-list {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 22px;
+}
+
+.features-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     margin-top: 44px;
 }
 
@@ -379,10 +390,18 @@ button, a {
     letter-spacing: -0.05em;
 }
 
-.feature-card {
+.feature-card,
+.proof-card,
+.service-item,
+.testimonial-card,
+.faq-item,
+.price-card {
     background: rgba(255,255,255,0.02);
     border: 1px solid var(--line);
     border-radius: 22px;
+}
+
+.feature-card {
     padding: 24px 22px;
     min-height: 220px;
 }
@@ -407,7 +426,10 @@ button, a {
 
 .feature-card p,
 .service-item p,
-.showcase-text p {
+.showcase-text p,
+.testimonial-card p,
+.faq-item p,
+.price-card li {
     margin: 0;
     color: var(--muted);
     line-height: 1.7;
@@ -424,9 +446,6 @@ button, a {
     align-items: flex-start;
     gap: 18px;
     padding: 24px 22px;
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    background: rgba(255,255,255,0.02);
 }
 
 .service-index {
@@ -445,8 +464,36 @@ button, a {
     font-size: 1.5rem;
 }
 
-.roadmap-panel {
+.proof-panel,
+.roadmap-panel,
+.testimonial-panel,
+.faq-panel,
+.pricing-panel {
     margin-top: 44px;
+}
+
+.proof-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.proof-card {
+    padding: 26px 22px;
+    text-align: center;
+}
+
+.proof-card strong {
+    display: block;
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    letter-spacing: -0.06em;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.proof-card span {
+    color: var(--muted);
+    text-transform: lowercase;
 }
 
 .roadmap-list {
@@ -516,6 +563,103 @@ button, a {
     line-height: 2;
 }
 
+.testimonial-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.testimonial-card {
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+}
+
+.testimonial-card p {
+    font-size: 1.02rem;
+}
+
+.person {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.person strong {
+    font-size: 1rem;
+}
+
+.person span {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.faq-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.faq-item {
+    padding: 22px 20px;
+}
+
+.faq-item h3 {
+    margin: 0 0 12px;
+    font-size: 1.1rem;
+}
+
+.pricing-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.price-card {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.price-card.featured {
+    background: linear-gradient(180deg, rgba(28, 215, 181, 0.08), rgba(255,255,255,0.02));
+    border-color: rgba(28, 215, 181, 0.35);
+}
+
+.plan-label {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.price-card h3 {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 3rem);
+    letter-spacing: -0.06em;
+}
+
+.price-card h3 span {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.price-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.price-card li::before {
+    content: "•";
+    color: var(--accent);
+    margin-right: 8px;
+}
+
 .footer {
     margin-top: 54px;
     display: flex;
@@ -538,8 +682,12 @@ button, a {
 @media (max-width: 980px) {
     .hero,
     .showcase,
-    .features-grid,
-    .roadmap-list {
+    .proof-grid,
+    .testimonial-grid,
+    .faq-list,
+    .pricing-grid,
+    .roadmap-list,
+    .features-grid {
         grid-template-columns: 1fr;
     }
 
