@@ -3,7 +3,7 @@ export const home = {
     meta: {
       title: 'DhakaFin — Make Better Financial Decisions.',
       description:
-        'Financial intelligence, accounting, tax and VAT compliance for Bangladeshi businesses. Phase 1: the design system and engineering foundation.',
+        'Financial intelligence, accounting, tax and VAT compliance for Bangladeshi businesses. Verified rates, calculators and professional services under one roof.',
     },
 
     hero: {

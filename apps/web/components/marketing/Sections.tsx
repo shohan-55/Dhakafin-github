@@ -80,36 +80,6 @@ export function PainList({ items }: { items: string[] }) {
   );
 }
 
-/* ───────────────────────────── Checklist groups ───────────────────────────── */
-
-export interface ChecklistGroup {
-  heading: string;
-  items: string[];
-}
-
-/** "What's included", grouped by cadence: ongoing / periodic / as-needed. */
-export function ChecklistGrid({ groups }: { groups: ChecklistGroup[] }) {
-  return (
-    <div className="grid gap-4 md:grid-cols-3">
-      {groups.map((group) => (
-        <Card key={group.heading} tone="quiet" padding="lg" className="h-full">
-          <h3 className="text-sm font-semibold text-[var(--df-color-text-strong)]">{group.heading}</h3>
-          <ul className="mt-4 space-y-2.5">
-            {group.items.map((item) => (
-              <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-muted">
-                <span aria-hidden="true" className="mt-1.5 shrink-0 text-sea-400">
-                  ✓
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      ))}
-    </div>
-  );
-}
-
 /**
  * The honesty block. Required on every service page by the blueprint — a scope
  * boundary stated up front prevents the conversation where a client assumes

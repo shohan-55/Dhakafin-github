@@ -31,7 +31,7 @@
  * pretending to have checked.
  */
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 
 const ROOT = process.cwd();
 const NEXT = join(ROOT, 'apps/web/.next');
@@ -139,25 +139,40 @@ const serverApp = join(NEXT, 'server/app');
  * taking the two-letter-code files — which keeps this working when a third
  * language is added without anyone remembering to update a hardcoded list.
  */
-const localePages = readdirSync(serverApp)
-  .filter((f) => /^[a-z]{2}\.html$/.test(f))
-  .map((f) => ({ locale: f.replace('.html', ''), path: join(serverApp, f) }));
-
-// Fall back to the marketing index if the locale files are not emitted
-// (e.g. a single-locale build), so the gate still measures something real.
-if (localePages.length === 0) {
-  const fallback = [join(NEXT, 'server/app/index.html'), join(NEXT, 'server/app/(marketing)/index.html')].find(
-    existsSync,
-  );
-  if (fallback) localePages.push({ locale: '(default)', path: fallback });
+/**
+ * Discover every prerendered page, grouped by locale — not just the locale home.
+ *
+ * The home page is the lightest page on the site. The heavy ones are the service
+ * detail pages, which carry the numeric face, the mono face for filing references
+ * and a full Bengali body. A gate that only measured `/en` would report 49.9 KB
+ * while a service page sat at twice that, which is exactly the failure mode this
+ * file exists to prevent. So: walk the whole tree and take the worst page in each
+ * locale, and report which page that was.
+ */
+function htmlUnder(dir, out = []) {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    if (statSync(full).isDirectory()) htmlUnder(full, out);
+    else if (entry.endsWith('.html')) out.push(full);
+  }
+  return out;
 }
 
-if (localePages.length === 0) {
-  console.error('✗ Font budget gate FAILED — could not locate any emitted page HTML to measure.\n');
-  process.exit(1);
+const locales = readdirSync(serverApp)
+  .filter((f) => statSync(join(serverApp, f)).isDirectory() && /^[a-z]{2}$/.test(f))
+  .sort();
+
+const localePages = [];
+for (const locale of locales) {
+  const home = join(serverApp, `${locale}.html`);
+  if (existsSync(home)) localePages.push({ locale, route: '/', path: home });
+  for (const file of htmlUnder(join(serverApp, locale))) {
+    const route = '/' + relative(join(serverApp, locale), file).replace(/\.html$/, '').replace(/\/index$/, '');
+    localePages.push({ locale, route: route === '/' ? '' : route, path: file });
+  }
 }
 
-const pages = localePages.map(({ locale, path }) => {
+const pages = localePages.map(({ locale, route, path }) => {
   const html = readFileSync(path, 'utf8');
   // Strip script/style so the serialised RSC payload cannot inflate the codepoint set.
   const visibleText = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ');
@@ -174,7 +189,7 @@ const pages = localePages.map(({ locale, path }) => {
     if (href) preloaded.add(href.split('/').pop());
   }
 
-  return { locale, codepoints, preloaded };
+  return { locale, route, codepoints, preloaded };
 });
 
 /** Resolve each codepoint through each stack; the first covering face wins. */
@@ -213,7 +228,8 @@ const allFaces = [...facesByFamily.values()].flat();
 const short = (n) => (n.length > 44 ? `${n.slice(0, 20)}…${n.slice(-20)}` : n);
 
 /* ── 6. Report ─────────────────────────────────────────────────────────── */
-console.log('\n  Font payload audit — every prerendered locale, measured separately\n');
+console.log('\n  Font payload audit — heaviest page in each locale, measured separately\n');
+console.log(`  Pages : ${pages.length} pages measured across ${new Set(pages.map((p) => p.locale)).size} locale(s)`);
 console.log(`  Stacks : ${stacks.length} (--df-font-sans / -num / -bn)   Budget : ${budgetKB} KB\n`);
 
 const results = pages.map((page) => {
@@ -223,13 +239,21 @@ const results = pages.map((page) => {
   return { page, resolved, total };
 });
 
-const worst = results.reduce((a, b) => (b.total > a.total ? b : a));
 const overBudget = results.filter((r) => r.total > budgetBytes);
 
-for (const { page, resolved, total } of results.sort((a, b) => b.total - a.total)) {
+/** The heaviest page in each locale — the number the budget actually protects. */
+const worstPerLocale = [];
+for (const locale of new Set(results.map((r) => r.page.locale))) {
+  const inLocale = results.filter((r) => r.page.locale === locale);
+  worstPerLocale.push(inLocale.reduce((a, b) => (b.total > a.total ? b : a)));
+}
+const worst = worstPerLocale.reduce((a, b) => (b.total > a.total ? b : a));
+
+for (const { page, resolved, total } of worstPerLocale.sort((a, b) => b.total - a.total)) {
   const pct = ((total / budgetBytes) * 100).toFixed(0);
   const flag = total > budgetBytes ? '✗' : '✓';
-  console.log(`  ── /${page.locale === '(default)' ? '' : page.locale} — ${(total / 1024).toFixed(1)} KB (${pct}%) ${flag}`);
+  const label = `/${page.locale === '(default)' ? '' : page.locale}${page.route}`;
+  console.log(`  ── ${label} — ${(total / 1024).toFixed(1)} KB (${pct}%) ${flag}`);
   const rows = allFaces
     .map((face) => ({ face, hit: resolved.get(face.fileName) }))
     .sort((a, b) => Number(Boolean(b.hit)) - Number(Boolean(a.hit)) || b.face.bytes - a.face.bytes);
@@ -242,7 +266,7 @@ for (const { page, resolved, total } of results.sort((a, b) => b.total - a.total
 }
 
 console.log(`  ${'─'.repeat(64)}`);
-console.log(`  Worst locale             : /${worst.page.locale === '(default)' ? '' : worst.page.locale} at ${(worst.total / 1024).toFixed(1)} KB`);
+console.log(`  Worst page overall       : /${worst.page.locale === '(default)' ? '' : worst.page.locale} at ${(worst.total / 1024).toFixed(1)} KB`);
 console.log(`  Budget (font.budgetKB)   : ${budgetKB} KB`);
 
 if (overBudget.length > 0) {

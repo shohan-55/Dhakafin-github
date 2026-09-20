@@ -82,5 +82,31 @@ export const chrome = {
       disclaimer: 'Disclaimer',
       refundPolicy: 'Refund policy',
     },
+  },
+
+  /** Compliance register labels — used wherever an obligation is named. */
+  compliance: {
+    title: 'Compliance register',
+    authorityLabel: 'Authority',
+    cadenceLabel: 'Cadence',
+    cadences: {
+      monthly: 'Monthly',
+      quarterly: 'Quarterly',
+      annual: 'Annual',
+      event: 'On event',
+    },
+    obligations: {
+      vatReturn: 'Monthly VAT return',
+      vdsDeposit: 'VDS deduction and deposit',
+      binRegistration: 'BIN registration and amendment',
+      incomeTaxReturn: 'Income tax return',
+      tdsDeposit: 'TDS deduction and deposit',
+      advanceTax: 'Advance income tax instalment',
+      rjscAnnualReturn: 'RJSC annual return and filings',
+    },
+    unverifiedTitle: 'Dates are published from the register',
+    unverifiedBody:
+      'Due dates, rates and thresholds change by SRO and by registration category. We publish them from a verified register rather than from a web page, so this list names your obligations without guessing at a number.',
   }
+
 };

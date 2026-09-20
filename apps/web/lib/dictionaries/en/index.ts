@@ -9,11 +9,13 @@
 import { chrome } from './chrome';
 import { home } from './home';
 import { states } from './states';
+import { services } from './services';
 
 export const en = {
   ...chrome,
   home,
   states,
+  services,
 };
 
 /**

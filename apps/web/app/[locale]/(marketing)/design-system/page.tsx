@@ -1,13 +1,46 @@
 import type { Metadata } from 'next';
+
+import { resolveLocale } from '@/lib/i18n';
+import { buildMetadata } from '@/lib/seo';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { DesignSystemGallery } from './DesignSystemGallery';
 
-export const metadata: Metadata = {
-  title: 'Design system — internal reference',
-  description: 'Internal DhakaFin design-system reference: tokens, components, states, motion and accessibility contract.',
-  robots: { index: false, follow: false },
-};
+/**
+ * Internal reference page — not a marketing surface, so it is `noindex`. It
+ * still needs a canonical and reciprocal hreflang (a crawler that reaches it
+ * through a link should be told which locale it is), and it still needs a
+ * per-locale description so two locales never ship identical metadata.
+ */
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  const copy =
+    locale === 'bn'
+      ? {
+          title: 'ডিজাইন সিস্টেম — অভ্যন্তরীণ রেফারেন্স',
+          description:
+            'DhakaFin ডিজাইন সিস্টেমের অভ্যন্তরীণ রেফারেন্স: প্রতিটি টোকেন, কম্পোনেন্ট, স্টেট ও মোশন স্তর, আর প্রতিটি রিলিজের আগে যাচাই করা কনট্রাস্ট কনট্র্যাক্ট ও অ্যাক্সেসিবিলিটি নিয়মের তালিকা।',
+        }
+      : {
+          title: 'Design system — internal reference',
+          description:
+            'Internal reference for the DhakaFin design system: every token, component, state and motion tier, plus the contrast contract checked before each release.',
+        };
+
+  return {
+    ...buildMetadata({
+      locale,
+      path: '/design-system',
+      title: copy.title,
+      description: copy.description,
+    }),
+    robots: { index: false, follow: false },
+  };
+}
 /**
  * The internal design-system gallery (blueprint §3.6 component quality gate).
  *

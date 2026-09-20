@@ -81,5 +81,31 @@ export const chrome = {
       disclaimer: 'দাবিত্যাগ',
       refundPolicy: 'রিফান্ড নীতি',
     },
+  },
+
+  /** Compliance register labels — used wherever an obligation is named. */
+  compliance: {
+    title: 'কমপ্লায়েন্স রেজিস্টার',
+    authorityLabel: 'সংস্থা',
+    cadenceLabel: 'সময়সীমা',
+    cadences: {
+      monthly: 'মাসিক',
+      quarterly: 'ত্রৈমাসিক',
+      annual: 'বার্ষিক',
+      event: 'ঘটনাভিত্তিক',
+    },
+    obligations: {
+      vatReturn: 'মাসিক ভ্যাট রিটার্ন',
+      vdsDeposit: 'ভিডিএস কর্তন ও জমা',
+      binRegistration: 'বিআইএন নিবন্ধন ও সংশোধন',
+      incomeTaxReturn: 'আয়কর রিটার্ন',
+      tdsDeposit: 'টিডিএস কর্তন ও জমা',
+      advanceTax: 'অগ্রিম আয়কর কিস্তি',
+      rjscAnnualReturn: 'আরজেএসসি বার্ষিক রিটার্ন ও ফাইলিং',
+    },
+    unverifiedTitle: 'তারিখ রেজিস্টার থেকে প্রকাশিত হয়',
+    unverifiedBody:
+      'নির্ধারিত তারিখ, হার ও সীমা এসআরও এবং নিবন্ধন ধরন অনুযায়ী বদলায়। আমরা সেগুলো যাচাইকৃত রেজিস্টার থেকে প্রকাশ করি, কোনো ওয়েব পেজ থেকে নয় — তাই এই তালিকা আপনার দায়গুলো নাম বলে, কোনো সংখ্যা অনুমান করে নয়।',
   }
+
 };
