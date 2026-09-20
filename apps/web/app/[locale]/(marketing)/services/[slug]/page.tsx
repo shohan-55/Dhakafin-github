@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import { ButtonLink } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { isServiceSlug, serviceSlugs, services } from '@/lib/content/services';
+import { toolHref } from '@/lib/content/tools';
 import { obligationList } from '@/lib/compliance';
 import { getDictionary } from '@/lib/dictionary';
 import { localeHref, resolveLocale, type Locale } from '@/lib/i18n';
@@ -337,7 +338,7 @@ export default async function ServiceDetailPage({
                 <li key={tool}>
                   <LocaleLink
                     locale={locale}
-                    href={`/tools/${tool}`}
+                    href={toolHref(tool)}
                     className="group block rounded-xl border border-[var(--df-color-border-quiet)] bg-surface1 p-4 no-underline transition-colors hover:border-[var(--df-color-border-hover)]"
                   >
                     <span className="block text-sm font-semibold text-[var(--df-color-text-strong)] group-hover:text-sea-300 df-num">

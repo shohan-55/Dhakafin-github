@@ -36,8 +36,13 @@ interface LanguageSwitcherProps {
  * single most common bilingual-site defect.
  */
 export function LanguageSwitcher({ current, labels, className }: LanguageSwitcherProps) {
-  // `usePathname` returns the URL as the visitor sees it — the internal `/en`
-  // rewrite never reaches the browser, so no `/en` prefix needs stripping here.
+  // `usePathname` answers two different questions depending on when it is asked.
+  // In the browser it returns the URL the visitor sees, so the internal `/en`
+  // rewrite is invisible. During prerendering there is no URL yet and it returns
+  // the route's own pathname, which carries the prefix — `/en/services`. Passing
+  // it through `switchLocale` normalises both shapes, so the static HTML and the
+  // hydrated page agree. Skipping that step emits `/bn/en/services`: it works in
+  // a browser with JavaScript and 404s for everyone else.
   const pathname = usePathname() || '/';
 
   return (

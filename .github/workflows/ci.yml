@@ -83,13 +83,21 @@ jobs:
       - name: Metadata (titles, descriptions, canonical, hreflang)
         run: npm run guard:meta
 
-      # ── Gate 8: performance budget ───────────────────────────────────────
+      # ── Gate 8: internal links ───────────────────────────────────────────
+      # Every internal href in the emitted HTML must resolve to a route the build
+      # produced. Routes that exist in the blueprint but are not built yet are
+      # declared in scripts/planned-routes.mjs with their owning task, and that
+      # list may only shrink.
+      - name: Internal link integrity
+        run: npm run guard:links
+
+      # ── Gate 9: performance budget ───────────────────────────────────────
       # Measured per locale from the build output against font.budgetKB. This is
       # the gate that catches "one preload:true added 139 KB to every page".
       - name: Font payload budget
         run: npm run guard:fonts
 
-      # ── Gate 9: dependency advisories ────────────────────────────────────
+      # ── Gate 10: dependency advisories ───────────────────────────────────
       - name: Audit production dependencies
         run: npm run audit
 

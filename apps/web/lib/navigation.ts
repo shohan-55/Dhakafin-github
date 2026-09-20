@@ -12,6 +12,7 @@
  * `tsc` enforces that — a route with no translation cannot be added silently.
  */
 import type { Dictionary } from './dictionary';
+import { toolHref } from './content/tools';
 
 export type FooterLinkKey = keyof Dictionary['footer']['links'];
 export type FooterColumnKey = keyof Dictionary['footer']['columns'];
@@ -42,12 +43,16 @@ export const footerColumns: FooterColumn[] = [
   {
     key: 'tools',
     links: [
-      { key: 'tdsCalculator', href: '/tools/tds-calculator' },
-      { key: 'vdsCalculator', href: '/tools/vds-calculator' },
-      { key: 'vatCalculator', href: '/tools/vat-calculator' },
-      { key: 'incomeTaxCalculator', href: '/tools/income-tax-calculator' },
-      { key: 'breakEvenCalculator', href: '/tools/break-even-calculator' },
-      { key: 'costEfficiencyCalculator', href: '/tools/cost-efficiency-calculator' },
+      // The six with the strongest search demand (§5.4 keyword table), then the hub.
+      // Hrefs come from the tool registry — never typed by hand, because that is
+      // how this column once pointed at `/tools/break-even-calculator` while the
+      // service pages pointed at `/tools/break-even` and neither route existed.
+      { key: 'tdsCalculator', href: toolHref('tds-calculator') },
+      { key: 'vdsCalculator', href: toolHref('vds-calculator') },
+      { key: 'vatCalculator', href: toolHref('vat-calculator') },
+      { key: 'incomeTaxCalculator', href: toolHref('income-tax-calculator') },
+      { key: 'breakEvenCalculator', href: toolHref('break-even-calculator') },
+      { key: 'costEfficiencyCalculator', href: toolHref('cost-efficiency-calculator') },
       { key: 'allTools', href: '/tools' },
     ],
   },

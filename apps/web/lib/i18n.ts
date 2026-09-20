@@ -26,9 +26,6 @@ export type Locale = (typeof locales)[number];
 /** English is the default. The B2B audience reads it; Bengali is a deliberate offer, not a fallback. */
 export const defaultLocale: Locale = 'en';
 
-/** Locales that appear as a URL prefix. The default locale does not. */
-export const prefixedLocales = locales.filter((l) => l !== defaultLocale);
-
 /**
  * `lang` attribute values. Bengali is `bn-BD`, not `bn` — the regional variant
  * determines date, numeral and currency formatting, and Bangladesh differs from
@@ -77,9 +74,25 @@ export function localeHref(locale: Locale, path: string): string {
   return clean === '/' ? `/${locale}` : `/${locale}${clean}`;
 }
 
-/** Strip any locale prefix from a pathname, yielding the canonical default-locale path. */
+/**
+ * Strip a locale prefix from a pathname, yielding the canonical, unprefixed path.
+ *
+ * Strips the default locale's prefix as well as the others, which is not
+ * cosmetic — it is the difference between a correct link and a broken one.
+ *
+ * `usePathname()` in a client component answers differently depending on where
+ * it runs. In the browser it returns the URL the visitor sees, so the internal
+ * `/en` rewrite is invisible and `/services` on the English page is just
+ * `/services`. But while Next.js is *prerendering* that same page there is no
+ * URL yet: the value is the route's own pathname, which for the default locale
+ * is `/en/services`. Anything that concatenates without normalising therefore
+ * bakes `/bn/en/services` into the static HTML — a 404 for anyone without
+ * JavaScript and a dead link for a crawler, while looking perfectly correct in a
+ * browser with JavaScript on. Normalising both shapes to one canonical path is
+ * what makes the markup and the hydrated result agree.
+ */
 export function stripLocalePrefix(pathname: string): string {
-  for (const locale of prefixedLocales) {
+  for (const locale of locales) {
     if (pathname === `/${locale}`) return '/';
     if (pathname.startsWith(`/${locale}/`)) return pathname.slice(locale.length + 1);
   }
@@ -91,6 +104,9 @@ export function stripLocalePrefix(pathname: string): string {
  * `hreflang` alternates, both of which must point at the *same page*, not the
  * home page. A switcher that dumps you on `/bn` when you were reading a VAT
  * guide is a bug users report as "the Bengali site is broken".
+ *
+ * Accepts a pathname with or without a locale prefix, so it is safe to call with
+ * the output of `usePathname()` in either environment. See `stripLocalePrefix`.
  */
 export function switchLocale(pathname: string, target: Locale): string {
   return localeHref(target, stripLocalePrefix(pathname));

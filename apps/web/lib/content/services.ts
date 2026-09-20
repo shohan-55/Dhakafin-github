@@ -46,13 +46,20 @@ export interface ServiceEntry {
   pairsWith: [ServiceSlug, ServiceSlug];
   /** The industry page most often paired with this service. */
   industry: { label: 'manufacturing' | 'trading' | 'ecommerce' };
-  /** Registerable tool slugs on /tools that compute something for this service. */
-  tools: string[];
+  /**
+   * Tools on /tools that compute something this service is accountable for.
+   * Typed as `ToolSlug`, so a slug that does not exist in the registry is a
+   * compile error rather than a 404 — which is exactly how the footer and the
+   * service pages drifted apart on `/tools/break-even`.
+   */
+  tools: ToolSlug[];
   /** Which compliance obligations this service carries (ids in `lib/compliance.ts`). */
   obligations: string[];
   /** Illustration motif key — see components/marketing/ServiceMotif.tsx. */
   motif: ServiceMotifKey;
 }
+
+import type { ToolSlug } from './tools';
 
 export type ServiceMotifKey =
   | 'ledger'
@@ -72,7 +79,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'foundations',
     pairsWith: ['audit-support', 'tax-services'],
     industry: { label: 'trading' },
-    tools: ['break-even', 'cash-runway'],
+    tools: ['profit-calculator', 'working-capital-calculator'],
     obligations: ['income-tax-return', 'vat-return-monthly'],
     motif: 'ledger',
   },
@@ -82,7 +89,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'foundations',
     pairsWith: ['accounting-bookkeeping', 'internal-control-governance'],
     industry: { label: 'manufacturing' },
-    tools: ['depreciation', 'break-even'],
+    tools: ['profit-calculator', 'cash-flow-calculator'],
     obligations: ['income-tax-return', 'rjsc-annual-return'],
     motif: 'sampling',
   },
@@ -92,7 +99,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'foundations',
     pairsWith: ['vat-services', 'accounting-bookkeeping'],
     industry: { label: 'trading' },
-    tools: ['tds-calculator', 'income-tax-calculator'],
+    tools: ['tds-calculator', 'income-tax-calculator', 'corporate-tax-calculator'],
     obligations: ['income-tax-return', 'tds-deposit-monthly', 'advance-tax'],
     motif: 'brackets',
   },
@@ -102,7 +109,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'control',
     pairsWith: ['tax-services', 'corporate-compliance'],
     industry: { label: 'ecommerce' },
-    tools: ['vat-calculator', 'pricing-margin'],
+    tools: ['vat-calculator', 'vds-calculator'],
     obligations: ['vat-return-monthly', 'vds-deposit', 'bin-registration'],
     motif: 'mushak',
   },
@@ -112,7 +119,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'control',
     pairsWith: ['accounting-bookkeeping', 'internal-control-governance'],
     industry: { label: 'manufacturing' },
-    tools: ['pricing-margin', 'break-even'],
+    tools: ['cost-efficiency-calculator', 'break-even-calculator'],
     obligations: ['income-tax-return'],
     motif: 'leak',
   },
@@ -122,7 +129,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'control',
     pairsWith: ['cost-efficiency-internal-control', 'audit-support'],
     industry: { label: 'manufacturing' },
-    tools: ['cash-runway', 'break-even'],
+    tools: ['cost-efficiency-calculator', 'cash-flow-calculator'],
     obligations: ['income-tax-return'],
     motif: 'gate',
   },
@@ -132,7 +139,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'growth',
     pairsWith: ['vat-services', 'financial-advisory'],
     industry: { label: 'manufacturing' },
-    tools: ['compliance-calendar'],
+    tools: ['vat-calculator', 'tds-calculator'],
     obligations: ['rjsc-annual-return', 'vat-return-monthly', 'income-tax-return'],
     motif: 'calendar',
   },
@@ -142,7 +149,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'growth',
     pairsWith: ['virtual-cfo', 'corporate-compliance'],
     industry: { label: 'ecommerce' },
-    tools: ['cash-runway', 'break-even'],
+    tools: ['roi-calculator', 'cash-flow-calculator'],
     obligations: ['income-tax-return'],
     motif: 'fan',
   },
@@ -152,7 +159,7 @@ export const services: Record<ServiceSlug, ServiceEntry> = {
     group: 'growth',
     pairsWith: ['financial-advisory', 'cost-efficiency-internal-control'],
     industry: { label: 'manufacturing' },
-    tools: ['cash-runway', 'pricing-margin'],
+    tools: ['cash-flow-calculator', 'working-capital-calculator'],
     obligations: ['income-tax-return', 'vat-return-monthly'],
     motif: 'cockpit',
   },
