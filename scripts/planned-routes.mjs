@@ -45,7 +45,6 @@ export const plannedRoutes = [
   { href: '/refund-policy', task: 'DF-P2-025', what: 'Refund policy' },
 
   // ── Experiences and conversion — DF-P2-044, DF-P2-026, DF-P2-019 ─────────
-  { href: '/cost-efficiency', task: 'DF-P2-044', what: 'Cost-efficiency experience page' },
   { href: '/diagnostic', task: 'DF-P2-015', what: 'Financial health diagnostic' },
   { href: '/book-consultation', task: 'DF-P2-026', what: 'Booking flow' },
   { href: '/insights', task: 'DF-P2-017', what: 'Insights index (CMS-driven)' },

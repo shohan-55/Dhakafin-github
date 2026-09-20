@@ -19,13 +19,14 @@
     "start": "npm run start --workspace @dhakafin/web",
     "lint": "npm run lint --workspace @dhakafin/web",
     "typecheck": "npm run typecheck --workspace @dhakafin/web",
-    "verify": "npm run tokens:validate && npm run tokens:build && npm run guard:tokens && npm run typecheck && npm run test:engine && npm run build && npm run guard:utilities && npm run guard:meta && npm run guard:links && npm run guard:fonts && npm run audit",
+    "verify": "npm run tokens:validate && npm run tokens:build && npm run guard:tokens && npm run typecheck && npm run test:engine && npm run build && npm run guard:utilities && npm run guard:meta && npm run guard:links && npm run guard:estimate && npm run guard:fonts && npm run audit",
     "guard:fonts": "node scripts/check-font-budget.mjs",
     "audit": "npm audit --omit=dev",
     "guard:utilities": "node scripts/check-utilities.mjs",
     "guard:meta": "node scripts/check-meta.mjs",
     "guard:links": "node scripts/check-links.mjs",
-    "test:engine": "cd apps/web && node --experimental-strip-types --test lib/tools/engine.test.ts"
+    "guard:estimate": "node scripts/check-estimate.mjs",
+    "test:engine": "cd apps/web && node --experimental-strip-types --test lib/tools/engine.test.ts lib/cost-efficiency.test.ts"
   },
   "keywords": [
     "dhakafin",
