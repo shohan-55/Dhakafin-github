@@ -1,0 +1,28 @@
+# DhakaFin — editor baseline.
+# Whitespace is not a style preference here: the token guard and the generated
+# dist/ artefacts are diffed in CI, so trailing whitespace and mixed line endings
+# show up as false failures.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+max_line_length = 120
+
+[*.md]
+# Trailing double-space is a hard line break in Markdown — must not be stripped.
+trim_trailing_whitespace = false
+
+[*.{json,jsonc}]
+indent_size = 2
+
+[*.yml]
+indent_size = 2
+
+[packages/tokens/dist/**]
+# Generated. Diffs here are noise; review df.tokens.json instead.
+generated_code = true

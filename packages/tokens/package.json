@@ -1,0 +1,21 @@
+{
+  "name": "@dhakafin/tokens",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DhakaFin design tokens — single source of truth. Builds CSS custom properties, Tailwind v4 theme and typed TS constants.",
+  "type": "module",
+  "main": "./dist/tokens.ts",
+  "exports": {
+    ".": "./dist/tokens.ts",
+    "./css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css"
+  },
+  "files": [
+    "df.tokens.json",
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "validate": "node validate.mjs"
+  }
+}

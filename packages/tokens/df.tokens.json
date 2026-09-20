@@ -1,0 +1,293 @@
+{
+  "$schema": "./token.schema.json",
+  "$meta": {
+    "name": "DhakaFin Design Tokens",
+    "version": "1.0.0",
+    "phase": "Phase 1 — DF-P1-003",
+    "description": "Single source of truth for the DhakaFin visual language. Build with `npm run tokens:build`. NEVER hardcode a hex, size, duration or easing in a component — the CI guard (scripts/check-no-hardcoded-tokens.mjs) fails the build.",
+    "reference": "docs/blueprint/DhakaFin_100_Percent_Master_Roadmap_Blueprint.md §3.2–§3.11",
+    "themes": {
+      "default": "dark",
+      "supported": ["dark", "light"],
+      "tiers": ["ultra", "high", "balanced", "lite"]
+    }
+  },
+
+  "color": {
+    "$comment": "Ocean Void foundation + sea-green signature spectrum. Contrast ratios are measured, not estimated — see validate.mjs.",
+    "void":      { "value": "#020b0a", "type": "color", "role": "base-background" },
+    "voidDeep":  { "value": "#010807", "type": "color", "role": "canvas-floor" },
+    "slateDeep": { "value": "#041312", "type": "color", "role": "section-alternate" },
+    "surface1":  { "value": "#061715", "type": "color", "role": "card-panel-base" },
+    "surface2":  { "value": "#0a1f1c", "type": "color", "role": "raised-menu-popover" },
+    "surface3":  { "value": "#0f2a26", "type": "color", "role": "overlay-modal" },
+
+    "glassTint":     { "value": "rgba(8, 30, 27, 0.65)", "type": "color", "role": "glass-surface" },
+    "glassTintSoft": { "value": "rgba(8, 30, 27, 0.40)", "type": "color", "role": "glass-surface-subtle" },
+
+    "sea": {
+      "$comment": "Signature DhakaFin spectrum. 500 is the primary brand colour.",
+      "700": { "value": "#0d9488", "type": "color", "role": "deep-fill", "usageRule": "large text (>=19px bold), borders, fills, icons — NOT small body text" },
+      "600": { "value": "#0f9e93", "type": "color", "role": "deep-fill-hover" },
+      "500": { "value": "#14b8a6", "type": "color", "role": "primary", "usageRule": "Primary buttons MUST use void (#020b0a) text — white on sea-500 fails WCAG (2.49:1)" },
+      "400": { "value": "#2dd4bf", "type": "color", "role": "luminous", "usageRule": "focus ring, hover glow, KPI accent" },
+      "300": { "value": "#5eead4", "type": "color", "role": "glow", "usageRule": "data streams, sparkline tips, live pulses" },
+      "200": { "value": "#99f6e4", "type": "color", "role": "text-on-deep-fill" }
+    },
+
+    "cyan":     { "value": "#22d3ee", "type": "color", "role": "data-stream", "usageRule": "never a CTA colour, never legal text" },
+    "cyanDim":  { "value": "#0891b2", "type": "color", "role": "cyan-fill" },
+    "gold":     { "value": "#d97706", "type": "color", "role": "regulatory-accent" },
+    "goldBright": { "value": "#fbbf24", "type": "color", "role": "regulatory-small-text" },
+    "violetDusk": { "value": "#7c6cf0", "type": "color", "role": "ai-surface", "usageRule": "max 10% coverage, AI surfaces only" },
+
+    "text":       { "value": "#e2e8f0", "type": "color", "role": "body" },
+    "textStrong": { "value": "#f8fafc", "type": "color", "role": "heading-and-key-numbers" },
+    "muted":      { "value": "#94a3b8", "type": "color", "role": "secondary-text" },
+    "muted2":     { "value": "#64748b", "type": "color", "role": "decorative", "restricted": "Decorative only or >=19px bold. Fails AA for normal body text." },
+
+    "ok":     { "value": "#34d399", "type": "color", "role": "status-positive" },
+    "okDeep": { "value": "#10b981", "type": "color", "role": "status-positive-fill" },
+    "warn":   { "value": "#fbbf24", "type": "color", "role": "status-attention" },
+    "risk":   { "value": "#fb923c", "type": "color", "role": "status-overdue-risk" },
+    "danger": { "value": "#f87171", "type": "color", "role": "status-critical" },
+    "info":   { "value": "#2dd4bf", "type": "color", "role": "status-informational" },
+
+    "border":          { "value": "rgba(45, 212, 191, 0.18)", "type": "color", "role": "hairline-default" },
+    "borderStrong":    { "value": "rgba(45, 212, 191, 0.32)", "type": "color", "role": "hairline-emphasis" },
+    "borderHover":     { "value": "rgba(94, 234, 212, 0.50)", "type": "color", "role": "hairline-interactive-hover" },
+    "borderQuiet":     { "value": "rgba(226, 232, 240, 0.08)", "type": "color", "role": "neutral-hairline" },
+    "surfaceTint":     { "value": "rgba(20, 184, 166, 0.08)", "type": "color", "role": "row-hover-selected-fill" },
+    "surfaceTintStrong": { "value": "rgba(20, 184, 166, 0.16)", "type": "color", "role": "chip-active-pill" },
+    "scrim":           { "value": "rgba(1, 8, 7, 0.72)", "type": "color", "role": "modal-backdrop" },
+    "glowSea":         { "value": "rgba(45, 212, 191, 0.35)", "type": "color", "role": "glow-shadow", "usageRule": "max 2 glows per viewport" }
+  },
+
+  "gradient": {
+    "ocean":   { "value": "linear-gradient(160deg, #020b0a 0%, #041312 55%, #06231f 100%)", "type": "gradient", "role": "page-section-background" },
+    "sealine": { "value": "linear-gradient(90deg, transparent, #14b8a6, #2dd4bf, transparent)", "type": "gradient", "role": "data-stream-divider" },
+    "depth":   { "value": "radial-gradient(120% 80% at 50% 0%, rgba(20, 184, 166, 0.14), transparent 60%)", "type": "gradient", "role": "hero-spotlight" },
+    "metal":   { "value": "linear-gradient(135deg, #1c2b2a 0%, #0b1817 40%, #16302c 70%, #0a1615 100%)", "type": "gradient", "role": "metallic-surface" },
+    "focus":   { "value": "linear-gradient(90deg, #5eead4, #22d3ee)", "type": "gradient", "role": "progress-active-tab" },
+    "edgeHighlight": { "value": "linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent)", "type": "gradient", "role": "machined-top-edge", "usageRule": "applied as a 1px top highlight so dark surfaces read as machined rather than flat" }
+  },
+
+  "font": {
+    "sans":  { "value": "'Plus Jakarta Sans', 'Hind Siliguri', system-ui, -apple-system, 'Segoe UI', sans-serif", "type": "fontFamily", "role": "structure-ui-body" },
+    "num":   { "value": "'Space Grotesk', 'Plus Jakarta Sans', ui-monospace, 'SFMono-Regular', monospace", "type": "fontFamily", "role": "financial-figures" },
+    "bn":    { "value": "'Hind Siliguri', 'Plus Jakarta Sans', sans-serif", "type": "fontFamily", "role": "bangla" },
+    "serif": { "value": "'Newsreader', Georgia, 'Times New Roman', serif", "type": "fontFamily", "role": "long-form-editorial" },
+    "mono":  { "value": "'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace", "type": "fontFamily", "role": "code-and-sro-references" },
+    "budgetKB": { "value": "180", "type": "number", "role": "performance-budget" }
+  },
+
+  "fontSize": {
+    "display":  { "value": "clamp(2.75rem, 6vw, 5.5rem)", "lineHeight": "0.98", "letterSpacing": "-0.03em", "fontWeight": "800", "role": "hero-signature-titles" },
+    "h1":       { "value": "clamp(2.25rem, 4.6vw, 3.75rem)", "lineHeight": "1.05", "letterSpacing": "-0.02em", "fontWeight": "700", "role": "page-h1" },
+    "h2":       { "value": "clamp(1.75rem, 3.4vw, 2.625rem)", "lineHeight": "1.12", "letterSpacing": "-0.015em", "fontWeight": "700", "role": "section-heading" },
+    "h3":       { "value": "clamp(1.375rem, 2.4vw, 1.875rem)", "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600", "role": "card-heading" },
+    "h4":       { "value": "clamp(1.125rem, 1.8vw, 1.375rem)", "lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "600", "role": "panel-title" },
+    "bodyLg":   { "value": "clamp(1.0625rem, 1.5vw, 1.1875rem)", "lineHeight": "1.65", "letterSpacing": "0", "fontWeight": "400", "role": "lead-paragraph" },
+    "body":     { "value": "clamp(0.9375rem, 1.3vw, 1rem)", "lineHeight": "1.7", "letterSpacing": "0", "fontWeight": "400", "role": "default-body" },
+    "sm":       { "value": "clamp(0.8125rem, 1.1vw, 0.875rem)", "lineHeight": "1.6", "letterSpacing": "0.005em", "fontWeight": "400", "role": "secondary-table-cell" },
+    "xs":       { "value": "clamp(0.6875rem, 0.9vw, 0.75rem)", "lineHeight": "1.5", "letterSpacing": "0.02em", "fontWeight": "500", "role": "caption-timestamp" },
+    "metricXl": { "value": "clamp(2rem, 4vw, 3.25rem)", "lineHeight": "1.0", "letterSpacing": "-0.02em", "fontWeight": "500", "font": "num", "role": "dashboard-hero-kpi" },
+    "metric":   { "value": "clamp(1.375rem, 2.6vw, 2rem)", "lineHeight": "1.05", "letterSpacing": "-0.01em", "fontWeight": "500", "font": "num", "role": "kpi-tile-tool-result" },
+    "metricSm": { "value": "clamp(1rem, 1.7vw, 1.25rem)", "lineHeight": "1.1", "letterSpacing": "0", "fontWeight": "500", "font": "num", "role": "inline-figure-table-number" },
+    "overline": { "value": "clamp(0.625rem, 0.9vw, 0.75rem)", "lineHeight": "1.2", "letterSpacing": "0.14em", "fontWeight": "600", "textTransform": "uppercase", "role": "section-eyebrow" }
+  },
+
+  "space": {
+    "1":  { "value": "4px", "type": "dimension" },   "2":  { "value": "8px", "type": "dimension" },
+    "3":  { "value": "12px", "type": "dimension" },  "4":  { "value": "16px", "type": "dimension" },
+    "5":  { "value": "20px", "type": "dimension" },  "6":  { "value": "24px", "type": "dimension" },
+    "8":  { "value": "32px", "type": "dimension" },  "10": { "value": "40px", "type": "dimension" },
+    "12": { "value": "48px", "type": "dimension" },  "16": { "value": "64px", "type": "dimension" },
+    "20": { "value": "80px", "type": "dimension" },  "24": { "value": "96px", "type": "dimension" },
+    "30": { "value": "128px", "type": "dimension" }, "38": { "value": "160px", "type": "dimension" },
+    "48": { "value": "200px", "type": "dimension" }
+  },
+
+  "radius": {
+    "sm":   { "value": "8px", "type": "dimension", "role": "chip-input-small" },
+    "md":   { "value": "12px", "type": "dimension", "role": "button-menu" },
+    "lg":   { "value": "16px", "type": "dimension", "role": "card" },
+    "xl":   { "value": "20px", "type": "dimension", "role": "panel-section" },
+    "2xl":  { "value": "28px", "type": "dimension", "role": "feature-tile" },
+    "full": { "value": "9999px", "type": "dimension", "role": "pill-avatar" }
+  },
+
+  "container": {
+    "content": { "value": "1200px", "type": "dimension", "role": "default-max-width" },
+    "wide":    { "value": "1440px", "type": "dimension", "role": "hero-dashboards" },
+    "reading": { "value": "720px", "type": "dimension", "role": "article-measure" }
+  },
+
+  "breakpoint": {
+    "xs": { "value": "360px", "type": "dimension" },
+    "sm": { "value": "480px", "type": "dimension" },
+    "md": { "value": "768px", "type": "dimension" },
+    "lg": { "value": "1024px", "type": "dimension" },
+    "xl": { "value": "1280px", "type": "dimension" },
+    "2xl": { "value": "1536px", "type": "dimension" }
+  },
+
+  "duration": {
+    "1": { "value": "120ms", "type": "duration", "role": "micro-feedback" },
+    "2": { "value": "200ms", "type": "duration", "role": "dropdown-chip-tab" },
+    "3": { "value": "320ms", "type": "duration", "role": "card-panel-drawer" },
+    "4": { "value": "560ms", "type": "duration", "role": "section-reveal" },
+    "5": { "value": "900ms", "type": "duration", "role": "hero-story-sequence" }
+  },
+
+  "ease": {
+    "out":    { "value": "cubic-bezier(0.16, 1, 0.3, 1)", "type": "cubicBezier", "role": "entrances" },
+    "inOut":  { "value": "cubic-bezier(0.65, 0, 0.35, 1)", "type": "cubicBezier", "role": "exits-and-loops" },
+    "spring": { "value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "type": "cubicBezier", "role": "magnetic-node-snap", "usageRule": "sparingly — max 2 places in the product" },
+    "linear": { "value": "linear", "type": "cubicBezier", "role": "data-stream-progress" }
+  },
+
+  "blur": {
+    "glass":   { "value": "16px", "type": "dimension", "role": "glass-panel" },
+    "overlay": { "value": "24px", "type": "dimension", "role": "modal-command-palette" },
+    "heavy":   { "value": "32px", "type": "dimension", "role": "hero-atmosphere" }
+  },
+
+  "elevation": {
+    "1":    { "value": "0 1px 2px rgba(0, 0, 0, 0.40)", "type": "shadow" },
+    "2":    { "value": "0 4px 16px rgba(0, 0, 0, 0.45)", "type": "shadow" },
+    "3":    { "value": "0 12px 32px rgba(0, 0, 0, 0.50)", "type": "shadow" },
+    "4":    { "value": "0 24px 64px rgba(0, 0, 0, 0.60)", "type": "shadow" },
+    "glow": { "value": "0 0 32px rgba(45, 212, 191, 0.25)", "type": "shadow", "role": "sea-glow" },
+    "inner":{ "value": "inset 0 1px 0 rgba(255, 255, 255, 0.06)", "type": "shadow", "role": "metal-edge-highlight" }
+  },
+
+  "zIndex": {
+    "canvas":  { "value": "0", "type": "number" },
+    "grid":    { "value": "1", "type": "number" },
+    "context": { "value": "10", "type": "number" },
+    "element": { "value": "20", "type": "number" },
+    "overlay": { "value": "100", "type": "number" },
+    "system":  { "value": "1000", "type": "number" }
+  },
+
+  "focus": {
+    "ring": { "value": "0 0 0 2px var(--df-color-void), 0 0 0 4px var(--df-color-sea-400)", "type": "shadow", "role": "focus-visible-ring" }
+  },
+
+  "touch": {
+    "minTarget":     { "value": "44px", "type": "dimension" },
+    "minSeparation": { "value": "8px", "type": "dimension" }
+  },
+
+  "tier": {
+    "$comment": "Experience tiers from blueprint §3.9. Applied as [data-tier] on <html>.",
+    "lite":     { "webgl": "none",       "blur": "0px",  "spotlight": "off", "pinnedScroll": "off", "durationScale": "0.4" },
+    "balanced": { "webgl": "simplified", "blur": "12px", "spotlight": "off", "pinnedScroll": "off", "durationScale": "0.8" },
+    "high":     { "webgl": "full",       "blur": "16px", "spotlight": "on",  "pinnedScroll": "on",  "durationScale": "1" },
+    "ultra":    { "webgl": "full",       "blur": "16px", "spotlight": "on",  "pinnedScroll": "on",  "durationScale": "1" }
+  },
+
+  "theme": {
+    "$comment": "Light theme is a secondary, fully specified theme: printed reports, PDF exports and explicit user choice. Portal defaults to dark.",
+    "light": {
+      "void":       { "value": "#f7faf9", "type": "color" },
+      "voidDeep":   { "value": "#ffffff", "type": "color" },
+      "slateDeep":  { "value": "#f1f6f4", "type": "color" },
+      "surface1":   { "value": "#ffffff", "type": "color" },
+      "surface2":   { "value": "#f6faf9", "type": "color" },
+      "surface3":   { "value": "#ffffff", "type": "color" },
+      "glassTint":  { "value": "rgba(255, 255, 255, 0.78)", "type": "color" },
+      "glassTintSoft": { "value": "rgba(255, 255, 255, 0.55)", "type": "color" },
+      "text":       { "value": "#0b1f1c", "type": "color" },
+      "textStrong": { "value": "#06120f", "type": "color" },
+      "muted":      { "value": "#4b6a65", "type": "color" },
+      "muted2":     { "value": "#5d7b76", "type": "color" },
+      "sea500":     { "value": "#0d9488", "type": "color" },
+      "sea400":     { "value": "#0f766e", "type": "color" },
+      "sea300":     { "value": "#115e59", "type": "color" },
+      "buttonPrimaryBg":   { "value": "#0f766e", "type": "color" },
+      "buttonPrimaryText": { "value": "#ffffff", "type": "color" },
+      "gold":       { "value": "#a16207", "type": "color" },
+      "goldBright": { "value": "#854d0e", "type": "color" },
+      "border":       { "value": "rgba(13, 148, 136, 0.20)", "type": "color" },
+      "borderStrong": { "value": "rgba(13, 148, 136, 0.34)", "type": "color" },
+      "borderHover":  { "value": "rgba(15, 118, 110, 0.55)", "type": "color" },
+      "borderQuiet":  { "value": "rgba(11, 31, 28, 0.10)", "type": "color" },
+      "surfaceTint":       { "value": "rgba(13, 148, 136, 0.08)", "type": "color" },
+      "surfaceTintStrong": { "value": "rgba(13, 148, 136, 0.16)", "type": "color" },
+      "scrim":      { "value": "rgba(11, 31, 28, 0.45)", "type": "color" },
+      "ok":         { "value": "#047857", "type": "color" },
+      "warn":       { "value": "#a16207", "type": "color" },
+      "risk":       { "value": "#b45309", "type": "color" },
+      "danger":     { "value": "#b91c1c", "type": "color" }
+    }
+  },
+
+  "contrastContract": {
+    "$comment": "Measured contrast pairs that validate.mjs re-computes on every build. These are promises to our users, enforced by CI.",
+    "required": [
+      { "fg": "text",       "bg": "void", "min": 4.5, "context": "body text on base" },
+      { "fg": "textStrong", "bg": "void", "min": 4.5, "context": "headings on base" },
+      { "fg": "muted",      "bg": "void", "min": 4.5, "context": "secondary text on base" },
+      { "fg": "sea500",     "bg": "void", "min": 4.5, "context": "primary brand on base" },
+      { "fg": "sea400",     "bg": "void", "min": 4.5, "context": "focus ring / accents on base" },
+      { "fg": "sea300",     "bg": "void", "min": 4.5, "context": "glow accents on base" },
+      { "fg": "gold",       "bg": "void", "min": 4.5, "context": "regulatory accent on base" },
+      { "fg": "goldBright", "bg": "void", "min": 4.5, "context": "regulatory badge text on base" },
+      { "fg": "ok",         "bg": "void", "min": 4.5, "context": "success status text on base" },
+      { "fg": "warn",       "bg": "void", "min": 4.5, "context": "warning status text on base" },
+      { "fg": "risk",       "bg": "void", "min": 4.5, "context": "risk status text on base" },
+      { "fg": "danger",     "bg": "void", "min": 4.5, "context": "critical status text on base" },
+      { "fg": "text",       "bg": "surface1", "min": 4.5, "context": "body text on card surface" },
+      { "fg": "muted",      "bg": "surface1", "min": 4.5, "context": "secondary text on card surface" },
+      { "fg": "void",       "bg": "sea500", "min": 4.5, "context": "PRIMARY BUTTON: dark text on sea-green (this is why buttons never use white text)" },
+      { "fg": "textStrong", "bg": "surface3", "min": 4.5, "context": "heading on overlay surface" }
+    ],
+    "forbidden": [
+      { "fg": "#ffffff", "bgLuminanceOf": "sea500", "reason": "White on sea-500 measures ~2.5:1 — fails WCAG AA. Use void (#020b0a) text instead." },
+      { "fg": "muted2", "bg": "void", "reason": "4.18:1 — fails AA for normal body text. Decorative or >=19px bold only." }
+    ]
+  },
+
+  "motion": {
+    "$comment": "Signature motion inventory from blueprint §3.10. Implemented as reusable utility classes so no page invents its own animation.",
+    "reveal":   { "value": "df-reveal", "type": "class", "role": "section entrance: fade + rise 16px, 560ms ease-out, once" },
+    "ledger":   { "value": "df-ledger-row", "type": "class", "role": "table row slide-in with drawing accent line" },
+    "stream":   { "value": "df-stream", "type": "class", "role": "data-stream dash animation along a path" },
+    "pulse":    { "value": "df-pulse-once", "type": "class", "role": "single ripple on node focus" },
+    "spotlight":{ "value": "df-spotlight", "type": "class", "role": "cursor-following radial gradient on cards (ultra/high only)" },
+    "staggerMax": { "value": "8", "type": "number", "role": "items animated in a staggered group" },
+    "staggerStep": { "value": "40ms", "type": "duration", "role": "delay between staggered children" },
+    "forbidden": [
+      "parallax on text",
+      "autoplaying carousels",
+      "bounce or elastic easing on financial data",
+      "custom cursors over data tables",
+      "background video loops",
+      "any motion longer than 900ms without user intent"
+    ]
+  },
+
+  "format": {
+    "currencySymbol": { "value": "৳", "type": "string" },
+    "locale":         { "value": "en-BD", "type": "string" },
+    "groupingStyle":  { "value": "lakh-crore (12,34,567)", "type": "string" },
+    "compactUnits":   { "value": "K, L (lakh), Cr (crore)", "type": "string" },
+    "fiscalYear":     { "value": "FY 2025–26", "type": "string" },
+    "dateFormat":     { "value": "DD MMM YYYY", "type": "string" },
+    "supportedLocales": { "value": "en, bn-BD", "type": "string" },
+    "banglaNumeralsSupported": { "value": "true", "type": "boolean" }
+  },
+
+  "a11y": {
+    "standard": { "value": "WCAG 2.2 AA", "type": "string" },
+    "minTargetSize": { "value": "44px", "type": "dimension" },
+    "bodyTextMinContrast": { "value": "4.5", "type": "number" },
+    "largeTextMinContrast": { "value": "3", "type": "number" },
+    "uiComponentMinContrast": { "value": "3", "type": "number" },
+    "reducedMotionSupported": { "value": "true", "type": "boolean" },
+    "statusNeverColourAlone": { "value": "true", "type": "boolean" },
+    "chartTableFallbackRequired": { "value": "true", "type": "boolean" }
+  }
+}
