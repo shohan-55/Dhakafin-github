@@ -32,7 +32,6 @@ export const plannedRoutes = [
   { href: '/compliance-calendar', task: 'DF-P2-015', what: 'Public compliance calendar' },
 
   // ── Static core pages — DF-P2-025 ────────────────────────────────────────
-  { href: '/about', task: 'DF-P2-025', what: 'About' },
   { href: '/team', task: 'DF-P2-025', what: 'Team' },
   { href: '/clients', task: 'DF-P2-025', what: 'Clients and case studies' },
   { href: '/security', task: 'DF-P2-025', what: 'Security and data handling' },

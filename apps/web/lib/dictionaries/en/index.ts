@@ -6,6 +6,7 @@
  * sees, so splitting is invisible to consumers: `getDictionary(locale).home.hero`
  * works exactly as before.
  */
+import { about } from './about';
 import { chrome } from './chrome';
 import { home } from './home';
 import { states } from './states';
@@ -17,6 +18,7 @@ import { tools } from './tools';
 
 export const en = {
   ...chrome,
+  about,
   home,
   states,
   services,
