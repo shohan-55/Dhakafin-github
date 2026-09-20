@@ -12,11 +12,20 @@ export interface BreadcrumbItem {
  * Every page at level 2+ renders this, and each instance is mirrored in
  * BreadcrumbList schema (blueprint §7.3).
  */
-export function Breadcrumb({ items, className }: { items: BreadcrumbItem[]; className?: string }) {
+export function Breadcrumb({
+  items,
+  className,
+  label = 'Breadcrumb',
+}: {
+  items: BreadcrumbItem[];
+  className?: string;
+  /** Translated landmark label. A Bengali page should announce "ব্রেডক্রাম্ব". */
+  label?: string;
+}) {
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className={cn('w-full', className)}>
+    <nav aria-label={label} className={cn('w-full', className)}>
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

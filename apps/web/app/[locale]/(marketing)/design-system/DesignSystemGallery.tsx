@@ -120,7 +120,7 @@ const TYPE_SCALE = [
   { token: 'fontSize.h2', sample: 'Where Is Your Money Going?', className: 'text-h2', use: 'Section heading' },
   { token: 'fontSize.h3', sample: 'TDS Rates in Bangladesh', className: 'text-h3', use: 'Card heading' },
   { token: 'fontSize.h4', sample: 'Applicability and conditions', className: 'text-h4', use: 'Panel title' },
-  { token: 'fontSize.bodyLg', sample: 'Accounting, audit, tax, VAT and financial intelligence.', className: 'text-bodyLg', use: 'Lead paragraph' },
+  { token: 'fontSize.bodyLg', sample: 'Accounting, audit, tax, VAT and financial intelligence.', className: 'text-body-lg', use: 'Lead paragraph' },
   { token: 'fontSize.body', sample: 'VDS is VAT deducted at source when you pay a service provider.', className: 'text-body', use: 'Body copy' },
   { token: 'fontSize.sm', sample: 'Effective 01 Jul 2025 · SRO 173-AIN/2025', className: 'text-sm', use: 'Secondary / table cell' },
   { token: 'fontSize.xs', sample: 'Last verified 12 Sep 2026', className: 'text-xs', use: 'Caption / timestamp' },

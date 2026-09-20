@@ -2,9 +2,24 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dhakafin.com/schemas/df.tokens.json",
   "title": "DhakaFin Design Token File",
-  "description": "Schema for packages/tokens/df.tokens.json — the single source of truth for the DhakaFin Design System (DFDS). Every visual constant in the product resolves to a token in this file. Editors get completion and inline documentation from this schema; validate.mjs enforces the parts a schema cannot express (WCAG maths, forbidden pairings, tier monotonicity).",
+  "description": "Schema for packages/tokens/df.tokens.json \u2014 the single source of truth for the DhakaFin Design System (DFDS). Every visual constant in the product resolves to a token in this file. Editors get completion and inline documentation from this schema; validate.mjs enforces the parts a schema cannot express (WCAG maths, forbidden pairings, tier monotonicity).",
   "type": "object",
-  "required": ["$schema", "$meta", "color", "font", "fontSize", "space", "radius", "duration", "ease", "zIndex", "contrastContract", "motion", "format", "a11y"],
+  "required": [
+    "$schema",
+    "$meta",
+    "color",
+    "font",
+    "fontSize",
+    "space",
+    "radius",
+    "duration",
+    "ease",
+    "zIndex",
+    "contrastContract",
+    "motion",
+    "format",
+    "a11y"
+  ],
   "additionalProperties": true,
   "patternProperties": {
     "^\\$": {
@@ -32,15 +47,22 @@
     "colourLiteral": {
       "type": "string",
       "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$",
-      "description": "A literal hex colour. Only permitted inside df.tokens.json — components must consume the generated token."
+      "description": "A literal hex colour. Only permitted inside df.tokens.json \u2014 components must consume the generated token."
     },
     "tokenLeaf": {
       "description": "A single design decision with its rationale.",
       "type": "object",
-      "required": ["value", "type"],
+      "required": [
+        "value",
+        "type"
+      ],
       "properties": {
-        "value": { "description": "The value. Format depends on `type`." },
-        "type": { "$ref": "#/$defs/tokenType" },
+        "value": {
+          "description": "The value. Format depends on `type`."
+        },
+        "type": {
+          "$ref": "#/$defs/tokenType"
+        },
         "role": {
           "type": "string",
           "description": "What this token is FOR, in product language. Required in spirit: a token without a stated role is an undocumented decision."
@@ -49,26 +71,55 @@
           "type": "string",
           "description": "A binding constraint. Where the design system must not be misused, the rule is recorded here rather than left to memory."
         },
-        "description": { "type": "string" },
+        "description": {
+          "type": "string"
+        },
         "restricted": {
           "type": "boolean",
-          "description": "Marks a token the validator will not allow in the required contrast set — e.g. a deliberately low-contrast decorative surface."
+          "description": "Marks a token the validator will not allow in the required contrast set \u2014 e.g. a deliberately low-contrast decorative surface."
         }
       },
       "additionalProperties": false
     },
     "typographyScale": {
-      "description": "A type-scale step. Unlike a bare token, a step is only valid when its metrics ship together — a size without a line-height and weight is not a decision, it is a guess.",
+      "description": "A type-scale step. Unlike a bare token, a step is only valid when its metrics ship together \u2014 a size without a line-height and weight is not a decision, it is a guess.",
       "type": "object",
-      "required": ["value", "lineHeight", "letterSpacing", "fontWeight", "role"],
+      "required": [
+        "value",
+        "lineHeight",
+        "letterSpacing",
+        "fontWeight",
+        "role"
+      ],
       "properties": {
-        "value": { "type": "string", "description": "Font size, px/rem/clamp() — must be a raw value, not a var(), so line-height pairing stays legible." },
-        "lineHeight": { "type": "string" },
-        "letterSpacing": { "type": "string" },
-        "fontWeight": { "type": "string" },
-        "font": { "type": "string", "description": "Token family alias, e.g. 'num' for financial figures." },
-        "textTransform": { "enum": ["none", "uppercase", "lowercase", "capitalize"] },
-        "role": { "type": "string" }
+        "value": {
+          "type": "string",
+          "description": "Font size, px/rem/clamp() \u2014 must be a raw value, not a var(), so line-height pairing stays legible."
+        },
+        "lineHeight": {
+          "type": "string"
+        },
+        "letterSpacing": {
+          "type": "string"
+        },
+        "fontWeight": {
+          "type": "string"
+        },
+        "font": {
+          "type": "string",
+          "description": "Token family alias, e.g. 'num' for financial figures."
+        },
+        "textTransform": {
+          "enum": [
+            "none",
+            "uppercase",
+            "lowercase",
+            "capitalize"
+          ]
+        },
+        "role": {
+          "type": "string"
+        }
       },
       "additionalProperties": false
     },
@@ -78,8 +129,25 @@
       "minProperties": 1,
       "patternProperties": {
         "^\\$": true,
-        "^[0-9]{2,3}$": { "$ref": "#/$defs/tokenLeaf" },
-        "^[a-zA-Z][a-zA-Z0-9]*$": { "$ref": "#/$defs/tokenLeaf" }
+        "^[0-9]{2,3}$": {
+          "$ref": "#/$defs/tokenLeaf"
+        },
+        "^[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/$defs/tokenLeaf"
+        }
+      },
+      "properties": {
+        "$utilityAlias": {
+          "type": "object",
+          "description": "Extra Tailwind utility names for existing colour tokens. Tailwind v4 keeps every colour token in one flat --color-* namespace, so a token whose name already begins with a CSS property would emit a doubled utility (borderQuiet \u2192 `border-border-quiet`). An alias is a second NAME for a token that already exists \u2014 never a new value \u2014 so it cannot drift from the palette.",
+          "propertyNames": {
+            "pattern": "^[a-z][a-zA-Z0-9]*$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "description": "Key of a sibling colour token in this group, e.g. \"borderQuiet\"."
+          }
+        }
       }
     },
     "numericScale": {
@@ -87,31 +155,69 @@
       "type": "object",
       "patternProperties": {
         "^\\$": true,
-        "^[0-9]+$": { "$ref": "#/$defs/tokenLeaf" },
-        "^[a-zA-Z][a-zA-Z0-9]*$": { "$ref": "#/$defs/tokenLeaf" }
+        "^[0-9]+$": {
+          "$ref": "#/$defs/tokenLeaf"
+        },
+        "^[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/$defs/tokenLeaf"
+        }
       }
     },
     "contrastAssertion": {
-      "description": "A contrast promise the validator proves on every build. Expressed as token PATHS, never literal colours — so if a palette value changes, the assertion re-runs against the new value instead of testing a stale constant.",
+      "description": "A contrast promise the validator proves on every build. Expressed as token PATHS, never literal colours \u2014 so if a palette value changes, the assertion re-runs against the new value instead of testing a stale constant.",
       "type": "object",
-      "required": ["fg", "bg", "min", "context"],
+      "required": [
+        "fg",
+        "bg",
+        "min",
+        "context"
+      ],
       "properties": {
-        "fg": { "$ref": "#/$defs/tokenPath" },
-        "bg": { "$ref": "#/$defs/tokenPath" },
-        "min": { "type": "number", "minimum": 1, "maximum": 21 },
-        "context": { "type": "string", "description": "Where this pairing occurs — used verbatim in the failure message." }
+        "fg": {
+          "$ref": "#/$defs/tokenPath"
+        },
+        "bg": {
+          "$ref": "#/$defs/tokenPath"
+        },
+        "min": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 21
+        },
+        "context": {
+          "type": "string",
+          "description": "Where this pairing occurs \u2014 used verbatim in the failure message."
+        }
       },
       "additionalProperties": false
     },
     "contrastProhibition": {
       "description": "A pairing that must STAY broken. These encode hard-won mistakes so a future palette change cannot quietly reintroduce them.",
       "type": "object",
-      "required": ["fg", "reason"],
+      "required": [
+        "fg",
+        "reason"
+      ],
       "properties": {
-        "fg": { "oneOf": [{ "$ref": "#/$defs/tokenPath" }, { "$ref": "#/$defs/colourLiteral" }] },
-        "bg": { "$ref": "#/$defs/tokenPath" },
-        "bgLuminanceOf": { "$ref": "#/$defs/tokenPath" },
-        "reason": { "type": "string" }
+        "fg": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/tokenPath"
+            },
+            {
+              "$ref": "#/$defs/colourLiteral"
+            }
+          ]
+        },
+        "bg": {
+          "$ref": "#/$defs/tokenPath"
+        },
+        "bgLuminanceOf": {
+          "$ref": "#/$defs/tokenPath"
+        },
+        "reason": {
+          "type": "string"
+        }
       },
       "additionalProperties": false
     },
@@ -122,77 +228,164 @@
     }
   },
   "properties": {
-    "$schema": { "type": "string" },
-
+    "$schema": {
+      "type": "string"
+    },
     "$meta": {
       "type": "object",
-      "required": ["name", "version", "phase"],
+      "required": [
+        "name",
+        "version",
+        "phase"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" },
-        "phase": { "type": "string" },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
         "themes": {
           "type": "object",
-          "required": ["default", "supported", "tiers"],
+          "required": [
+            "default",
+            "supported",
+            "tiers"
+          ],
           "properties": {
-            "default": { "enum": ["dark", "light"] },
-            "supported": { "type": "array", "items": { "enum": ["dark", "light"] }, "minItems": 1 },
+            "default": {
+              "enum": [
+                "dark",
+                "light"
+              ]
+            },
+            "supported": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "dark",
+                  "light"
+                ]
+              },
+              "minItems": 1
+            },
             "tiers": {
               "type": "array",
               "minItems": 1,
-              "items": { "enum": ["lite", "balanced", "high", "ultra"] },
+              "items": {
+                "enum": [
+                  "lite",
+                  "balanced",
+                  "high",
+                  "ultra"
+                ]
+              },
               "description": "Experience tiers in ascending capability order. validate.mjs enforces that cost decreases monotonically down this list."
             }
           }
         }
       }
     },
-
-    "color": { "$ref": "#/$defs/colorGroup" },
-    "gradient": { "$ref": "#/$defs/colorGroup" },
-    "font": { "$ref": "#/$defs/colorGroup" },
+    "color": {
+      "$ref": "#/$defs/colorGroup"
+    },
+    "gradient": {
+      "$ref": "#/$defs/colorGroup"
+    },
+    "font": {
+      "$ref": "#/$defs/colorGroup"
+    },
     "fontSize": {
       "type": "object",
       "patternProperties": {
         "^\\$": true,
-        "^[a-zA-Z][a-zA-Z0-9]*$": { "$ref": "#/$defs/typographyScale" }
+        "^[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/$defs/typographyScale"
+        }
       }
     },
-    "space": { "$ref": "#/$defs/numericScale" },
-    "radius": { "$ref": "#/$defs/colorGroup" },
-    "container": { "$ref": "#/$defs/colorGroup" },
-    "breakpoint": { "$ref": "#/$defs/numericScale" },
-    "duration": { "$ref": "#/$defs/numericScale" },
-    "ease": { "$ref": "#/$defs/colorGroup" },
-    "blur": { "$ref": "#/$defs/colorGroup" },
-    "elevation": { "$ref": "#/$defs/numericScale" },
-    "zIndex": { "$ref": "#/$defs/numericScale" },
-    "focus": { "$ref": "#/$defs/colorGroup" },
-    "touch": { "$ref": "#/$defs/colorGroup" },
-
+    "space": {
+      "$ref": "#/$defs/numericScale"
+    },
+    "radius": {
+      "$ref": "#/$defs/colorGroup"
+    },
+    "container": {
+      "$ref": "#/$defs/colorGroup"
+    },
+    "breakpoint": {
+      "$ref": "#/$defs/numericScale"
+    },
+    "duration": {
+      "$ref": "#/$defs/numericScale"
+    },
+    "ease": {
+      "$ref": "#/$defs/colorGroup"
+    },
+    "blur": {
+      "$ref": "#/$defs/colorGroup"
+    },
+    "elevation": {
+      "$ref": "#/$defs/numericScale"
+    },
+    "zIndex": {
+      "$ref": "#/$defs/numericScale"
+    },
+    "focus": {
+      "$ref": "#/$defs/colorGroup"
+    },
+    "touch": {
+      "$ref": "#/$defs/colorGroup"
+    },
     "tier": {
       "type": "object",
-      "description": "Per-tier capability switchboard. Consumed at runtime as [data-tier=\"…\"] custom properties.",
+      "description": "Per-tier capability switchboard. Consumed at runtime as [data-tier=\"\u2026\"] custom properties.",
       "patternProperties": {
         "^\\$": true,
         "^(lite|balanced|high|ultra)$": {
           "type": "object",
-          "required": ["webgl", "blur", "spotlight", "pinnedScroll", "durationScale"],
+          "required": [
+            "webgl",
+            "blur",
+            "spotlight",
+            "pinnedScroll",
+            "durationScale"
+          ],
           "properties": {
-            "webgl": { "enum": ["none", "minimal", "full"] },
-            "blur": { "type": "string" },
-            "spotlight": { "enum": ["off", "on"] },
-            "pinnedScroll": { "enum": ["off", "on"] },
+            "webgl": {
+              "enum": [
+                "none",
+                "minimal",
+                "full"
+              ]
+            },
+            "blur": {
+              "type": "string"
+            },
+            "spotlight": {
+              "enum": [
+                "off",
+                "on"
+              ]
+            },
+            "pinnedScroll": {
+              "enum": [
+                "off",
+                "on"
+              ]
+            },
             "durationScale": {
               "type": "string",
               "pattern": "^[0-9]*\\.?[0-9]+$",
-              "description": "Multiplier applied to every duration token. A single number collapses all motion at once — this is the graceful-degradation lever."
+              "description": "Multiplier applied to every duration token. A single number collapses all motion at once \u2014 this is the graceful-degradation lever."
             }
           }
         }
       }
     },
-
     "theme": {
       "description": "Theme overrides. Keys must exist in the dark palette so a theme can never introduce a colour that has no contrast contract.",
       "type": "object",
@@ -203,11 +396,20 @@
           "patternProperties": {
             "^[a-zA-Z][a-zA-Z0-9]*$": {
               "type": "object",
-              "required": ["value", "type"],
+              "required": [
+                "value",
+                "type"
+              ],
               "properties": {
-                "value": { "$ref": "#/$defs/colourLiteral" },
-                "type": { "const": "color" },
-                "role": { "type": "string" }
+                "value": {
+                  "$ref": "#/$defs/colourLiteral"
+                },
+                "type": {
+                  "const": "color"
+                },
+                "role": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -215,51 +417,80 @@
       },
       "additionalProperties": false
     },
-
     "contrastContract": {
       "type": "object",
       "description": "The accessibility contract. validate.mjs exits non-zero if any required assertion fails or any forbidden pairing passes.",
-      "required": ["required", "forbidden"],
+      "required": [
+        "required",
+        "forbidden"
+      ],
       "properties": {
-        "required": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/contrastAssertion" } },
-        "forbidden": { "type": "array", "items": { "$ref": "#/$defs/contrastProhibition" } }
+        "required": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/contrastAssertion"
+          }
+        },
+        "forbidden": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contrastProhibition"
+          }
+        }
       },
       "additionalProperties": false
     },
-
     "motion": {
       "type": "object",
       "properties": {
         "forbidden": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "description": "Effects the product must never use. Recorded as a list so a reviewer can cite the rule, not their taste."
         },
-        "staggerMax": { "$ref": "#/$defs/tokenLeaf" },
-        "staggerStep": { "$ref": "#/$defs/tokenLeaf" }
+        "staggerMax": {
+          "$ref": "#/$defs/tokenLeaf"
+        },
+        "staggerStep": {
+          "$ref": "#/$defs/tokenLeaf"
+        }
       },
       "patternProperties": {
         "^\\$": true,
-        "^(?!forbidden$|staggerMax$|staggerStep$)[a-zA-Z][a-zA-Z0-9]*$": { "$ref": "#/$defs/tokenLeaf" }
+        "^(?!forbidden$|staggerMax$|staggerStep$)[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/$defs/tokenLeaf"
+        }
       }
     },
-
     "format": {
       "description": "Bangladesh-specific formatting rules. Locale data is a token, not a literal buried in a component.",
       "type": "object",
       "patternProperties": {
         "^\\$": true,
-        "^[a-zA-Z][a-zA-Z0-9]*$": { "$ref": "#/$defs/tokenLeaf" }
+        "^[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/$defs/tokenLeaf"
+        }
       }
     },
-
     "a11y": {
       "description": "Accessibility thresholds. The contrast floors here are the numbers validate.mjs enforces; changing one changes the build gate.",
       "type": "object",
-      "required": ["standard", "minTargetSize", "bodyTextMinContrast", "largeTextMinContrast", "reducedMotionSupported", "statusNeverColourAlone"],
+      "required": [
+        "standard",
+        "minTargetSize",
+        "bodyTextMinContrast",
+        "largeTextMinContrast",
+        "reducedMotionSupported",
+        "statusNeverColourAlone"
+      ],
       "patternProperties": {
         "^\\$": true,
-        "^[a-zA-Z][a-zA-Z0-9]*$": { "$ref": "#/$defs/tokenLeaf" }
+        "^[a-zA-Z][a-zA-Z0-9]*$": {
+          "$ref": "#/$defs/tokenLeaf"
+        }
       }
     }
   }

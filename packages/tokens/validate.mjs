@@ -140,6 +140,24 @@ for (const bad of raw.contrastContract.forbidden) {
   }
 }
 
+/* ─── 3b. Colour utility aliases ─── */
+const colourAlias = raw.color.$utilityAlias ?? {};
+for (const [alias, target] of Object.entries(colourAlias)) {
+  if (alias.startsWith('$')) continue;
+  if (raw.color[alias]?.value) {
+    errors.push(
+      `color.$utilityAlias."${alias}" collides with the existing colour token "${alias}" — ` +
+        `an alias must not shadow a real token.`
+    );
+  }
+  if (!raw.color[target]?.value) {
+    errors.push(
+      `color.$utilityAlias."${alias}" targets "${target}", which is not a colour token in this group.`
+    );
+  }
+}
+const aliasNames = Object.keys(colourAlias).filter((k) => !k.startsWith('$'));
+
 /* ─── 4. Light theme coverage ─── */
 const LIGHT_REQUIRED = ['void', 'surface1', 'text', 'textStrong', 'muted', 'border', 'borderHover', 'buttonPrimaryBg', 'buttonPrimaryText'];
 for (const k of LIGHT_REQUIRED) {
@@ -169,6 +187,10 @@ for (const r of results) {
 }
 console.log('  ' + '─'.repeat(78));
 console.log(`  ${results.length} pairs checked · ${errors.length} error(s) · ${warnings.length} warning(s)\n`);
+
+if (aliasNames.length) {
+  console.log(`  ✓ ${aliasNames.length} colour utility alias(es) resolve to real tokens: ${aliasNames.join(', ')}\n`);
+}
 
 for (const w of warnings) console.log(`  ⚠️  ${w}`);
 if (warnings.length) console.log('');

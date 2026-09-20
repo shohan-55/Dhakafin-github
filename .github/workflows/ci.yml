@@ -69,13 +69,20 @@ jobs:
       - name: Build
         run: npm run build
 
-      # ── Gate 6: performance budget ───────────────────────────────────────
-      # Measured from the build output against font.budgetKB. This is the gate
-      # that catches "one preload:true added 139 KB to every page".
+      # ── Gate 6: design-system integrity ──────────────────────────────────
+      # Every colour utility used in the source must resolve to emitted CSS.
+      # Tailwind silently ignores an unknown class, which is how 121 references
+      # to text-strong / border-quiet shipped in Phase 1 rendering nothing.
+      - name: Utility integrity (no class emits nothing)
+        run: npm run guard:utilities
+
+      # ── Gate 7: performance budget ───────────────────────────────────────
+      # Measured per locale from the build output against font.budgetKB. This is
+      # the gate that catches "one preload:true added 139 KB to every page".
       - name: Font payload budget
         run: npm run guard:fonts
 
-      # ── Gate 7: dependency advisories ────────────────────────────────────
+      # ── Gate 8: dependency advisories ────────────────────────────────────
       - name: Audit production dependencies
         run: npm run audit
 

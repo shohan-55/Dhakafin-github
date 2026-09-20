@@ -157,6 +157,23 @@ for (const { path } of colorTokens) {
   themeLines.push(`  --color-${name}: var(${cssVarName(path)});`);
 }
 
+// Colour utility aliases.
+// Tailwind v4 keeps every colour token in one flat --color-* namespace, so a
+// token already named after a CSS property (borderQuiet, textStrong) would emit
+// a doubled utility: `border-border-quiet`. The alias map in the token file
+// gives those tokens natural utility names without introducing a second value.
+const colorAlias = raw.color?.$utilityAlias ?? {};
+for (const [alias, target] of Object.entries(colorAlias)) {
+  if (alias.startsWith('$')) continue;
+  const source = colorTokens.find(({ path }) => path[1] === target);
+  if (!source) {
+    throw new Error(
+      `df.tokens.json: color.$utilityAlias."${alias}" points at "${target}", which is not a colour token.`
+    );
+  }
+  themeLines.push(`  --color-${kebab(alias)}: var(${cssVarName(source.path)});`);
+}
+
 // Fonts
 themeLines.push('', '  /* Typography families */');
 for (const { path, node } of flat.filter(({ path }) => path[0] === 'font' && path[1] !== 'budgetKB')) {

@@ -44,6 +44,9 @@
   --color-surface-tint-strong: var(--df-color-surface-tint-strong);
   --color-scrim: var(--df-color-scrim);
   --color-glow-sea: var(--df-color-glow-sea);
+  --color-strong: var(--df-color-text-strong);
+  --color-quiet: var(--df-color-border-quiet);
+  --color-hover: var(--df-color-border-hover);
 
   /* Typography families */
   --font-sans: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, -apple-system, 'Segoe UI', sans-serif;

@@ -2,7 +2,7 @@
   "name": "dhakafin",
   "private": true,
   "version": "1.0.0-phase1",
-  "description": "DhakaFin — Financial Intelligence, Accounting & Compliance SaaS platform for Bangladesh. Monorepo root.",
+  "description": "DhakaFin \u2014 Financial Intelligence, Accounting & Compliance SaaS platform for Bangladesh. Monorepo root.",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -19,9 +19,10 @@
     "start": "npm run start --workspace @dhakafin/web",
     "lint": "npm run lint --workspace @dhakafin/web",
     "typecheck": "npm run typecheck --workspace @dhakafin/web",
-    "verify": "npm run tokens:validate && npm run tokens:build && npm run guard:tokens && npm run typecheck && npm run build && npm run guard:fonts && npm run audit",
+    "verify": "npm run tokens:validate && npm run tokens:build && npm run guard:tokens && npm run typecheck && npm run build && npm run guard:utilities && npm run guard:fonts && npm run audit",
     "guard:fonts": "node scripts/check-font-budget.mjs",
-    "audit": "npm audit --omit=dev"
+    "audit": "npm audit --omit=dev",
+    "guard:utilities": "node scripts/check-utilities.mjs"
   },
   "keywords": [
     "dhakafin",

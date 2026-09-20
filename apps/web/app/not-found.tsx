@@ -60,7 +60,7 @@ export default async function NotFound() {
 
             <h1 className="mt-4 max-w-2xl text-h1 text-[var(--df-color-text-strong)]">{t.title}</h1>
 
-            <p className="mt-4 max-w-xl text-bodyLg text-muted">{t.body}</p>
+            <p className="mt-4 max-w-xl text-body-lg text-muted">{t.body}</p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:max-w-3xl">
               {destinations.map((item) => (

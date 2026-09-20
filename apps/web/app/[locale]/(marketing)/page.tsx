@@ -83,7 +83,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               </Reveal>
 
               <Reveal delay={120}>
-                <p className="mt-6 max-w-[58ch] text-bodyLg text-muted">
+                <p className="mt-6 max-w-[58ch] text-body-lg text-muted">
                   {t.hero.lede}
                 </p>
               </Reveal>
@@ -215,7 +215,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <h2 className="mt-4 max-w-[24ch] text-h2 text-[var(--df-color-text-strong)]">
             {t.intelligence.title}
           </h2>
-          <p className="mt-4 max-w-[62ch] text-bodyLg text-muted">
+          <p className="mt-4 max-w-[62ch] text-body-lg text-muted">
             {t.intelligence.body}
           </p>
         </Reveal>
@@ -271,7 +271,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <h2 className="mt-4 max-w-[22ch] text-h2 text-[var(--df-color-text-strong)]">
                 {t.regulatory.title}
               </h2>
-              <p className="mt-4 max-w-[54ch] text-bodyLg text-muted">
+              <p className="mt-4 max-w-[54ch] text-body-lg text-muted">
                 {t.regulatory.body}
               </p>
 
@@ -338,7 +338,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <h2 className="mt-4 max-w-[26ch] text-h2 text-[var(--df-color-text-strong)]">
             {t.compliance.title}
           </h2>
-          <p className="mt-4 max-w-[62ch] text-bodyLg text-muted">
+          <p className="mt-4 max-w-[62ch] text-body-lg text-muted">
             {t.compliance.body}
           </p>
         </Reveal>
@@ -460,7 +460,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <h2 className="mx-auto max-w-[22ch] text-h2 text-[var(--df-color-text-strong)]">
               {t.finalCta.title}
             </h2>
-            <p className="mx-auto mt-5 max-w-[54ch] text-bodyLg text-muted">
+            <p className="mx-auto mt-5 max-w-[54ch] text-body-lg text-muted">
               {t.finalCta.body}
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">

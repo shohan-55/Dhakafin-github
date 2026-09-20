@@ -15,6 +15,13 @@
 
   "color": {
     "$comment": "Ocean Void foundation + sea-green signature spectrum. Contrast ratios are measured, not estimated — see validate.mjs.",
+
+    "$utilityAlias": {
+      "$comment": "Tailwind v4 puts every colour token in one flat --color-* namespace, so a token already named after a CSS property (borderQuiet, textStrong) would emit a doubled utility such as `border-border-quiet`. These aliases give the semantic-palette utilities their natural names (`border-quiet`, `text-strong`) while the raw --df-color-* variables keep their precise names. An alias is a second name for an existing token, never a new value.",
+      "strong": "textStrong",
+      "quiet": "borderQuiet",
+      "hover": "borderHover"
+    },
     "void":      { "value": "#020b0a", "type": "color", "role": "base-background" },
     "voidDeep":  { "value": "#010807", "type": "color", "role": "canvas-floor" },
     "slateDeep": { "value": "#041312", "type": "color", "role": "section-alternate" },
