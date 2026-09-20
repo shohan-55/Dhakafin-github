@@ -8,6 +8,7 @@
  */
 import { about } from './about';
 import { chrome } from './chrome';
+import { glossary } from './glossary';
 import { editorial } from './editorial';
 import { help } from './help';
 import { home } from './home';
@@ -20,6 +21,7 @@ import { tools } from './tools';
 
 export const en = {
   ...chrome,
+  glossary,
   editorial,
   help,
   about,
