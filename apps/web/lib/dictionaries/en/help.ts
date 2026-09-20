@@ -84,7 +84,7 @@ export const help: HelpCopy = {
     'tool-cost': {
       question: 'Do the calculators cost anything?',
       answer:
-        'All thirteen calculators are free and need no account. Nothing is stored, and no email address is required to see a result. Where a tool encodes your figures into a shareable link, the numbers travel inside that link rather than to a server — so you can read the address and see exactly what was shared.',
+        'All thirteen calculators are free and need no account. Nothing is stored, and no email address is needed to see a result. A share link carries your figures inside the link itself rather than in an account — so the address bar shows exactly what is shared, and the link deserves the same care as the figures.',
       keywords: ['free', 'cost', 'account', 'privacy', 'share link'],
     },
     'tool-numerals': {
