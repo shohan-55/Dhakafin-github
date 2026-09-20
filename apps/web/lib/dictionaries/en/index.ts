@@ -8,6 +8,7 @@
  */
 import { about } from './about';
 import { chrome } from './chrome';
+import { help } from './help';
 import { home } from './home';
 import { states } from './states';
 import { costEfficiency } from './cost-efficiency';
@@ -18,6 +19,7 @@ import { tools } from './tools';
 
 export const en = {
   ...chrome,
+  help,
   about,
   home,
   states,

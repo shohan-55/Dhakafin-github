@@ -76,6 +76,8 @@ export const chrome = {
       security: 'নিরাপত্তা ও ডেটা',
       editorialPolicy: 'সম্পাদনা নীতি',
       contact: 'যোগাযোগ',
+      help: 'হেল্প সেন্টার',
+      faq: 'সাধারণ জিজ্ঞাসা',
       terms: 'শর্তাবলি',
       privacy: 'গোপনীয়তা',
       disclaimer: 'দাবিত্যাগ',

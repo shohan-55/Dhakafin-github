@@ -8,6 +8,7 @@
  */
 import { about } from './about';
 import { chrome } from './chrome';
+import { help } from './help';
 import { home } from './home';
 import { states } from './states';
 import { costEfficiency } from './cost-efficiency';
@@ -20,6 +21,7 @@ import type { Dictionary } from '../en';
 
 export const bn: Dictionary = {
   ...chrome,
+  help,
   about,
   home,
   states,

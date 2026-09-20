@@ -2,7 +2,7 @@
   "name": "dhakafin",
   "private": true,
   "version": "1.0.0-phase1",
-  "description": "DhakaFin \u2014 Financial Intelligence, Accounting & Compliance SaaS platform for Bangladesh. Monorepo root.",
+  "description": "DhakaFin — Financial Intelligence, Accounting & Compliance SaaS platform for Bangladesh. Monorepo root.",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -19,7 +19,7 @@
     "start": "npm run start --workspace @dhakafin/web",
     "lint": "npm run lint --workspace @dhakafin/web",
     "typecheck": "npm run typecheck --workspace @dhakafin/web",
-    "verify": "npm run tokens:validate && npm run tokens:build && npm run guard:tokens && npm run typecheck && npm run test:engine && npm run build && npm run guard:utilities && npm run guard:meta && npm run guard:links && npm run guard:estimate && npm run guard:pricing && npm run guard:fonts && npm run audit",
+    "verify": "npm run tokens:validate && npm run tokens:build && npm run guard:tokens && npm run typecheck && npm run test:engine && npm run build && npm run guard:utilities && npm run guard:meta && npm run guard:links && npm run guard:estimate && npm run guard:pricing && npm run guard:faq && npm run guard:fonts && npm run audit",
     "guard:fonts": "node scripts/check-font-budget.mjs",
     "audit": "npm audit --omit=dev",
     "guard:utilities": "node scripts/check-utilities.mjs",
@@ -27,7 +27,8 @@
     "guard:links": "node scripts/check-links.mjs",
     "guard:estimate": "node scripts/check-estimate.mjs",
     "test:engine": "cd apps/web && node --experimental-strip-types --test lib/tools/engine.test.ts lib/cost-efficiency.test.ts lib/pricing.test.ts",
-    "guard:pricing": "node scripts/check-pricing.mjs"
+    "guard:pricing": "node scripts/check-pricing.mjs",
+    "guard:faq": "node scripts/check-faq.mjs"
   },
   "keywords": [
     "dhakafin",

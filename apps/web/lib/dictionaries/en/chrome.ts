@@ -77,6 +77,8 @@ export const chrome = {
       security: 'Security & data',
       editorialPolicy: 'Editorial policy',
       contact: 'Contact',
+      help: 'Help centre',
+      faq: 'Frequently asked questions',
       terms: 'Terms',
       privacy: 'Privacy',
       disclaimer: 'Disclaimer',

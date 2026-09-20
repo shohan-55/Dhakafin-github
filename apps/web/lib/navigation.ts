@@ -79,6 +79,8 @@ export const footerColumns: FooterColumn[] = [
       { key: 'security', href: '/security' },
       { key: 'editorialPolicy', href: '/editorial-policy' },
       { key: 'contact', href: '/contact' },
+      { key: 'help', href: '/help' },
+      { key: 'faq', href: '/faq' },
     ],
   },
 ];
