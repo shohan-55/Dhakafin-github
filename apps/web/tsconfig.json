@@ -34,7 +34,8 @@
       "@dhakafin/tokens/css": [
         "../../packages/tokens/dist/tokens.css"
       ]
-    }
+    },
+    "allowImportingTsExtensions": true
   },
   "include": [
     "next-env.d.ts",

@@ -65,7 +65,14 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      # ── Gate 5: production build ─────────────────────────────────────────
+      # ── Gate 5: calculation engine ───────────────────────────────────────
+      # The published formula vectors from §5.5.4: ≥ 3 per tool, including the
+      # boundary and rounding cases. Pure arithmetic with no build step, so a
+      # broken formula fails in under a second instead of after a full compile.
+      - name: Calculation engine vectors
+        run: npm run test:engine
+
+      # ── Gate 6: production build ─────────────────────────────────────────
       - name: Build
         run: npm run build
 
@@ -76,14 +83,14 @@ jobs:
       - name: Utility integrity (no class emits nothing)
         run: npm run guard:utilities
 
-      # ── Gate 7: SEO metadata ─────────────────────────────────────────────
+      # ── Gate 8: SEO metadata ─────────────────────────────────────────────
       # Read from the emitted HTML, not the source: unique titles and
       # descriptions within the search-result budget, canonical links, and
       # reciprocal hreflang on every route published in both locales.
       - name: Metadata (titles, descriptions, canonical, hreflang)
         run: npm run guard:meta
 
-      # ── Gate 8: internal links ───────────────────────────────────────────
+      # ── Gate 9: internal links ───────────────────────────────────────────
       # Every internal href in the emitted HTML must resolve to a route the build
       # produced. Routes that exist in the blueprint but are not built yet are
       # declared in scripts/planned-routes.mjs with their owning task, and that
@@ -91,13 +98,13 @@ jobs:
       - name: Internal link integrity
         run: npm run guard:links
 
-      # ── Gate 9: performance budget ───────────────────────────────────────
+      # ── Gate 10: font payload budget ───────────────────────────────────────
       # Measured per locale from the build output against font.budgetKB. This is
       # the gate that catches "one preload:true added 139 KB to every page".
       - name: Font payload budget
         run: npm run guard:fonts
 
-      # ── Gate 10: dependency advisories ───────────────────────────────────
+      # ── Gate 11: dependency advisories ───────────────────────────────────
       - name: Audit production dependencies
         run: npm run audit
 
