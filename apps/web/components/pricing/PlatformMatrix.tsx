@@ -43,7 +43,7 @@ export function PlatformMatrix({
         <Badge tone="regulatory" glyph="◷">
           {copy.statusBadge}
         </Badge>
-        <span className="text-xs text-[var(--df-color-muted-2)]">{copy.notOnSaleLabel}</span>
+        <span className="text-xs text-[var(--df-color-muted)]">{copy.notOnSaleLabel}</span>
       </div>
 
       <p className="mt-5 max-w-3xl text-body leading-relaxed text-muted">{copy.lede}</p>
@@ -71,7 +71,7 @@ export function PlatformMatrix({
                     <span className="df-num text-lg text-sea-300">
                       {target(tier.targetMonthly.low, tier.targetMonthly.high)}
                     </span>
-                    <span className="mt-0.5 block text-[11px] text-[var(--df-color-muted-2)]">
+                    <span className="mt-0.5 block text-[11px] text-[var(--df-color-muted)]">
                       {copy.targetLabel} · {copy.monthlySuffix}
                     </span>
                   </>
@@ -80,7 +80,7 @@ export function PlatformMatrix({
 
               <p className="mt-2 text-xs leading-relaxed text-muted">{tierCopy.description}</p>
 
-              <p className="mt-4 border-t border-[var(--df-color-border-quiet)] pt-4 text-[11px] leading-relaxed text-[var(--df-color-muted-2)]">
+              <p className="mt-4 border-t border-[var(--df-color-border-quiet)] pt-4 text-[11px] leading-relaxed text-[var(--df-color-muted)]">
                 <span className="font-semibold uppercase tracking-[0.1em]">{copy.audienceLabel}: </span>
                 {tierCopy.audience}
               </p>
@@ -120,7 +120,7 @@ export function PlatformMatrix({
           <span className="font-semibold text-[var(--df-color-text)]">{copy.annualLabel}: </span>
           {copy.annualNote}
         </p>
-        <p className="rounded-xl border border-dashed border-[var(--df-color-border-strong)] bg-void/30 p-4 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+        <p className="rounded-xl border border-dashed border-[var(--df-color-border-strong)] bg-void/30 p-4 text-xs leading-relaxed text-[var(--df-color-muted)]">
           {copy.finalNote}
         </p>
       </div>

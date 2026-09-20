@@ -160,8 +160,11 @@ export default async function ToolPage({
     featureList: definition.inputs.map((i) => tool.fields[i.id]?.label ?? i.id),
   };
 
+  /* The marketing layout owns the single main landmark and the skip-link
+     target. A page that renders its own would nest landmarks and duplicate the
+     id, so this wrapper is a plain div for exactly that reason. */
   return (
-    <main id="main" className="df-container py-16 sm:py-24">
+    <div className="df-container py-16 sm:py-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -241,7 +244,7 @@ export default async function ToolPage({
                 className="group block h-full no-underline"
               >
                 <Card tone="quiet" padding="lg" interactive className="h-full">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                     {copy.related.toolLabel}
                   </p>
                   <p className="mt-2 text-sm font-medium text-[var(--df-color-text-strong)]">
@@ -259,7 +262,7 @@ export default async function ToolPage({
               className="group block h-full no-underline"
             >
               <Card tone="quiet" padding="lg" interactive className="h-full">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                   {copy.related.serviceLabel}
                 </p>
                 <p className="mt-2 text-sm font-medium text-[var(--df-color-text-strong)]">
@@ -272,7 +275,7 @@ export default async function ToolPage({
           {/* The rate page this tool depends on, while it does not exist yet. */}
           <li>
             <Card tone="quiet" padding="lg" className="h-full">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                 {copy.related.rateLabel}
               </p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -302,6 +305,6 @@ export default async function ToolPage({
         primary={{ label: copy.cta.primary, href: localeHref(locale, '/book-consultation') }}
         secondary={{ label: copy.cta.secondary, href: localeHref(locale, '/services') }}
       />
-    </main>
+    </div>
   );
 }

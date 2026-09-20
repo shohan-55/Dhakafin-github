@@ -69,7 +69,7 @@ export function BandLadder({
                 />
               </span>
 
-              <span className="df-num col-start-2 text-right text-xs tabular-nums text-[var(--df-color-muted-2)] sm:col-start-3 sm:text-sm">
+              <span className="df-num col-start-2 text-right text-xs tabular-nums text-[var(--df-color-muted)] sm:col-start-3 sm:text-sm">
                 {row.band}
               </span>
             </li>
@@ -77,8 +77,8 @@ export function BandLadder({
         })}
       </ul>
 
-      <p className="mt-6 text-xs leading-relaxed text-[var(--df-color-muted-2)]">{caption}</p>
-      <p className="mt-2 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+      <p className="mt-6 text-xs leading-relaxed text-[var(--df-color-muted)]">{caption}</p>
+      <p className="mt-2 text-xs leading-relaxed text-[var(--df-color-muted)]">
         {scaleNote}{' '}
         <span className="whitespace-nowrap">
           ({formatBDT(min, { numerals })} – {formatBDT(max, { numerals })})

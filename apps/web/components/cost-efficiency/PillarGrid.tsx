@@ -44,7 +44,7 @@ export function PillarGrid({ copy, resolutions }: PillarGridProps) {
               <details className="h-full">
                 <summary className="flex h-full cursor-pointer list-none flex-col p-6 [&::-webkit-details-marker]:hidden">
                   <span className="flex items-start justify-between gap-4">
-                    <span className="df-num text-[11px] font-semibold tracking-[0.14em] text-[var(--df-color-muted-2)]">
+                    <span className="df-num text-[11px] font-semibold tracking-[0.14em] text-[var(--df-color-muted)]">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <Badge tone={published ? 'ok' : 'regulatory'} size="sm" glyph={published ? '✓' : '◷'}>
@@ -63,7 +63,7 @@ export function PillarGrid({ copy, resolutions }: PillarGridProps) {
                     {pillar.question}
                   </span>
 
-                  <span className="mt-4 block text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+                  <span className="mt-4 block text-xs leading-relaxed text-[var(--df-color-muted)]">
                     <span className="font-medium text-gold-bright">
                       {copy.method.columns.range}:{' '}
                     </span>
@@ -86,7 +86,7 @@ export function PillarGrid({ copy, resolutions }: PillarGridProps) {
                   </p>
 
                   <div className="mt-5 rounded-xl border border-[var(--df-color-border-quiet)] bg-void/30 p-4">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                       {copy.beats.leakage.marker} · {copy.method.columns.status}
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{pillar.yesMeans}</p>
@@ -135,7 +135,7 @@ function PillarSpark({ id, caption }: { id: LeakagePillarId; caption: string }) 
           {charts[id]}
         </svg>
       </div>
-      <figcaption className="mt-2 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+      <figcaption className="mt-2 text-xs leading-relaxed text-[var(--df-color-muted)]">
         {caption}
       </figcaption>
     </figure>

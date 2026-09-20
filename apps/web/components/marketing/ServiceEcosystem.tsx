@@ -77,11 +77,11 @@ export function ServiceEcosystem({
                 {/* Preview: problem, three deliverables, who it is for, price. */}
                 <span className="mt-4 hidden gap-6 border-t border-[var(--df-color-border-quiet)] pt-4 group-focus-within:grid group-hover:grid md:grid-cols-[1.2fr_1fr]">
                   <span className="block">
-                    <span className="block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                    <span className="block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                       {copy.ecosystem.problemLabel}
                     </span>
                     <span className="mt-1.5 block text-sm text-[var(--df-color-text)]">{item.problem.items[0]}</span>
-                    <span className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                    <span className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                       {copy.ecosystem.deliverablesLabel}
                     </span>
                     <span className="mt-1.5 block space-y-1">
@@ -93,11 +93,11 @@ export function ServiceEcosystem({
                     </span>
                   </span>
                   <span className="block">
-                    <span className="block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                    <span className="block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                       {copy.ecosystem.whoLabel}
                     </span>
                     <span className="mt-1.5 block text-sm text-muted">{item.hero.chips.join(' · ')}</span>
-                    <span className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                    <span className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                       {copy.ecosystem.priceLabel}
                     </span>
                     <span className="mt-1.5 block text-sm text-[var(--df-color-text)] df-num">{item.hero.priceBand}</span>

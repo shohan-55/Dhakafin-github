@@ -93,7 +93,7 @@ export default async function ServiceDetailPage({
                   {hub.eyebrow}
                 </LocaleLink>
               </li>
-              <li aria-hidden="true" className="text-[var(--df-color-muted-2)]">
+              <li aria-hidden="true" className="text-[var(--df-color-muted)]">
                 /
               </li>
               <li className="text-[var(--df-color-text)]">
@@ -121,7 +121,7 @@ export default async function ServiceDetailPage({
               </ul>
 
               <p className="mt-6 text-sm text-[var(--df-color-text)]">
-                <span className="text-[var(--df-color-muted-2)]">{hub.ecosystem.priceLabel}: </span>
+                <span className="text-[var(--df-color-muted)]">{hub.ecosystem.priceLabel}: </span>
                 <span className="font-semibold df-num">{copy.hero.priceBand}</span>
               </p>
 
@@ -405,7 +405,7 @@ export default async function ServiceDetailPage({
             {copy.cta.secondary}
           </ButtonLink>
         </div>
-        <p className="mt-6 text-xs leading-relaxed text-[var(--df-color-muted-2)]">{copy.cta.footnote}</p>
+        <p className="mt-6 text-xs leading-relaxed text-[var(--df-color-muted)]">{copy.cta.footnote}</p>
 
         <div className="mt-12 border-t border-[var(--df-color-border-quiet)] pt-8">
           <h3 className="text-overline font-semibold text-sea-400">{hub.ecosystem.legendPrimary}</h3>

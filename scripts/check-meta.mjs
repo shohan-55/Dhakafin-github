@@ -90,6 +90,7 @@ const pages = htmlFiles(SERVER_APP)
 
     return {
       file: relative(ROOT, file),
+      html,
       route: '/' + relative(SERVER_APP, file).replace(/\.html$/, ''),
       title: decode(head.match(/<title>([^<]*)<\/title>/i)?.[1] ?? ''),
       description: decode(meta('description') ?? ''),
@@ -137,6 +138,44 @@ const dupes = (key) => {
   }
   return [...seen.entries()].filter(([, routes]) => routes.length > 1);
 };
+
+/* ── Landmark and identity structure ──────────────────────────────────────
+ * Metadata is only half of "is this page well formed". Three structural facts
+ * are checked on every emitted page, because each one has a specific failure
+ * mode that is invisible in a browser and expensive in assistive tech:
+ *
+ *   · exactly one <main>      — a nested landmark splits the page for a screen
+ *                               reader and duplicates the skip-link target;
+ *   · exactly one <h1>        — zero h1s hides the page's subject; two make the
+ *                               outline ambiguous;
+ *   · no duplicate id=        — aria-labelledby, skip links and anchors all
+ *                               resolve to the first match, so a duplicate
+ *                               silently points somewhere the author did not
+ *                               intend.
+ */
+
+for (const page of pages) {
+  const mains = (page.html.match(/<main[\s>]/g) ?? []).length;
+  const h1s = (page.html.match(/<h1[\s>]/g) ?? []).length;
+
+  if (mains !== 1) {
+    errors.push(`${page.route} — ${mains} main landmark(s); expected exactly 1`);
+  }
+  if (h1s !== 1) {
+    errors.push(`${page.route} — ${h1s} <h1> element(s); expected exactly 1`);
+  }
+
+  const ids = [...page.html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+  const seen = new Set();
+  const repeated = new Set();
+  for (const id of ids) {
+    if (seen.has(id)) repeated.add(id);
+    seen.add(id);
+  }
+  if (repeated.size) {
+    errors.push(`${page.route} — duplicate id attribute(s): ${[...repeated].sort().join(', ')}`);
+  }
+}
 
 for (const [value, routes] of dupes('title')) {
   errors.push(`duplicate <title> on ${routes.join(', ')} — "${value.slice(0, 60)}"`);

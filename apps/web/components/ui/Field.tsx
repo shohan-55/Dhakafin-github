@@ -73,7 +73,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
           inputMode={rest.type === 'number' || currency ? 'decimal' : rest.inputMode}
           className={cn(
             'h-full w-full min-w-0 bg-transparent text-[var(--df-color-text-strong)] outline-none',
-            'placeholder:text-[var(--df-color-muted-2)]',
+            'placeholder:text-[var(--df-color-muted)]',
             (rest.type === 'number' || currency) && 'df-num tabular-nums'
           )}
           {...rest}
@@ -239,7 +239,7 @@ export function TextareaField({
         aria-describedby={[hint ? `${fieldId}-hint` : null, error ? `${fieldId}-error` : null].filter(Boolean).join(' ') || undefined}
         className={cn(
           'min-h-[120px] w-full resize-y rounded-lg border bg-surface1 px-3 py-2.5 text-sm leading-relaxed',
-          'text-[var(--df-color-text-strong)] outline-none placeholder:text-[var(--df-color-muted-2)]',
+          'text-[var(--df-color-text-strong)] outline-none placeholder:text-[var(--df-color-muted)]',
           'transition-[border-color,box-shadow] duration-[var(--df-duration-fast)] ease-[var(--ease-out)]',
           'focus:border-sea-400 focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--df-color-sea-400)_18%,transparent)]',
           error

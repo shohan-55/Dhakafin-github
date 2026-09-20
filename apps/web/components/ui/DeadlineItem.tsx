@@ -88,9 +88,9 @@ export function DeadlineItem({
           <p className={cn('mt-1.5 flex items-center gap-1.5 text-xs font-medium', style.text)}>
             <span aria-hidden="true">{style.glyph}</span>
             <span>{style.label}</span>
-            <span aria-hidden="true" className="text-[var(--df-color-muted-2)]">·</span>
+            <span aria-hidden="true" className="text-[var(--df-color-muted)]">·</span>
             <span className="df-num text-[var(--df-color-text)]">{formatDueIn(daysRemaining)}</span>
-            <span className="df-num text-[var(--df-color-muted-2)]">({dueDate})</span>
+            <span className="df-num text-[var(--df-color-muted)]">({dueDate})</span>
           </p>
 
           {requirements ? (

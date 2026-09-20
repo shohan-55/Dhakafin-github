@@ -139,13 +139,13 @@ export function WorkflowTimeline({
             <p className="mt-2 text-sm leading-relaxed text-muted">{step.weDo}</p>
             <dl className="mt-4 grid gap-3 sm:grid-cols-2">
               <div>
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                   {labels.weNeed}
                 </dt>
                 <dd className="mt-1 text-sm text-[var(--df-color-text)]">{step.weNeed}</dd>
               </div>
               <div>
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                   {labels.timeline}
                 </dt>
                 <dd className="mt-1 text-sm text-[var(--df-color-text)]">{step.timeline}</dd>
@@ -244,7 +244,7 @@ export function CtaBand({
           ) : null}
         </div>
         {footnote ? (
-          <p className="mx-auto mt-8 max-w-2xl text-xs leading-relaxed text-[var(--df-color-muted-2)]">{footnote}</p>
+          <p className="mx-auto mt-8 max-w-2xl text-xs leading-relaxed text-[var(--df-color-muted)]">{footnote}</p>
         ) : null}
       </div>
     </section>

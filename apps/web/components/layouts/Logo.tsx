@@ -32,7 +32,7 @@ export function Logo({ className, compact = false }: { className?: string; compa
           <span className="text-[17px] font-extrabold tracking-[-0.02em] text-[var(--df-color-text-strong)]">
             Dhaka<span className="text-sea-400">Fin</span>
           </span>
-          <span className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.18em] text-[var(--df-color-muted-2)]">
+          <span className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.18em] text-[var(--df-color-muted)]">
             Financial Intelligence
           </span>
         </span>

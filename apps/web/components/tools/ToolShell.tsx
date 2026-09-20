@@ -244,7 +244,7 @@ export function ToolShell({
           <div className="grid gap-2 sm:grid-cols-2">
             {Array.from({ length: count }, (_, i) => (
               <label key={i} className="flex items-center gap-2">
-                <span className="w-24 shrink-0 text-xs text-[var(--df-color-muted-2)]">
+                <span className="w-24 shrink-0 text-xs text-[var(--df-color-muted)]">
                   {interpolate(copy.seriesRowLabel, { n: formatNumber(i + 1, numeral) })}
                 </span>
                 <span className="flex flex-1 items-center gap-1.5 rounded-lg border border-[var(--df-color-border)] bg-surface1 px-2.5 py-1.5">
@@ -311,11 +311,11 @@ export function ToolShell({
         </details>
       ) : null}
 
-      <p className="text-xs leading-relaxed text-[var(--df-color-muted-2)]">{shell.inputsNote}</p>
+      <p className="text-xs leading-relaxed text-[var(--df-color-muted)]">{shell.inputsNote}</p>
 
       {copy.examples.items[0] ? (
         <div className="flex flex-wrap items-center gap-2 border-t border-[var(--df-color-border-quiet)] pt-4">
-          <span className="text-xs text-[var(--df-color-muted-2)]">{shell.exampleLabel}</span>
+          <span className="text-xs text-[var(--df-color-muted)]">{shell.exampleLabel}</span>
           <Badge tone="neutral">{copy.examples.items[0].title}</Badge>
         </div>
       ) : null}
@@ -343,13 +343,13 @@ export function ToolShell({
             <p className="mt-3 text-xs leading-relaxed text-muted">
               {copy.pendingState?.whatWeNeed}
             </p>
-            <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+            <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted)]">
               {pendingCopy.outlook}
             </p>
           </div>
 
           <div className="rounded-xl border border-[var(--df-color-border-quiet)] bg-surface1/40 p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
               {shell.inputsTitle}
             </p>
             <p className="df-num mt-2 text-sm text-[var(--df-color-text)]">{formula}</p>
@@ -394,7 +394,7 @@ export function ToolShell({
           </span>
         </div>
 
-        <p className="text-xs leading-relaxed text-[var(--df-color-muted-2)]">{shell.resultsNote}</p>
+        <p className="text-xs leading-relaxed text-[var(--df-color-muted)]">{shell.resultsNote}</p>
       </div>
     </div>
   );

@@ -81,11 +81,11 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
         <ServiceEcosystem locale={locale} copy={copy} servicesCopy={copy} />
 
         <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-[var(--df-color-border-quiet)] pt-6">
-          <p className="flex items-center gap-2 text-xs text-[var(--df-color-muted-2)]">
+          <p className="flex items-center gap-2 text-xs text-[var(--df-color-muted)]">
             <span aria-hidden="true" className="h-px w-8 bg-[var(--df-color-sea-400)]" />
             {copy.ecosystem.legendPrimary}
           </p>
-          <p className="flex items-center gap-2 text-xs text-[var(--df-color-muted-2)]">
+          <p className="flex items-center gap-2 text-xs text-[var(--df-color-muted)]">
             <span aria-hidden="true" className="h-px w-8 border-t border-dashed border-[var(--df-color-border-quiet)]" />
             {copy.ecosystem.legendSupport}
           </p>

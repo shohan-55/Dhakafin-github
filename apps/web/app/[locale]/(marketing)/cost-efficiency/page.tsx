@@ -99,8 +99,11 @@ export default async function CostEfficiencyPage({
   /** The service this page belongs to, so the ecosystem keeps its links. */
   const parentService = serviceRegistry['cost-efficiency-internal-control'];
 
+  /* The marketing layout owns the single main landmark and the skip-link
+     target. A page that renders its own would nest landmarks and duplicate the
+     id, so this wrapper is a plain div for exactly that reason. */
   return (
-    <main id="main">
+    <div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
@@ -201,7 +204,7 @@ export default async function CostEfficiencyPage({
           {copy.delivery.items.map((item, index) => (
             <Reveal as="li" key={item.title} index={index}>
               <Card tone="context" padding="lg" className="h-full">
-                <span className="df-num text-[11px] font-semibold tracking-[0.14em] text-[var(--df-color-muted-2)]">
+                <span className="df-num text-[11px] font-semibold tracking-[0.14em] text-[var(--df-color-muted)]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <h3 className="mt-3 text-base font-semibold text-[var(--df-color-text-strong)]">
@@ -229,7 +232,7 @@ export default async function CostEfficiencyPage({
       <Section id="related" title={dict.tools.related.heading} tone="deep">
         <div className="grid gap-8 lg:grid-cols-3">
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
               {dict.nav.services.label}
             </h3>
             <ul className="mt-4 space-y-2.5">
@@ -264,7 +267,7 @@ export default async function CostEfficiencyPage({
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
               {dict.nav.tools.label}
             </h3>
             <ul className="mt-4 space-y-2.5">
@@ -299,7 +302,7 @@ export default async function CostEfficiencyPage({
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
               {dict.nav.industries.label}
             </h3>
             <ul className="mt-4 space-y-2.5">
@@ -325,7 +328,7 @@ export default async function CostEfficiencyPage({
         primary={{ label: copy.delivery.bookLabel, href: bookHref }}
         secondary={{ label: copy.delivery.checklistLabel, href: checklistHref }}
       />
-    </main>
+    </div>
   );
 }
 
@@ -371,12 +374,12 @@ function StructureSchematic({ copy }: { copy: CostEfficiencyCopy }) {
         <li>
           <div className="flex items-baseline justify-between gap-4">
             <span className="text-sm text-gold-bright">{copy.chart.exposure}</span>
-            <span className="text-xs text-[var(--df-color-muted-2)]">{copy.chart.legendWithheld}</span>
+            <span className="text-xs text-[var(--df-color-muted)]">{copy.chart.legendWithheld}</span>
           </div>
           <div className="mt-2 h-3.5 w-full rounded-full border border-dashed border-[var(--df-color-gold)] bg-[repeating-linear-gradient(135deg,transparent,transparent_6px,color-mix(in_srgb,var(--df-color-gold)_35%,transparent)_6px,color-mix(in_srgb,var(--df-color-gold)_35%,transparent)_12px)]" />
         </li>
       </ul>
-      <figcaption className="mt-5 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+      <figcaption className="mt-5 text-xs leading-relaxed text-[var(--df-color-muted)]">
         {copy.chart.axisNote}
       </figcaption>
     </figure>

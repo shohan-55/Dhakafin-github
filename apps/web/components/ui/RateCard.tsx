@@ -157,15 +157,15 @@ export function RateCard({
 
       <dl className={cn('grid gap-x-6 gap-y-2 text-xs', compact ? 'mt-3' : 'mt-4', 'sm:grid-cols-2')}>
         <div>
-          <dt className="text-[var(--df-color-muted-2)]">Base</dt>
+          <dt className="text-[var(--df-color-muted)]">Base</dt>
           <dd className="mt-0.5 text-[var(--df-color-text)]">{base}</dd>
         </div>
         <div>
-          <dt className="text-[var(--df-color-muted-2)]">Taxpayer type</dt>
+          <dt className="text-[var(--df-color-muted)]">Taxpayer type</dt>
           <dd className="mt-0.5 text-[var(--df-color-text)]">{taxpayerType}</dd>
         </div>
         <div className="sm:col-span-2">
-          <dt className="text-[var(--df-color-muted-2)]">Applicability</dt>
+          <dt className="text-[var(--df-color-muted)]">Applicability</dt>
           <dd className="mt-0.5 leading-relaxed text-[var(--df-color-text)]">{applicability}</dd>
         </div>
       </dl>
@@ -173,7 +173,7 @@ export function RateCard({
       {/* Provenance strip — the reason users trust this page */}
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--df-color-border-quiet)] pt-3 text-[11px]">
         <span className="inline-flex items-center gap-1.5">
-          <span className="text-[var(--df-color-muted-2)]">Effective</span>
+          <span className="text-[var(--df-color-muted)]">Effective</span>
           <span className="df-num text-[var(--df-color-text)]">
             {effectiveFrom}
             {effectiveTo ? ` – ${effectiveTo}` : ''}
@@ -182,7 +182,7 @@ export function RateCard({
 
         {provenance.referenceSro ? (
           <span className="inline-flex items-center gap-1.5">
-            <span className="text-[var(--df-color-muted-2)]">SRO</span>
+            <span className="text-[var(--df-color-muted)]">SRO</span>
             {provenance.sourceUrl ? (
               <a
                 href={provenance.sourceUrl}
@@ -199,13 +199,13 @@ export function RateCard({
         ) : null}
 
         <span className="inline-flex items-center gap-1.5">
-          <span className="text-[var(--df-color-muted-2)]">Verified</span>
+          <span className="text-[var(--df-color-muted)]">Verified</span>
           <span className="df-num text-[var(--df-color-text)]">{provenance.verifiedAt}</span>
-          <span className="text-[var(--df-color-muted-2)]">by {provenance.verifiedBy}</span>
+          <span className="text-[var(--df-color-muted)]">by {provenance.verifiedBy}</span>
         </span>
 
         {fiscalYear ? (
-          <span className="df-num text-[var(--df-color-muted-2)]">{fiscalYear}</span>
+          <span className="df-num text-[var(--df-color-muted)]">{fiscalYear}</span>
         ) : null}
       </div>
 

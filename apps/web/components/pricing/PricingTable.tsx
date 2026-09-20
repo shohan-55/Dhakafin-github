@@ -84,7 +84,7 @@ export function PricingTable({
       {/* ── Controls ─────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div role="group" aria-label={copy.billingLabel}>
-          <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted-2)]">
+          <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted)]">
             {copy.billingLabel}
           </span>
           <div className="mt-2 inline-flex rounded-lg border border-[var(--df-color-border)] bg-surface1 p-0.5">
@@ -142,7 +142,7 @@ export function PricingTable({
                 <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-sea-400">
                   {group.name}
                 </span>
-                <span className="ms-3 text-xs font-normal normal-case tracking-normal text-[var(--df-color-muted-2)]">
+                <span className="ms-3 text-xs font-normal normal-case tracking-normal text-[var(--df-color-muted)]">
                   {group.lede}
                 </span>
               </TD>
@@ -179,7 +179,7 @@ export function PricingTable({
                       <span className="block text-sm text-[var(--df-color-text-strong)]">
                         {showAnnual ? row.annualValue : row.band}
                       </span>
-                      <span className="mt-0.5 block text-[11px] font-normal text-[var(--df-color-muted-2)]">
+                      <span className="mt-0.5 block text-[11px] font-normal text-[var(--df-color-muted)]">
                         {showAnnual ? copy.billingAnnual : row.cadenceLabel}
                       </span>
                     </TD>
@@ -222,7 +222,7 @@ export function PricingTable({
       <p className="mt-3 text-xs leading-relaxed text-muted sm:hidden">{copy.scrollHint}</p>
 
       {/* ── Annual arithmetic, and the one-off exception ─────────────────── */}
-      <p className="mt-3 max-w-3xl text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+      <p className="mt-3 max-w-3xl text-xs leading-relaxed text-[var(--df-color-muted)]">
         {copy.annualNote} {copy.oneOffNote}
       </p>
 
@@ -258,7 +258,7 @@ export function PricingTable({
                 <p className="df-num mt-2 text-lg text-sea-300">
                   {annual && row.annualValue ? row.annualValue : row.band}
                 </p>
-                <p className="mt-1 text-[11px] text-[var(--df-color-muted-2)]">
+                <p className="mt-1 text-[11px] text-[var(--df-color-muted)]">
                   {annual && row.annualValue ? copy.billingAnnual : row.cadenceLabel}
                 </p>
 
@@ -268,7 +268,7 @@ export function PricingTable({
                   <ul className="mt-3 space-y-1 text-xs text-muted">
                     {row.drivers.map((driver) => (
                       <li key={driver} className="flex gap-2">
-                        <span aria-hidden="true" className="text-[var(--df-color-muted-2)]">
+                        <span aria-hidden="true" className="text-[var(--df-color-muted)]">
                           —
                         </span>
                         <span>{driver}</span>
@@ -277,7 +277,7 @@ export function PricingTable({
                   </ul>
                 ) : null}
 
-                <h5 className="mt-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted-2)]">
+                <h5 className="mt-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted)]">
                   {copy.excludesLabel}
                 </h5>
                 <ul className="mt-2 space-y-1 text-xs text-muted">
@@ -292,7 +292,7 @@ export function PricingTable({
                 </ul>
 
                 {row.note ? (
-                  <p className="mt-4 text-xs italic leading-relaxed text-[var(--df-color-muted-2)]">
+                  <p className="mt-4 text-xs italic leading-relaxed text-[var(--df-color-muted)]">
                     {row.note}
                   </p>
                 ) : null}

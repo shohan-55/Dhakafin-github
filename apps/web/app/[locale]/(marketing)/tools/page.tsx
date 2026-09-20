@@ -51,8 +51,11 @@ export default async function ToolsHubPage({
   const copy = dict.tools;
   const numerals = locale === 'bn' ? 'bn' : 'latin';
 
+  /* The marketing layout owns the single main landmark and the skip-link
+     target. A page that renders its own would nest landmarks and duplicate the
+     id, so this wrapper is a plain div for exactly that reason. */
   return (
-    <main id="main" className="df-container py-16 sm:py-24">
+    <div className="df-container py-16 sm:py-24">
       <Breadcrumb
         items={[
           { label: 'DhakaFin', href: localeHref(locale, '/') },
@@ -111,7 +114,7 @@ export default async function ToolsHubPage({
                       className="flex h-full flex-col"
                     >
                       <div className="flex items-start justify-between gap-3">
-                        <span className="df-num text-xs font-semibold text-[var(--df-color-muted-2)]">
+                        <span className="df-num text-xs font-semibold text-[var(--df-color-muted)]">
                           {String(entry.order).padStart(2, '0')}
                         </span>
                         {pending ? (
@@ -130,7 +133,7 @@ export default async function ToolsHubPage({
 
                       {/* The example figure is the fastest way to show what a tool
                           is for. It is a worked example, not a claim about anyone. */}
-                      <p className="df-num mt-5 text-xs text-[var(--df-color-muted-2)]">
+                      <p className="df-num mt-5 text-xs text-[var(--df-color-muted)]">
                         {toolCopy.examples.items[0]?.title ?? formatBDT(entry.example.amount, { numerals })}
                       </p>
 
@@ -150,6 +153,6 @@ export default async function ToolsHubPage({
           </section>
         );
       })}
-    </main>
+    </div>
   );
 }

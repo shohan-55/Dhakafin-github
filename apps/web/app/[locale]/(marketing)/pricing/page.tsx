@@ -166,8 +166,11 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
     })),
   };
 
+  /* The marketing layout owns the single main landmark and the skip-link
+     target. A page that renders its own would nest landmarks and duplicate the
+     id, so this wrapper is a plain div for exactly that reason. */
   return (
-    <main id="main">
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(offerCatalog) }}
@@ -222,7 +225,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
           {copy.drivers.items.map((item, index) => (
             <Reveal as="li" key={item.title} index={index}>
               <Card tone="context" padding="lg" className="h-full">
-                <span className="df-num text-[11px] font-semibold tracking-[0.14em] text-[var(--df-color-muted-2)]">
+                <span className="df-num text-[11px] font-semibold tracking-[0.14em] text-[var(--df-color-muted)]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <h3 className="mt-3 text-base font-semibold text-[var(--df-color-text-strong)]">
@@ -245,7 +248,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
         <PricingTable copy={copy.table} rows={rows} groups={groups} />
 
         <NotIncluded title={copy.table.exclusionsHeading} items={copy.table.exclusions} />
-        <p className="mt-4 max-w-3xl text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+        <p className="mt-4 max-w-3xl text-xs leading-relaxed text-[var(--df-color-muted)]">
           {copy.table.exclusionsLede}
         </p>
       </Section>
@@ -314,7 +317,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
               >
                 {row.name}
               </LocaleLink>
-              <span className="df-num text-xs text-[var(--df-color-muted-2)]">{row.band}</span>
+              <span className="df-num text-xs text-[var(--df-color-muted)]">{row.band}</span>
             </li>
           ))}
         </ul>
@@ -327,6 +330,6 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
         secondary={{ label: copy.cta.secondaryLabel, href: quoteHref }}
         footnote={copy.cta.footnote}
       />
-    </main>
+    </div>
   );
 }

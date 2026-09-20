@@ -244,7 +244,7 @@ export function ToolResultPanel({
         aria-atomic="true"
         aria-label={`${shell.liveRegionLabel}: ${copy.result.primaryLabel}`}
       >
-        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted-2)]">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted)]">
           {copy.result.primaryLabel}
         </p>
         <p className="mt-2 flex items-baseline gap-2">
@@ -315,7 +315,7 @@ export function ToolResultPanel({
             {result.steps.map((step) => (
               <li key={step.label} className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <span className="text-sm text-[var(--df-color-text)]">{step.label}</span>
-                <span className="df-num text-xs text-[var(--df-color-muted-2)]">{step.expression}</span>
+                <span className="df-num text-xs text-[var(--df-color-muted)]">{step.expression}</span>
                 <span className="df-num w-full text-end text-sm tabular-nums text-[var(--df-color-text-strong)] sm:w-auto">
                   {formatBDT(step.value, { compact: Math.abs(step.value) >= 10_000_000 })}
                 </span>

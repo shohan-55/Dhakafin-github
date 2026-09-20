@@ -42,7 +42,7 @@ export function Breadcrumb({
               )}
 
               {!isLast ? (
-                <span aria-hidden="true" className="text-[var(--df-color-muted-2)]">
+                <span aria-hidden="true" className="text-[var(--df-color-muted)]">
                   /
                 </span>
               ) : null}

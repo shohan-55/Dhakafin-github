@@ -76,8 +76,11 @@ export default async function IndustriesPage({
   const locale: Locale = resolveLocale((await params).locale);
   const copy = getDictionary(locale).industries;
 
+  /* The marketing layout owns the single main landmark and the skip-link
+     target. A page that renders its own would nest landmarks and duplicate the
+     id, so this wrapper is a plain div for exactly that reason. */
   return (
-    <main id="main" className="df-container py-16 sm:py-24">
+    <div className="df-container py-16 sm:py-24">
       <Breadcrumb
         items={[{ label: 'DhakaFin', href: localeHref(locale, '/') }, { label: copy.hero.eyebrow }]}
         label={copy.hero.eyebrow}
@@ -136,7 +139,7 @@ export default async function IndustriesPage({
                         {industry.promise}
                       </p>
 
-                      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs text-[var(--df-color-muted-2)]">
+                      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs text-[var(--df-color-muted)]">
                         <span>
                           {industry.kpis.items.length} {locale === 'bn' ? 'টি KPI' : 'KPIs'}
                         </span>
@@ -181,7 +184,7 @@ export default async function IndustriesPage({
             <li key={planned.slug}>
               <span className="inline-flex items-center gap-2 rounded-lg border border-dashed border-[var(--df-color-border-strong)] px-3 py-1.5 text-sm text-muted">
                 {planned.slug.replace(/-/g, ' ')}
-                <span className="text-[10px] uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                <span className="text-[10px] uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                   {copy.rail.plannedBadge}
                 </span>
               </span>
@@ -189,6 +192,6 @@ export default async function IndustriesPage({
           ))}
         </ul>
       </section>
-    </main>
+    </div>
   );
 }

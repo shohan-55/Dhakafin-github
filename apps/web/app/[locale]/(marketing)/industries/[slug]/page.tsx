@@ -138,8 +138,11 @@ export default async function IndustryPage({
     areaServed: { '@type': 'Country', name: 'Bangladesh' },
   };
 
+  /* The marketing layout owns the single main landmark and the skip-link
+     target. A page that renders its own would nest landmarks and duplicate the
+     id, so this wrapper is a plain div for exactly that reason. */
   return (
-    <main id="main">
+    <div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
@@ -222,7 +225,7 @@ export default async function IndustryPage({
                       <TD className="align-top">
                         <span className="font-medium text-[var(--df-color-text-strong)]">{label}</span>
                         {register ? (
-                          <span className="mt-1 block text-xs text-[var(--df-color-muted-2)]">
+                          <span className="mt-1 block text-xs text-[var(--df-color-muted)]">
                             {register.authority} · {dict.compliance.cadences[register.cadence]}
                           </span>
                         ) : null}
@@ -239,7 +242,7 @@ export default async function IndustryPage({
               {dict.compliance.unverifiedTitle}
             </Badge>
             <p className="mt-4 text-sm leading-relaxed text-muted">{industry.complianceProfile.noDatesNote}</p>
-            <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+            <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted)]">
               {dict.compliance.unverifiedBody}
             </p>
           </Card>
@@ -250,13 +253,13 @@ export default async function IndustryPage({
       <Section id="financial-dna" title={industry.financialDna.heading} lede={industry.financialDna.lede}>
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
               {locale === 'bn' ? 'আয় ও ব্যয়ের গঠন' : 'Revenue and cost structure'}
             </h3>
             <ul className="mt-4 space-y-4">
               {industry.financialDna.structure.map((row, index) => (
                 <li key={row.label} className="flex gap-4">
-                  <span className="df-num mt-0.5 text-xs font-semibold text-[var(--df-color-muted-2)]">
+                  <span className="df-num mt-0.5 text-xs font-semibold text-[var(--df-color-muted)]">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <span>
@@ -270,7 +273,7 @@ export default async function IndustryPage({
 
           <div className="space-y-6">
             <Card tone="quiet" padding="lg">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                 {locale === 'bn' ? 'যেখানে ব্যয় বেরিয়ে যায়' : 'Where cost leaks'}
               </h3>
               <ul className="mt-4 space-y-3">
@@ -286,7 +289,7 @@ export default async function IndustryPage({
             </Card>
 
             <Card tone="quiet" padding="lg">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                 {locale === 'bn' ? 'নগদের ধরন' : 'Working capital pattern'}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-[var(--df-color-text)]">
@@ -360,7 +363,7 @@ export default async function IndustryPage({
               <LocaleLink locale={locale} href={`/services/${service.slug}`} className="group block no-underline">
                 <Card tone="quiet" padding="lg" interactive>
                   <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-                    <span className="df-num text-xs font-semibold text-[var(--df-color-muted-2)]">
+                    <span className="df-num text-xs font-semibold text-[var(--df-color-muted)]">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <h3 className="text-base font-semibold text-[var(--df-color-text-strong)]">
@@ -408,7 +411,7 @@ export default async function IndustryPage({
               { term: locale === 'bn' ? 'ফলাফল' : 'Result', body: industry.caseStudy.result },
             ].map((part) => (
               <div key={part.term}>
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                   {part.term}
                 </dt>
                 <dd className="mt-1.5 text-sm leading-relaxed text-[var(--df-color-text)]">{part.body}</dd>
@@ -484,6 +487,6 @@ export default async function IndustryPage({
           href: `${localeHref(locale, '/contact')}?industry=${entry.slug}&intent=checklist`,
         }}
       />
-    </main>
+    </div>
   );
 }

@@ -63,7 +63,7 @@ function Specimen({ label, children, note }: { label: string; children: React.Re
     <div className="rounded-xl border border-[var(--df-color-border-quiet)] bg-surface1/50 p-5">
       <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">{label}</p>
       <div className="mt-4">{children}</div>
-      {note ? <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted-2)]">{note}</p> : null}
+      {note ? <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted)]">{note}</p> : null}
     </div>
   );
 }
@@ -233,7 +233,7 @@ export function DesignSystemGallery() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+              <p className="mt-4 text-xs leading-relaxed text-[var(--df-color-muted)]">
                 These are environment and infrastructure tasks — they need credentials, not code, and are documented so
                 the gate cannot be quietly declared “done”.
               </p>
@@ -265,7 +265,7 @@ export function DesignSystemGallery() {
                         <p className="mt-2.5 truncate text-[11px] font-medium text-[var(--df-color-text)]">
                           {key.replace('color.', '')}
                         </p>
-                        <p className="df-num truncate text-[10px] text-[var(--df-color-muted-2)]">{value}</p>
+                        <p className="df-num truncate text-[10px] text-[var(--df-color-muted)]">{value}</p>
                       </div>
                     );
                   })}
@@ -372,7 +372,7 @@ export function DesignSystemGallery() {
                 className="rounded-xl border border-[var(--df-color-border-quiet)] bg-surface1/50 p-5"
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="df-num text-[11px] text-[var(--df-color-muted-2)]">
+                  <p className="df-num text-[11px] text-[var(--df-color-muted)]">
                     {item.token} · {tokenValue(item.token)}
                   </p>
                   <p className="text-[11px] text-muted">{item.use}</p>

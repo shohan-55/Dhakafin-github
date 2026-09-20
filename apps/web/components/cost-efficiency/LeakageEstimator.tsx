@@ -212,7 +212,7 @@ export function LeakageEstimator({
       <div className="space-y-6 lg:sticky lg:top-24">
         {/* Industry */}
         <Card tone="context" padding="lg">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
             {locale === 'bn' ? 'খাত' : 'Industry'}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -282,10 +282,10 @@ export function LeakageEstimator({
               onBlur={() => commit(copy.estimator.turnoverLabel, taka(input.turnover, locale))}
               className="df-num h-11 w-40 rounded-lg border border-[var(--df-color-border-quiet)] bg-void/40 px-3 text-sm text-[var(--df-color-text-strong)]"
             />
-            <span className="text-xs text-[var(--df-color-muted-2)]">{copy.estimator.turnoverInputLabel}</span>
+            <span className="text-xs text-[var(--df-color-muted)]">{copy.estimator.turnoverInputLabel}</span>
           </div>
 
-          <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+          <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted)]">
             {copy.estimator.turnoverFloorNote}
           </p>
         </Card>
@@ -310,12 +310,12 @@ export function LeakageEstimator({
                     </label>
                     <span className="df-num text-sm font-medium text-[var(--df-color-text-strong)]">
                       {formatPercent(shareToPercent(share), 1, numerals)}{' '}
-                      <span className="text-xs text-[var(--df-color-muted-2)]">
+                      <span className="text-xs text-[var(--df-color-muted)]">
                         {taka(amount, locale)}
                       </span>
                     </span>
                   </div>
-                  <p className="mt-0.5 text-xs text-[var(--df-color-muted-2)]">
+                  <p className="mt-0.5 text-xs text-[var(--df-color-muted)]">
                     {copy.estimator.categories[id].hint}
                   </p>
                   <input
@@ -349,7 +349,7 @@ export function LeakageEstimator({
               {taka(estimate.operatingCost, locale)}
             </span>
           </div>
-          <p className="mt-1 text-xs text-[var(--df-color-muted-2)]">{copy.estimator.operatingCostNote}</p>
+          <p className="mt-1 text-xs text-[var(--df-color-muted)]">{copy.estimator.operatingCostNote}</p>
         </Card>
 
         {/* Five process questions */}
@@ -464,7 +464,7 @@ export function LeakageEstimator({
                     tone={pillar.flagged ? 'warn' : 'sea'}
                   />
                 </div>
-                <p className="mt-1.5 text-xs text-[var(--df-color-muted-2)]">
+                <p className="mt-1.5 text-xs text-[var(--df-color-muted)]">
                   {formatPercent(pillar.shareOfOperatingCostBasisPoints / 100, 1, numerals)}{' '}
                   {locale === 'bn' ? '— মোট পরিচালন ব্যয়ের' : 'of total operating cost'}
                 </p>
@@ -547,7 +547,7 @@ export function LeakageEstimator({
                   <TR key={`${row.pillar}-${row.industry}`}>
                     <TD className="text-sm text-[var(--df-color-text)]">{copy.pillars[row.pillar].name}</TD>
                     <TD className="text-sm text-muted">{industryNames[row.industry]}</TD>
-                    <TD className="text-sm text-[var(--df-color-muted-2)]">{copy.method.sourceMissing}</TD>
+                    <TD className="text-sm text-[var(--df-color-muted)]">{copy.method.sourceMissing}</TD>
                     <TD className="text-sm text-muted">
                       {row.resolution.status === 'verified'
                         ? copy.method.statusVerified
@@ -555,7 +555,7 @@ export function LeakageEstimator({
                           ? `${copy.method.statusUnverified} — ${copy.method.reason[row.resolution.reasonKey]}`
                           : copy.method.statusUnverified}
                     </TD>
-                    <TD className="text-sm text-[var(--df-color-muted-2)]">{copy.method.sourceMissing}</TD>
+                    <TD className="text-sm text-[var(--df-color-muted)]">{copy.method.sourceMissing}</TD>
                   </TR>
                 ))}
               </tbody>
@@ -580,18 +580,18 @@ export function LeakageEstimator({
             <ol className="mt-5 space-y-3">
               {estimate.priority.map((id, index) => (
                 <li key={id} className="flex items-baseline gap-3">
-                  <span className="df-num text-xs font-semibold text-[var(--df-color-muted-2)]">
+                  <span className="df-num text-xs font-semibold text-[var(--df-color-muted)]">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <span className="text-sm text-[var(--df-color-text-strong)]">{copy.pillars[id].name}</span>
-                  <span className="df-num text-xs text-[var(--df-color-muted-2)]">
+                  <span className="df-num text-xs text-[var(--df-color-muted)]">
                     {taka(estimate.pillars.find((p) => p.id === id)?.spendBaseAmount ?? 0, locale)}
                   </span>
                 </li>
               ))}
             </ol>
           ) : (
-            <p className="mt-4 text-sm text-[var(--df-color-muted-2)]">{copy.estimator.priorityEmpty}</p>
+            <p className="mt-4 text-sm text-[var(--df-color-muted)]">{copy.estimator.priorityEmpty}</p>
           )}
         </Card>
 
@@ -620,7 +620,7 @@ export function LeakageEstimator({
               <label htmlFor="ce-compare" className="text-sm text-muted">
                 {copy.estimator.compareLabel}
               </label>
-              <p id="ce-compare-note" className="mt-1 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+              <p id="ce-compare-note" className="mt-1 text-xs leading-relaxed text-[var(--df-color-muted)]">
                 {copy.estimator.compareNote}
               </p>
             </div>
@@ -637,7 +637,7 @@ export function LeakageEstimator({
               {copy.delivery.checklistLabel}
             </ButtonLink>
           </div>
-          <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+          <p className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted)]">
             {copy.delivery.checklistNote}
           </p>
 
@@ -653,7 +653,7 @@ export function LeakageEstimator({
                 {copy.estimator.resetLabel}
               </Button>
             </div>
-            <p className="text-xs leading-relaxed text-[var(--df-color-muted-2)]">{copy.estimator.shareHint}</p>
+            <p className="text-xs leading-relaxed text-[var(--df-color-muted)]">{copy.estimator.shareHint}</p>
             <p className="df-num break-all rounded-lg border border-[var(--df-color-border-quiet)] bg-void/40 px-3 py-2 text-xs text-muted">
               {shareUrl}
             </p>
@@ -664,7 +664,7 @@ export function LeakageEstimator({
         <div className="sticky bottom-4 z-[var(--df-z-index-context)] lg:hidden">
           <div className="df-glass df-edge flex items-center justify-between gap-4 rounded-2xl p-4">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--df-color-muted-2)]">
+              <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--df-color-muted)]">
                 {copy.estimator.stickyLabel}
               </p>
               <p className="df-num text-lg font-semibold text-sea-300">
@@ -729,8 +729,8 @@ function Waterfall({
         {/* The beat that must stay empty until a benchmark exists. */}
         <div>
           <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-            <span className="text-sm text-[var(--df-color-muted-2)]">{copy.chart.profitAfter}</span>
-            <span className="df-num text-sm font-medium text-[var(--df-color-muted-2)]">
+            <span className="text-sm text-[var(--df-color-muted)]">{copy.chart.profitAfter}</span>
+            <span className="df-num text-sm font-medium text-[var(--df-color-muted)]">
               {copy.chart.profitAfterWithheld}
             </span>
           </div>
@@ -738,7 +738,7 @@ function Waterfall({
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-[var(--df-color-muted-2)]">
+      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-[var(--df-color-muted)]">
         <span className="flex items-center gap-2">
           <span aria-hidden="true" className="h-2 w-3 rounded-full bg-[var(--df-color-ok)]" />
           {copy.chart.legendNecessary}
@@ -753,7 +753,7 @@ function Waterfall({
         </span>
       </div>
 
-      <figcaption className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+      <figcaption className="mt-3 text-xs leading-relaxed text-[var(--df-color-muted)]">
         {copy.chart.axisNote} · {copy.estimator.operatingCostLabel}:{' '}
         {formatNumber(estimate.operatingCost, numerals)} ({formatPercent(estimate.operatingCostShareBasisPoints / 100, 1, numerals)})
       </figcaption>

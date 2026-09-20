@@ -137,7 +137,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                         <p className="df-num mt-1.5 text-metric-sm tabular-nums text-[var(--df-color-text-strong)]">
                           {item.value}
                         </p>
-                        <p className="mt-0.5 text-[11px] text-[var(--df-color-muted-2)]">{item.note}</p>
+                        <p className="mt-0.5 text-[11px] text-[var(--df-color-muted)]">{item.note}</p>
                       </div>
                     ))}
                   </div>
@@ -185,7 +185,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 </div>
 
                 <div className="border-t border-[var(--df-color-border-quiet)] bg-surface2/40 px-5 py-3">
-                  <p className="text-[11px] leading-relaxed text-[var(--df-color-muted-2)]">
+                  <p className="text-[11px] leading-relaxed text-[var(--df-color-muted)]">
                     {t.hero.terminalFootnote}
                   </p>
                 </div>
@@ -475,7 +475,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 {dict.common.exploreDesignSystem}
               </LocaleLink>
             </div>
-            <p className="mx-auto mt-8 max-w-2xl text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+            <p className="mx-auto mt-8 max-w-2xl text-xs leading-relaxed text-[var(--df-color-muted)]">
               {dict.common.disclaimer}
             </p>
           </Reveal>

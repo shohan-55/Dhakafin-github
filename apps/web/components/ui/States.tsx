@@ -136,7 +136,7 @@ export function ErrorState({
           <p className="mt-1.5 text-sm leading-relaxed text-muted">{description}</p>
 
           {reference ? (
-            <p className="df-num mt-2 text-xs text-[var(--df-color-muted-2)]">
+            <p className="df-num mt-2 text-xs text-[var(--df-color-muted)]">
               {referenceLabel}: {reference}
             </p>
           ) : null}
@@ -283,10 +283,10 @@ export function ProvenanceNote({
         Verified
       </Badge>
       <span className="df-num">{verifiedAt}</span>
-      <span className="text-[var(--df-color-muted-2)]">by {verifiedBy}</span>
-      <span aria-hidden="true" className="text-[var(--df-color-muted-2)]">·</span>
+      <span className="text-[var(--df-color-muted)]">by {verifiedBy}</span>
+      <span aria-hidden="true" className="text-[var(--df-color-muted)]">·</span>
       <span>Source: {sourceLabel}</span>
-      <span aria-hidden="true" className="text-[var(--df-color-muted-2)]">·</span>
+      <span aria-hidden="true" className="text-[var(--df-color-muted)]">·</span>
       <span>DhakaFin verifies rates within 48 working hours of NBR publication.</span>
     </p>
   );

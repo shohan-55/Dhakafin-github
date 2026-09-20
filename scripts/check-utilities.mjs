@@ -158,6 +158,55 @@ for (const [cls] of used) {
   unresolved.push(cls);
 }
 
+/* ── 3b. Custom-property references must exist ─────────────────────────────
+ * The class check above cannot see inside an arbitrary value, so
+ * `text-[var(--df-color-muted-2)]` passed it for months while rendering the
+ * wrong colour — the variable did not exist and the declaration was dropped at
+ * computed-value time. Silent, like the failures this gate was written for.
+ *
+ * Derive the defined set from the generated token CSS (plus the app stylesheet,
+ * which is allowed to define component-facing variables of its own) and treat
+ * any `var(--df-…)` in source that is not in it as an error.
+ */
+
+const DEFINED = new Set();
+const definedSources = [
+  join(ROOT, 'packages', 'tokens', 'dist', 'tokens.css'),
+  join(ROOT, 'packages', 'tokens', 'dist', 'theme.css'),
+  join(ROOT, 'packages', 'tokens', 'dist', 'base.css'),
+  join(WEB, 'app', 'globals.css'),
+];
+for (const file of definedSources) {
+  if (!existsSync(file)) continue;
+  for (const m of readFileSync(file, 'utf8').matchAll(/(--df-[a-z0-9-]+)\s*:/g)) DEFINED.add(m[1]);
+}
+
+const badVars = new Map();
+for (const file of sources) {
+  const text = readFileSync(file, 'utf8');
+  for (const m of text.matchAll(/var\((--df-[a-z0-9-]+)/g)) {
+    const name = m[1];
+    // `var(--x, fallback)` is a deliberate fallback, not a missing token.
+    const rest = text.slice(m.index + m[0].length, m.index + m[0].length + 2);
+    if (DEFINED.has(name) || rest.startsWith(',')) continue;
+    if (!badVars.has(name)) badVars.set(name, new Set());
+    badVars.get(name).add(relative(ROOT, file));
+  }
+}
+
+if (badVars.size) {
+  console.error('\n  ✗ token references that no stylesheet defines:');
+  for (const [name, files] of [...badVars].sort((a, b) => b[1].size - a[1].size)) {
+    console.error(`      ${name}   ${files.size} file(s)`);
+    for (const f of [...files].slice(0, 3)) console.error(`          ${f}`);
+  }
+  console.error(
+    `\n  ${badVars.size} undefined variable(s). A reference to a token that does not\n` +
+      `  exist is dropped silently — fix the name or add the token.\n`
+  );
+  process.exit(1);
+}
+
 /* ── 4. Report ─────────────────────────────────────────────────────────── */
 
 console.log('\n  Utility integrity  ·  every colour utility must resolve to real CSS');
@@ -181,4 +230,5 @@ if (unresolved.length) {
 }
 
 console.log(`  ✓ all ${used.size} colour utilities resolve to generated CSS.`);
+console.log(`  ✓ every var(--df-…) reference resolves to ${DEFINED.size} defined tokens.`);
 console.log(`    derived from ${colourNames.length} colour tokens and ${textNames.length} type-scale steps.\n`);

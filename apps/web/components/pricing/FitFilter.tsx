@@ -71,7 +71,7 @@ export function FitFilter({
   return (
     <div className="rounded-2xl border border-[var(--df-color-border)] bg-surface1 p-6 sm:p-8">
       {trail.length ? (
-        <ol className="mb-6 space-y-1 text-xs text-[var(--df-color-muted-2)]">
+        <ol className="mb-6 space-y-1 text-xs text-[var(--df-color-muted)]">
           {trail.map((line, index) => (
             <li key={`${line}-${index}`} className="flex gap-2">
               <span aria-hidden="true" className="df-num">
@@ -94,7 +94,7 @@ export function FitFilter({
             </h3>
 
             <p className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted-2)]">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted)]">
                 {copy.resultBandLabel}
               </span>
               <span className="df-num text-lg text-sea-300">{answer.band}</span>
@@ -120,7 +120,7 @@ export function FitFilter({
           </div>
         ) : (
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted-2)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--df-color-muted)]">
               {copy.stepLabel} <span className="df-num">{current + 1}</span> /{' '}
               <span className="df-num">{steps.length}</span>
             </p>
@@ -163,7 +163,7 @@ export function FitFilter({
         )}
       </div>
 
-      <p className="mt-8 border-t border-[var(--df-color-border-quiet)] pt-5 text-xs leading-relaxed text-[var(--df-color-muted-2)]">
+      <p className="mt-8 border-t border-[var(--df-color-border-quiet)] pt-5 text-xs leading-relaxed text-[var(--df-color-muted)]">
         <a href={diagnosticHref} className="text-sea-300 underline-offset-4 hover:underline">
           {copy.notSureLabel}
         </a>{' '}

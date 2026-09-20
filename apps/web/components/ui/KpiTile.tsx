@@ -115,7 +115,7 @@ export function KpiTile({
             )}
           </p>
         ) : null}
-        <p className="text-xs text-[var(--df-color-muted-2)]">{period}</p>
+        <p className="text-xs text-[var(--df-color-muted)]">{period}</p>
       </div>
     </Wrapper>
   );
