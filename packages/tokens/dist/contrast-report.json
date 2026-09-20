@@ -1,0 +1,184 @@
+{
+  "generatedFrom": "df.tokens.json",
+  "standard": "WCAG 2.2 AA",
+  "results": [
+    {
+      "fg": "text",
+      "bg": "void",
+      "ratio": 16.149143875133735,
+      "min": 4.5,
+      "pass": true,
+      "context": "body text on base",
+      "fgValue": "#e2e8f0",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "textStrong",
+      "bg": "void",
+      "ratio": 19.027836747203093,
+      "min": 4.5,
+      "pass": true,
+      "context": "headings on base",
+      "fgValue": "#f8fafc",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "muted",
+      "bg": "void",
+      "ratio": 7.764447667973957,
+      "min": 4.5,
+      "pass": true,
+      "context": "secondary text on base",
+      "fgValue": "#94a3b8",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "sea500",
+      "bg": "void",
+      "ratio": 7.9980199502879845,
+      "min": 4.5,
+      "pass": true,
+      "context": "primary brand on base",
+      "fgValue": "#14b8a6",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "sea400",
+      "bg": "void",
+      "ratio": 10.694857843062085,
+      "min": 4.5,
+      "pass": true,
+      "context": "focus ring / accents on base",
+      "fgValue": "#2dd4bf",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "sea300",
+      "bg": "void",
+      "ratio": 13.457824835606644,
+      "min": 4.5,
+      "pass": true,
+      "context": "glow accents on base",
+      "fgValue": "#5eead4",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "gold",
+      "bg": "void",
+      "ratio": 6.249048893400129,
+      "min": 4.5,
+      "pass": true,
+      "context": "regulatory accent on base",
+      "fgValue": "#d97706",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "goldBright",
+      "bg": "void",
+      "ratio": 11.92571898787501,
+      "min": 4.5,
+      "pass": true,
+      "context": "regulatory badge text on base",
+      "fgValue": "#fbbf24",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "ok",
+      "bg": "void",
+      "ratio": 10.35585817610696,
+      "min": 4.5,
+      "pass": true,
+      "context": "success status text on base",
+      "fgValue": "#34d399",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "warn",
+      "bg": "void",
+      "ratio": 11.92571898787501,
+      "min": 4.5,
+      "pass": true,
+      "context": "warning status text on base",
+      "fgValue": "#fbbf24",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "risk",
+      "bg": "void",
+      "ratio": 8.796320181448015,
+      "min": 4.5,
+      "pass": true,
+      "context": "risk status text on base",
+      "fgValue": "#fb923c",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "danger",
+      "bg": "void",
+      "ratio": 7.197152276668173,
+      "min": 4.5,
+      "pass": true,
+      "context": "critical status text on base",
+      "fgValue": "#f87171",
+      "bgValue": "#020b0a"
+    },
+    {
+      "fg": "text",
+      "bg": "surface1",
+      "ratio": 14.927869464446513,
+      "min": 4.5,
+      "pass": true,
+      "context": "body text on card surface",
+      "fgValue": "#e2e8f0",
+      "bgValue": "#061715"
+    },
+    {
+      "fg": "muted",
+      "bg": "surface1",
+      "ratio": 7.177263522279538,
+      "min": 4.5,
+      "pass": true,
+      "context": "secondary text on card surface",
+      "fgValue": "#94a3b8",
+      "bgValue": "#061715"
+    },
+    {
+      "fg": "void",
+      "bg": "sea500",
+      "ratio": 7.9980199502879845,
+      "min": 4.5,
+      "pass": true,
+      "context": "PRIMARY BUTTON: dark text on sea-green (this is why buttons never use white text)",
+      "fgValue": "#020b0a",
+      "bgValue": "#14b8a6"
+    },
+    {
+      "fg": "textStrong",
+      "bg": "surface3",
+      "ratio": 14.549764949661567,
+      "min": 4.5,
+      "pass": true,
+      "context": "heading on overlay surface",
+      "fgValue": "#f8fafc",
+      "bgValue": "#0f2a26"
+    },
+    {
+      "fg": "#ffffff",
+      "bg": "sea500",
+      "ratio": 2.489161732374787,
+      "min": 4.5,
+      "pass": true,
+      "forbidden": true,
+      "context": "White on sea-500 measures ~2.5:1 — fails WCAG AA. Use void (#020b0a) text instead."
+    },
+    {
+      "fg": "muted2",
+      "bg": "void",
+      "ratio": 4.18344670804796,
+      "min": 4.5,
+      "pass": true,
+      "forbidden": true,
+      "context": "4.18:1 — fails AA for normal body text. Decorative or >=19px bold only."
+    }
+  ]
+}

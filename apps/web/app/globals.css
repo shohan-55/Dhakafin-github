@@ -1,0 +1,211 @@
+/* ─────────────────────────────────────────────────────────────
+ * DhakaFin — global stylesheet
+ * DF-P1-003 / DF-P1-004
+ *
+ * Layer order matters:
+ *   1. Tailwind v4 core
+ *   2. Generated tokens  (raw custom properties: --df-*)
+ *   3. Generated theme   (@theme inline → Tailwind utilities resolve to --df-*)
+ *   4. Generated base    (element resets, focus policy, signature motion)
+ *   5. App layer         (font-variable wiring + component-facing utilities)
+ *
+ * Nothing in this file may hardcode a colour, size or duration.
+ * ───────────────────────────────────────────────────────────── */
+
+@import 'tailwindcss';
+@import '../../../packages/tokens/dist/tokens.css';
+@import '../../../packages/tokens/dist/theme.css';
+@import '../../../packages/tokens/dist/base.css';
+
+/* Tailwind content sources (explicit beats implicit in a monorepo) */
+@source '../components';
+@source '../lib';
+@source '../app';
+
+/* ─── Font wiring (DF-P1-004) ───
+ * next/font self-hosts and subsets each family and exposes a CSS variable.
+ * Here we re-point the token font stacks at those variables so the entire
+ * product (including charts and Three.js labels) picks up the real faces.
+ */
+:root {
+  --df-font-sans: var(--font-jakarta), var(--font-ui-bn), var(--font-hind), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --df-font-num: var(--font-grotesk), var(--font-ui-bn), var(--font-jakarta), ui-monospace, monospace;
+  --df-font-bn: var(--font-ui-bn), var(--font-hind), var(--font-jakarta), sans-serif;
+  --df-font-mono: var(--font-mono), ui-monospace, 'SFMono-Regular', monospace;
+  --df-font-serif: var(--font-serif), Georgia, serif;
+}
+
+/* ─── Component-facing utilities built from tokens ─── */
+@layer utilities {
+  /* Layout containers (blueprint §3.5) */
+  .df-container {
+    width: 100%;
+    max-width: var(--df-container-content);
+    margin-inline: auto;
+    padding-inline: var(--df-space-5);
+  }
+
+  @media (min-width: 768px) {
+    .df-container {
+      padding-inline: var(--df-space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .df-container {
+      padding-inline: var(--df-space-12);
+    }
+  }
+
+  .df-container-wide {
+    max-width: var(--df-container-wide);
+  }
+
+  .df-container-reading {
+    max-width: var(--df-container-reading);
+  }
+
+  /* Section rhythm */
+  .df-section {
+    padding-block: clamp(var(--df-space-16), 9vw, var(--df-space-30));
+  }
+
+  .df-section-tight {
+    padding-block: clamp(var(--df-space-12), 6vw, var(--df-space-20));
+  }
+
+  /* Glass surface: the workhorse material. Never stack more than two. */
+  .df-glass {
+    background-color: var(--df-color-glass-tint);
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+    border: 1px solid var(--df-color-border);
+  }
+
+  [data-tier='lite'] .df-glass {
+    background-color: var(--df-color-surface2);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* 1px machined top edge, built from the edgeHighlight gradient token */
+  .df-edge-top::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    background-image: var(--df-gradient-edge-highlight);
+    pointer-events: none;
+  }
+
+  /* Machined edge on dark surfaces */
+  .df-edge {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      var(--shadow-1);
+  }
+
+  /* Hairline rule with a sea-green centre — used as a section divider */
+  .df-rule {
+    height: 1px;
+    width: 100%;
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--df-color-border-strong),
+      transparent
+    );
+  }
+
+  /* Eyebrow bar: the small signature mark beside overlines */
+  .df-eyebrow-bar::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 2px;
+    margin-inline-end: var(--df-space-3);
+    vertical-align: middle;
+    background: var(--df-gradient-focus);
+    border-radius: var(--radius-full);
+  }
+
+  /* Truncate to N lines */
+  .df-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .df-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Screen-reader-only, but focusable (skip links) */
+  .df-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .df-skip-link:focus-visible {
+    position: fixed;
+    top: var(--df-space-4);
+    left: var(--df-space-4);
+    z-index: var(--df-z-index-system);
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: var(--df-space-3) var(--df-space-5);
+    clip: auto;
+    white-space: normal;
+    background-color: var(--df-color-sea-500);
+    color: var(--df-color-void);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+  }
+
+  /* Thin scroll container for long tables on mobile */
+  .df-scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  /* Shimmer for skeletons */
+  .df-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      var(--df-color-surface2) 0%,
+      var(--df-color-surface3) 40%,
+      var(--df-color-surface2) 80%
+    );
+    background-size: 200% 100%;
+    animation: var(--animate-df-shimmer);
+  }
+
+  [data-tier='lite'] .df-shimmer {
+    animation: none;
+    background-image: none;
+    background-color: var(--df-color-surface2);
+  }
+
+  /* Focus ring utility for elements that cannot use :focus-visible defaults */
+  .df-focus-ring:focus-visible {
+    outline: none;
+    box-shadow: var(--df-focus-ring);
+  }
+}

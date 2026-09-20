@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege: this workflow only reads the repo.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  verify:
+    name: Verify (tokens · types · build · budgets)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      # ── Gate 1: the accessibility contract ────────────────────────────────
+      # Runs BEFORE the build. If a palette change breaks a required contrast
+      # pairing, or accidentally fixes a forbidden one, we stop here with a
+      # readable message instead of failing later inside a bundled artefact.
+      - name: Contrast contract (WCAG AA/AAA)
+        run: npm run tokens:validate
+
+      # ── Gate 2: regenerate design tokens from source ──────────────────────
+      # `dist/` is committed so the app can build without the pipeline, which
+      # means it can drift. This step would surface that drift.
+      - name: Build tokens
+        run: npm run tokens:build
+
+      - name: Tokens are in sync with df.tokens.json
+        run: |
+          if ! git diff --quiet -- packages/tokens/dist; then
+            echo "::error::packages/tokens/dist is out of date. Run 'npm run tokens:build' and commit the result."
+            git --no-pager diff --stat -- packages/tokens/dist
+            exit 1
+          fi
+          echo "✓ generated tokens match their source"
+
+      # ── Gate 3: design-system discipline ─────────────────────────────────
+      - name: No hardcoded design values
+        run: npm run guard:tokens
+
+      # ── Gate 4: types ────────────────────────────────────────────────────
+      - name: Typecheck
+        run: npm run typecheck
+
+      # ── Gate 5: calculation engine ───────────────────────────────────────
+      # The published formula vectors from §5.5.4: ≥ 3 per tool, including the
+      # boundary and rounding cases. Pure arithmetic with no build step, so a
+      # broken formula fails in under a second instead of after a full compile.
+      - name: Calculation engine vectors
+        run: npm run test:engine
+
+      # ── Gate 6: production build ─────────────────────────────────────────
+      - name: Build
+        run: npm run build
+
+      # ── Gate 6: design-system integrity ──────────────────────────────────
+      # Every colour utility used in the source must resolve to emitted CSS.
+      # Tailwind silently ignores an unknown class, which is how 121 references
+      # to text-strong / border-quiet shipped in Phase 1 rendering nothing.
+      - name: Utility integrity (no class emits nothing)
+        run: npm run guard:utilities
+
+      # ── Gate 8: SEO metadata ─────────────────────────────────────────────
+      # Read from the emitted HTML, not the source: unique titles and
+      # descriptions within the search-result budget, canonical links, and
+      # reciprocal hreflang on every route published in both locales.
+      - name: Metadata (titles, descriptions, canonical, hreflang)
+        run: npm run guard:meta
+
+      # ── Gate 9: internal links ───────────────────────────────────────────
+      # Every internal href in the emitted HTML must resolve to a route the build
+      # produced. Routes that exist in the blueprint but are not built yet are
+      # declared in scripts/planned-routes.mjs with their owning task, and that
+      # list may only shrink.
+      - name: Internal link integrity
+        run: npm run guard:links
+
+      # ── Gate 10: font payload budget ───────────────────────────────────────
+      # Measured per locale from the build output against font.budgetKB. This is
+      # the gate that catches "one preload:true added 139 KB to every page".
+      - name: Font payload budget
+        run: npm run guard:fonts
+
+      # ── Gate 11: dependency advisories ───────────────────────────────────
+      - name: Audit production dependencies
+        run: npm run audit
+
+      - name: Upload build output on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build-output
+          path: |
+            apps/web/.next/trace
+            apps/web/.next/build-manifest.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # Lighthouse and axe are wired in Phase 4 (DF-P4-0xx) when the app has routes
+  # worth measuring. A synthetic score on a three-route scaffold is noise, not a
+  # signal — the placeholders below record the commitment rather than fake it.
+  #
+  # lighthouse:
+  #   needs: verify
+  #   name: Lighthouse budget (perf/a11y/SEO/best-practices >= 95)
+  #
+  # a11y:
+  #   needs: verify
+  #   name: axe-core WCAG 2.2 AA sweep
