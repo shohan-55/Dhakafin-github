@@ -94,7 +94,11 @@ export interface ErrorStateProps {
   description: string;
   /** Short correlation id shown to the user and logged for support. */
   reference?: string;
+  /** Translated label for the correlation id. Defaults to English. */
+  referenceLabel?: string;
   onRetry?: () => void;
+  /** Translated label for the retry control. Defaults to English. */
+  retryLabel?: string;
   href?: string;
   hrefLabel?: string;
   className?: string;
@@ -104,7 +108,9 @@ export function ErrorState({
   title = 'Something went wrong on our side',
   description,
   reference,
+  referenceLabel = 'Reference',
   onRetry,
+  retryLabel = 'Try again',
   href,
   hrefLabel,
   className,
@@ -130,7 +136,9 @@ export function ErrorState({
           <p className="mt-1.5 text-sm leading-relaxed text-muted">{description}</p>
 
           {reference ? (
-            <p className="df-num mt-2 text-xs text-[var(--df-color-muted-2)]">Reference: {reference}</p>
+            <p className="df-num mt-2 text-xs text-[var(--df-color-muted-2)]">
+              {referenceLabel}: {reference}
+            </p>
           ) : null}
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -140,7 +148,7 @@ export function ErrorState({
                 onClick={onRetry}
                 className="inline-flex h-9 items-center rounded-lg border border-[var(--df-color-border-strong)] px-4 text-sm font-medium text-[var(--df-color-text-strong)] transition-colors hover:border-[var(--df-color-border-hover)]"
               >
-                Try again
+                {retryLabel}
               </button>
             ) : null}
 

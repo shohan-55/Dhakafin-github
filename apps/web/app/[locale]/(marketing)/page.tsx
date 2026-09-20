@@ -11,12 +11,24 @@ import { Alert, ProvenanceNote } from '@/components/ui/States';
 import { Reveal } from '@/components/system/Reveal';
 import { SpotlightCard } from '@/components/system/SpotlightCard';
 import { TierSwitcher } from '@/components/system/TierControls';
+import { LocaleLink } from '@/components/system/LocaleLink';
+import { getDictionary } from '@/lib/dictionary';
+import { localeHref, resolveLocale } from '@/lib/i18n';
+import { buildMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'DhakaFin — Make Better Financial Decisions.',
-  description:
-    'Financial intelligence, accounting, tax and VAT compliance for Bangladeshi businesses. Phase 1: the design system and engineering foundation.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const locale = resolveLocale((await params).locale);
+  const dict = getDictionary(locale);
+  const t = dict.home;
+
+  return buildMetadata({
+    locale,
+    path: '/',
+    title: t.meta.title,
+    description: t.meta.description,
+    keywords: ['accounting Bangladesh', 'TDS rate', 'VAT return', 'financial intelligence', 'virtual CFO'],
+  });
+}
 
 /**
  * Home route.
@@ -32,7 +44,11 @@ export const metadata: Metadata = {
  *   2. No rate value is hardcoded into a component; values are passed in as data and
  *      carry their provenance (source, effective date, verifier).
  */
-export default function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const locale = resolveLocale((await params).locale);
+  const dict = getDictionary(locale);
+  const t = dict.home;
+
   return (
     <>
       {/* ─────────────────────────── HERO ─────────────────────────── */}
@@ -52,41 +68,40 @@ export default function HomePage() {
               <Reveal>
                 <div className="flex flex-wrap items-center gap-3">
                   <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">
-                    Financial intelligence for Bangladesh
+                    {t.hero.eyebrow}
                   </p>
                   <Badge tone="sea" size="sm">
-                    Phase 1 · Foundation
+                    {t.hero.phaseBadge}
                   </Badge>
                 </div>
               </Reveal>
 
               <Reveal delay={60}>
                 <h1 className="mt-6 max-w-[16ch] text-display text-[var(--df-color-text-strong)]">
-                  Make Better <span className="text-sea-400">Financial</span> Decisions.
+                  {t.hero.titleLead} <span className="text-sea-400">{t.hero.titleAccent}</span> {t.hero.titleTail}
                 </h1>
               </Reveal>
 
               <Reveal delay={120}>
                 <p className="mt-6 max-w-[58ch] text-bodyLg text-muted">
-                  Accounting, audit, tax, VAT and financial intelligence built around one goal — helping businesses
-                  understand their numbers, control their costs and move forward with confidence.
+                  {t.hero.lede}
                 </p>
               </Reveal>
 
               <Reveal delay={180}>
                 <div className="mt-9 flex flex-wrap items-center gap-3">
-                  <ButtonLink href="/design-system" size="lg" magnetic>
-                    Explore the design system
-                  </ButtonLink>
-                  <ButtonLink href="/book-consultation" variant="secondary" size="lg">
-                    Book a Consultation
+                  <LocaleLink locale={locale} href="/design-system" className="inline-flex h-12 items-center rounded-lg border border-sea-500/40 px-6 text-sm font-semibold text-sea-300 no-underline transition-colors duration-[var(--df-duration-fast)] hover:bg-surface-tint">
+                    {dict.common.exploreDesignSystem}
+                  </LocaleLink>
+                  <ButtonLink href={localeHref(locale, '/book-consultation')} variant="secondary" size="lg">
+                    {dict.common.bookConsultation}
                   </ButtonLink>
                 </div>
               </Reveal>
 
               <Reveal delay={240}>
                 <p className="mt-8 max-w-[52ch] border-l-2 border-sea-500/40 pl-4 text-sm italic leading-relaxed text-muted">
-                  Numbers tell you what happened. Intelligence tells you what to do next.
+                  {t.hero.pullQuote}
                 </p>
               </Reveal>
             </div>
@@ -97,20 +112,20 @@ export default function HomePage() {
                 <div className="flex items-center justify-between gap-4 border-b border-[var(--df-color-border-quiet)] px-5 py-3.5">
                   <div className="flex items-center gap-2">
                     <span aria-hidden="true" className="h-2 w-2 rounded-full bg-ok" />
-                    <span className="text-xs font-medium text-[var(--df-color-text)]">Control terminal</span>
+                    <span className="text-xs font-medium text-[var(--df-color-text)]">{t.hero.terminalTitle}</span>
                   </div>
                   <Badge tone="sample" size="sm">
-                    Sample data
+                    {dict.common.sampleData}
                   </Badge>
                 </div>
 
                 <div className="space-y-3 p-5">
                   <div className="grid grid-cols-2 gap-3">
                     {[
-                      { label: 'Books reconciled', value: '98%', note: 'Aug 2026' },
-                      { label: 'Next filing', value: '6 days', note: 'Mushak 9.1' },
-                      { label: 'Cash runway', value: '7.2 mo', note: 'at current burn' },
-                      { label: 'Open flags', value: '3', note: '1 high' },
+                      { label: t.hero.stats.reconciled, value: '98%', note: 'Aug 2026' },
+                      { label: t.hero.stats.nextFiling, value: '6 days', note: 'Mushak 9.1' },
+                      { label: t.hero.stats.runway, value: '7.2 mo', note: t.hero.stats.atCurrentBurn },
+                      { label: t.hero.stats.openFlags, value: '3', note: t.hero.stats.oneHigh },
                     ].map((item) => (
                       <div
                         key={item.label}
@@ -130,9 +145,9 @@ export default function HomePage() {
                   {/* Signature motion: animated data stream between two nodes */}
                   <div className="rounded-lg border border-[var(--df-color-border-quiet)] bg-surface1/60 p-4">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted">
-                      Money flow · signature motion
+                      {t.hero.flow.heading}
                     </p>
-                    <svg viewBox="0 0 320 56" className="mt-3 h-14 w-full" role="img" aria-label="Animated data stream from revenue to net profit">
+                    <svg viewBox="0 0 320 56" className="mt-3 h-14 w-full" role="img" aria-label={t.hero.flow.alt}>
                       <defs>
                         <linearGradient id="df-stream-grad" x1="0" y1="0" x2="1" y2="0">
                           <stop offset="0%" stopColor="var(--df-color-sea-700)" />
@@ -162,17 +177,16 @@ export default function HomePage() {
                     </svg>
 
                     <div className="mt-1 flex justify-between text-[11px] text-muted">
-                      <span>Revenue</span>
-                      <span className="text-sea-300">Profit core</span>
-                      <span>Net profit</span>
+                      <span>{t.hero.flow.revenue}</span>
+                      <span className="text-sea-300">{t.hero.flow.core}</span>
+                      <span>{t.hero.flow.netProfit}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="border-t border-[var(--df-color-border-quiet)] bg-surface2/40 px-5 py-3">
                   <p className="text-[11px] leading-relaxed text-[var(--df-color-muted-2)]">
-                    Illustrative interface. Live dashboards, real business data and the full command centre ship in
-                    Phase 6.
+                    {t.hero.terminalFootnote}
                   </p>
                 </div>
               </Card>
@@ -186,12 +200,10 @@ export default function HomePage() {
         <Reveal>
           <Alert
             tone="info"
-            title="Phase 1 build — this is the foundation, not the finished homepage"
-            action={{ label: 'See what is built and what is next', href: '/design-system' }}
+            title={t.phaseNotice.title}
+            action={{ label: t.phaseNotice.action, href: localeHref(locale, '/design-system') }}
           >
-            The token pipeline, component library, motion language, experience tiers, accessibility baseline and CI
-            quality gates are in place. The signature homepage (WebGL financial universe), the money-flow experience,
-            the rate hub, the 13 tools and the SaaS portal follow in Phases 2–7 as specified in the master roadmap.
+            {t.phaseNotice.body}
           </Alert>
         </Reveal>
       </section>
@@ -199,53 +211,51 @@ export default function HomePage() {
       {/* ─────────────────── INTELLIGENCE COMPONENTS ─────────────────── */}
       <section className="df-container df-container-wide df-section">
         <Reveal>
-          <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">Signature components</p>
+          <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">{t.intelligence.eyebrow}</p>
           <h2 className="mt-4 max-w-[24ch] text-h2 text-[var(--df-color-text-strong)]">
-            Numbers that explain themselves.
+            {t.intelligence.title}
           </h2>
           <p className="mt-4 max-w-[62ch] text-bodyLg text-muted">
-            A bare figure is not intelligence. Every KPI in DhakaFin carries its delta, a plain-language judgement, the
-            driver behind the change and the period it refers to — so a business owner knows what to do next, not just
-            what happened.
+            {t.intelligence.body}
           </p>
         </Reveal>
 
         <Reveal delay={80} className="mt-10">
           <KpiRow columns={4}>
             <KpiTile
-              label="Revenue"
+              label={t.intelligence.kpi.revenue}
               value={1250000}
               delta={18.4}
-              qualifier="Growth accelerating"
-              driver={{ text: 'Sales volume, not price', href: '/design-system#kpi' }}
-              period="Jul 2026 · vs Jun 2026 · from books"
+              qualifier={t.intelligence.kpi.revenueQualifier}
+              driver={{ text: t.intelligence.kpi.revenueDriver, href: localeHref(locale, '/design-system#kpi') }}
+              period={`${t.intelligence.period} · ${t.intelligence.fromBooks}`}
               sample
             />
             <KpiTile
-              label="Gross profit"
+              label={t.intelligence.kpi.grossProfit}
               value={410000}
               delta={9.1}
-              qualifier="Margin holding steady"
-              driver={{ text: 'Direct cost in line with sales' }}
-              period="Jul 2026 · vs Jun 2026 · from books"
+              qualifier={t.intelligence.kpi.grossProfitQualifier}
+              driver={{ text: t.intelligence.kpi.grossProfitDriver }}
+              period={`${t.intelligence.period} · ${t.intelligence.fromBooks}`}
               sample
             />
             <KpiTile
-              label="Net profit"
+              label={t.intelligence.kpi.netProfit}
               value={190000}
               delta={-2.3}
-              qualifier="Margin softening"
-              driver={{ text: 'Payroll up 22% vs output 6%', href: '/design-system#kpi' }}
-              period="Jul 2026 · vs Jun 2026 · from books"
+              qualifier={t.intelligence.kpi.netProfitQualifier}
+              driver={{ text: t.intelligence.kpi.netProfitDriver, href: localeHref(locale, '/design-system#kpi') }}
+              period={`${t.intelligence.period} · ${t.intelligence.fromBooks}`}
               sample
             />
             <KpiTile
-              label="Cash position"
+              label={t.intelligence.kpi.cash}
               value={320000}
               delta={0.8}
-              qualifier="Runway steady"
-              driver={{ text: 'Receivables ageing in 60+ days' }}
-              period="Jul 2026 · vs Jun 2026 · from bank"
+              qualifier={t.intelligence.kpi.cashQualifier}
+              driver={{ text: t.intelligence.kpi.cashDriver }}
+              period={`${t.intelligence.period} · ${t.intelligence.fromBank}`}
               sample
             />
           </KpiRow>
@@ -257,21 +267,19 @@ export default function HomePage() {
         <div className="df-container df-container-wide df-section">
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <Reveal>
-              <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">Regulatory trust</p>
+              <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">{t.regulatory.eyebrow}</p>
               <h2 className="mt-4 max-w-[22ch] text-h2 text-[var(--df-color-text-strong)]">
-                Every rate shows its source. Every time.
+                {t.regulatory.title}
               </h2>
               <p className="mt-4 max-w-[54ch] text-bodyLg text-muted">
-                A rate without provenance is a liability. The rate card component cannot render without an effective
-                date, a reference and a named verifier — the database, the API contract and the component all enforce
-                the same rule, and CI fails the build if a rate value is ever hardcoded into the frontend.
+                {t.regulatory.body}
               </p>
 
               <div className="mt-8 space-y-3">
                 {[
-                  { term: 'Effective date', text: 'The date the rate took legal effect, not the date we published it.' },
-                  { term: 'Reference / SRO', text: 'The instrument that changed it, linked to the official PDF.' },
-                  { term: 'Verified', text: 'Who checked it against the source, and when — refreshed on a 45-day cycle.' },
+                  { term: t.regulatory.terms.effectiveDate, text: t.regulatory.terms.effectiveDateText },
+                  { term: t.regulatory.terms.reference, text: t.regulatory.terms.referenceText },
+                  { term: t.regulatory.terms.verified, text: t.regulatory.terms.verifiedText },
                 ].map((item) => (
                   <div key={item.term} className="flex gap-3">
                     <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sea-400" />
@@ -286,39 +294,37 @@ export default function HomePage() {
 
             <Reveal delay={80}>
               <RateCard
-                title="Contractor / sub-contractor payments"
+                title={t.regulatory.rate.title}
                 sectionRef="89"
                 rateType="percent"
                 value={7.5}
-                base="Gross payment"
-                applicability="Payments to resident contractors, sub-contractors and suppliers for works"
-                taxpayerType="Resident"
+                base={t.regulatory.rate.base}
+                applicability={t.regulatory.rate.applicability}
+                taxpayerType={t.regulatory.rate.taxpayerType}
                 effectiveFrom="01 Jul 2025"
                 previousValue={7.5}
                 provenance={{
                   referenceSro: 'SRO 173-AIN/2025',
                   verifiedAt: '12 Sep 2026',
-                  verifiedBy: 'DhakaFin tax team',
+                  verifiedBy: t.regulatory.rate.verifiedBy,
                 }}
                 status="current"
                 fiscalYear="FY 2025–26"
                 sample
-                onViewDetailHref="/design-system#rate-card"
+                onViewDetailHref={localeHref(locale, '/design-system#rate-card')}
               />
 
               <div className="mt-4">
                 <Alert
                   tone="regulatory"
-                  title="Rate values on this page are placeholders"
+                  title={t.regulatory.placeholderTitle}
                 >
-                  The rows above demonstrate the component&apos;s structure with clearly-marked sample values. The rate
-                  database — with historical versions, SRO links and comparison across fiscal years — is built in
-                  Phase 3, and no rate ships until a named reviewer verifies it against the official source.
+                  {t.regulatory.placeholderBody}
                 </Alert>
               </div>
 
               <div className="mt-4">
-                <ProvenanceNote verifiedAt="12 Sep 2026" verifiedBy="DhakaFin tax team" />
+                <ProvenanceNote verifiedAt="12 Sep 2026" verifiedBy={t.regulatory.rate.verifiedBy} />
               </div>
             </Reveal>
           </div>
@@ -328,42 +334,40 @@ export default function HomePage() {
       {/* ─────────────────── COMPLIANCE CALM ─────────────────── */}
       <section className="df-container df-container-wide df-section">
         <Reveal>
-          <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">Compliance intelligence</p>
+          <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">{t.compliance.eyebrow}</p>
           <h2 className="mt-4 max-w-[26ch] text-h2 text-[var(--df-color-text-strong)]">
-            Urgency that stays calm.
+            {t.compliance.title}
           </h2>
           <p className="mt-4 max-w-[62ch] text-bodyLg text-muted">
-            Deadlines escalate through four deliberate states and nothing else. No flashing, no countdown clocks, no
-            red flooding — the interface should feel intelligent, not stressful. Each item names what it is, who owns
-            it, what is still missing and what happens next.
+            {t.compliance.body}
           </p>
         </Reveal>
 
         <div className="mt-10 grid gap-4 lg:grid-cols-2">
           <Reveal delay={60}>
             <DeadlineItem
-              title="VAT Return — August 2026"
+              title={t.compliance.vatTitle}
               formRef="Mushak 9.1"
               daysRemaining={6}
               dueDate="15 Oct 2026"
               requirements={{
-                description: 'Needs: sales register, purchase register, input tax credit ledger',
+                description: t.compliance.vatRequirements,
                 met: 2,
                 total: 3,
               }}
-              owner="DhakaFin consultant"
-              primaryAction={{ label: 'Upload remaining document', href: '/design-system' }}
+              owner={t.compliance.vatOwner}
+              primaryAction={{ label: t.compliance.vatAction, href: localeHref(locale, '/design-system') }}
             />
           </Reveal>
 
           <Reveal delay={120}>
             <DeadlineItem
-              title="TDS Deposit — September 2026"
+              title={t.compliance.tdsTitle}
               formRef="Section 89–90"
               daysRemaining={11}
               dueDate="15 Oct 2026"
-              owner="You"
-              primaryAction={{ label: 'Review deduction schedule', href: '/design-system' }}
+              owner={t.compliance.tdsOwner}
+              primaryAction={{ label: t.compliance.tdsAction, href: localeHref(locale, '/design-system') }}
             />
           </Reveal>
         </div>
@@ -373,44 +377,20 @@ export default function HomePage() {
       <section className="border-y border-[var(--df-color-border-quiet)] bg-[var(--df-color-slate-deep)]">
         <div className="df-container df-container-wide df-section">
           <Reveal>
-            <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">Design language</p>
+            <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">{t.designLanguage.eyebrow}</p>
             <h2 className="mt-4 max-w-[24ch] text-h2 text-[var(--df-color-text-strong)]">
-              Ten principles, one system.
+              {t.designLanguage.title}
             </h2>
           </Reveal>
 
           <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
-              {
-                title: 'Depth with purpose',
-                body: 'Five layers — canvas, grid, context, element, overlay — each one expressing a level of information, never decoration.',
-                tag: '3D',
-              },
-              {
-                title: 'Motion with meaning',
-                body: 'Three motion layers with fixed durations: structure 560–900ms, component 120–320ms, detail 60–160ms. Detail never outruns component.',
-                tag: '4D',
-              },
-              {
-                title: 'Scroll that tells the story',
-                body: 'Pinned sequences are capped at two per page and always degrade to a static, complete layout.',
-                tag: '5D',
-              },
-              {
-                title: 'Data you can interrogate',
-                body: 'Charts animate their draw, never the data. Hover, keyboard and a data-table fallback reach the same numbers.',
-                tag: '6D',
-              },
-              {
-                title: 'Context-aware by design',
-                body: 'Four experience tiers detect the device, the connection and the user’s motion preference, then drop heavy effects without dropping features.',
-                tag: '7D',
-              },
-              {
-                title: 'Continuity across sections',
-                body: 'Selecting a node updates the insight rail, the chart, the related service and the URL together — one interaction, one state.',
-                tag: '9D',
-              },
+              { ...t.designLanguage.depth, tag: '3D' },
+              { ...t.designLanguage.motion, tag: '4D' },
+              { ...t.designLanguage.scroll, tag: '5D' },
+              { ...t.designLanguage.data, tag: '6D' },
+              { ...t.designLanguage.context, tag: '7D' },
+              { ...t.designLanguage.continuity, tag: '9D' },
             ].map((item, index) => (
               <Reveal key={item.title} index={index} delay={40}>
                 <SpotlightCard className="h-full rounded-xl">
@@ -430,12 +410,8 @@ export default function HomePage() {
             <Card tone="glass" padding="lg">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-2xl">
-                  <CardTitle as="h3">Experience tiers</CardTitle>
-                  <CardDescription>
-                    The full experience on capable hardware; a complete, fast, fully usable product everywhere else.
-                    The “Reduce effects” switch in the footer is the accessibility escape hatch — it is honoured
-                    before the first paint.
-                  </CardDescription>
+                  <CardTitle as="h3">{t.designLanguage.tiersTitle}</CardTitle>
+                  <CardDescription>{t.designLanguage.tiersBody}</CardDescription>
                 </div>
                 <TierSwitcher />
               </div>
@@ -448,12 +424,12 @@ export default function HomePage() {
       <section className="df-container df-container-wide df-section">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <Reveal>
-            <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">Questions</p>
+            <p className="text-overline df-eyebrow-bar font-semibold text-sea-400">{t.faq.eyebrow}</p>
             <h2 className="mt-4 text-h2 text-[var(--df-color-text-strong)]">
-              What DhakaFin is — and is not.
+              {t.faq.title}
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              These six answers carry FAQPage structured data on the production homepage in Phase 2.
+              {t.faq.note}
             </p>
           </Reveal>
 
@@ -462,42 +438,12 @@ export default function HomePage() {
               exclusive
               defaultOpenId="q1"
               items={[
-                {
-                  id: 'q1',
-                  question: 'What does DhakaFin actually do?',
-                  answer:
-                    'Three connected layers: a free public intelligence hub (verified tax, VAT, TDS and VDS rates, a compliance calendar and 13 calculators), a SaaS platform for running your books, documents and compliance, and professional services delivered by accountants, tax specialists and analysts.',
-                },
-                {
-                  id: 'q2',
-                  question: 'Is DhakaFin a chartered accountancy firm?',
-                  answer:
-                    'DhakaFin is a financial intelligence and compliance platform backed by professional financial services. We do not claim to be a CA firm; statutory audits are coordinated with licensed auditors, and our team page names the qualifications of every professional who works on your account.',
-                },
-                {
-                  id: 'q3',
-                  question: 'How often are the rates updated?',
-                  answer:
-                    'Every rate row carries an effective date, a source link and the name of the person who verified it. Our commitment is to publish NBR changes within 24–48 working hours, and every family is re-verified on a 45-day cycle. The rate database ships in Phase 3.',
-                },
-                {
-                  id: 'q4',
-                  question: 'Is my financial data safe?',
-                  answer:
-                    'Documents live in a private storage bucket and are reachable only through time-limited signed links. Every download is logged, access is scoped per business, and the portal enforces role-based permissions. The full security architecture is specified in the master roadmap.',
-                },
-                {
-                  id: 'q5',
-                  question: 'Do you support Bangla?',
-                  answer:
-                    'Yes. The design system ships a Bangla typeface, Bangla numerals and lakh-crore number formatting from day one, and the public content is written in both languages rather than machine-translated.',
-                },
-                {
-                  id: 'q6',
-                  question: 'What can I use today?',
-                  answer:
-                    'Right now: the design system and this foundation build. The rate hub and tools arrive in Phases 3 and 4, the SaaS portal in Phases 5–6. The master roadmap in the repository lists every task and gate, so you can see exactly where the build stands.',
-                },
+                { id: 'q1', question: t.faq.what, answer: t.faq.whatAnswer },
+                { id: 'q2', question: t.faq.firm, answer: t.faq.firmAnswer },
+                { id: 'q3', question: t.faq.freshness, answer: t.faq.freshnessAnswer },
+                { id: 'q4', question: t.faq.security, answer: t.faq.securityAnswer },
+                { id: 'q5', question: t.faq.bangla, answer: t.faq.banglaAnswer },
+                { id: 'q6', question: t.faq.today, answer: t.faq.todayAnswer },
               ]}
             />
           </Reveal>
@@ -512,21 +458,25 @@ export default function HomePage() {
         <div className="df-container df-container-wide df-section text-center">
           <Reveal>
             <h2 className="mx-auto max-w-[22ch] text-h2 text-[var(--df-color-text-strong)]">
-              Make Better Financial Decisions.
+              {t.finalCta.title}
             </h2>
             <p className="mx-auto mt-5 max-w-[54ch] text-bodyLg text-muted">
-              Numbers tell you what happened. Intelligence tells you what to do next.
+              {t.finalCta.body}
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <ButtonLink href="/book-consultation" size="lg" magnetic>
-                Book a Consultation
+              <ButtonLink href={localeHref(locale, '/book-consultation')} size="lg" magnetic>
+                {dict.common.bookConsultation}
               </ButtonLink>
-              <ButtonLink href="/design-system" variant="secondary" size="lg">
-                Explore the design system
-              </ButtonLink>
+              <LocaleLink
+                locale={locale}
+                href="/design-system"
+                className="inline-flex h-12 items-center rounded-lg border border-[var(--df-color-border)] px-6 text-sm font-semibold text-[var(--df-color-text)] no-underline transition-colors duration-[var(--df-duration-fast)] hover:bg-surface-tint"
+              >
+                {dict.common.exploreDesignSystem}
+              </LocaleLink>
             </div>
             <p className="mx-auto mt-8 max-w-2xl text-xs leading-relaxed text-[var(--df-color-muted-2)]">
-              General information based on published NBR sources — not professional advice for your specific case.
+              {dict.common.disclaimer}
             </p>
           </Reveal>
         </div>

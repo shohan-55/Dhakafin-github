@@ -28,9 +28,9 @@
  * product (including charts and Three.js labels) picks up the real faces.
  */
 :root {
-  --df-font-sans: var(--font-jakarta), var(--font-currency), var(--font-hind), system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --df-font-num: var(--font-grotesk), var(--font-currency), var(--font-jakarta), ui-monospace, monospace;
-  --df-font-bn: var(--font-hind), var(--font-currency), var(--font-jakarta), sans-serif;
+  --df-font-sans: var(--font-jakarta), var(--font-ui-bn), var(--font-hind), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --df-font-num: var(--font-grotesk), var(--font-ui-bn), var(--font-jakarta), ui-monospace, monospace;
+  --df-font-bn: var(--font-ui-bn), var(--font-hind), var(--font-jakarta), sans-serif;
   --df-font-mono: var(--font-mono), ui-monospace, 'SFMono-Regular', monospace;
   --df-font-serif: var(--font-serif), Georgia, serif;
 }

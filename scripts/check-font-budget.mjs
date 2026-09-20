@@ -12,8 +12,8 @@
  *
  *   1. read every @font-face from the emitted CSS (family → file, unicode-range, bytes)
  *   2. read the family stacks from globals.css (`--df-font-sans: var(--font-a), var(--font-b)…`)
- *   3. read the rendered text of the home page (script/style stripped, so the RSC
- *      payload cannot inflate the result)
+ *   3. read the rendered text of every prerendered locale page (script/style
+ *      stripped, so the RSC payload cannot inflate the result)
  *   4. for each codepoint, walk the stack and find the FIRST family with a face
  *      whose unicode-range covers it — that is the face the browser downloads
  *   5. add anything with a <link rel=preload as=font>, because preload fetches it
@@ -21,6 +21,11 @@
  *
  * A face is counted only when a real codepoint on a real page resolves to it.
  * That is what makes this a budget rather than a byte-count of a directory.
+ *
+ * EVERY locale is measured, not just English. The Bengali page is the expensive
+ * one — it is the page the Bengali typeface exists for — so measuring only `/`
+ * would report a comfortable 49% while the page half the audience reads sits
+ * somewhere else entirely.
  *
  * Run after `next build`. If .next is absent it reports SKIPPED rather than
  * pretending to have checked.
@@ -125,95 +130,130 @@ if (stacks.length === 0) {
   process.exit(1);
 }
 
-/* ── 4. The rendered text of the page that matters ─────────────────────── */
-const candidates = [join(NEXT, 'server/app/index.html'), join(NEXT, 'server/app/(marketing)/index.html')];
-const htmlPath = candidates.find(existsSync);
+/* ── 4. Every prerendered locale page, not just English ────────────────── */
+const serverApp = join(NEXT, 'server/app');
 
-if (!htmlPath) {
-  console.error('✗ Font budget gate FAILED — could not locate the emitted home-page HTML to measure.\n');
+/**
+ * Locale home pages are emitted as `en.html`, `bn.html`, … next to their route
+ * directories. Finding the home page for each locale means walking one level and
+ * taking the two-letter-code files — which keeps this working when a third
+ * language is added without anyone remembering to update a hardcoded list.
+ */
+const localePages = readdirSync(serverApp)
+  .filter((f) => /^[a-z]{2}\.html$/.test(f))
+  .map((f) => ({ locale: f.replace('.html', ''), path: join(serverApp, f) }));
+
+// Fall back to the marketing index if the locale files are not emitted
+// (e.g. a single-locale build), so the gate still measures something real.
+if (localePages.length === 0) {
+  const fallback = [join(NEXT, 'server/app/index.html'), join(NEXT, 'server/app/(marketing)/index.html')].find(
+    existsSync,
+  );
+  if (fallback) localePages.push({ locale: '(default)', path: fallback });
+}
+
+if (localePages.length === 0) {
+  console.error('✗ Font budget gate FAILED — could not locate any emitted page HTML to measure.\n');
   process.exit(1);
 }
 
-const html = readFileSync(htmlPath, 'utf8');
-// Strip script/style so the serialised RSC payload cannot inflate the codepoint set.
-const visibleText = html
-  .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-  .replace(/<style[\s\S]*?<\/style>/gi, ' ');
+const pages = localePages.map(({ locale, path }) => {
+  const html = readFileSync(path, 'utf8');
+  // Strip script/style so the serialised RSC payload cannot inflate the codepoint set.
+  const visibleText = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ');
 
-const codepoints = new Set();
-for (const ch of visibleText) codepoints.add(ch.codePointAt(0));
+  const codepoints = new Set();
+  for (const ch of visibleText) codepoints.add(ch.codePointAt(0));
 
-/* ── 5. Preloads are unconditional ─────────────────────────────────────── */
-const preloaded = new Set();
-for (const m of html.matchAll(/<link[^>]*>/g)) {
-  const tag = m[0];
-  if (!tag.includes('as="font"') || !tag.includes('rel="preload"')) continue;
-  const href = tag.match(/href="([^"]+\.woff2)"/)?.[1];
-  if (href) preloaded.add(href.split('/').pop());
-  else {
-    const preload = tag.match(/href="([^"]+\.woff2)"/)?.[1];
-    if (preload) preloaded.add(preload.split('/').pop());
+  // Preloads are unconditional: the browser fetches them whether or not a glyph needs them.
+  const preloaded = new Set();
+  for (const m of html.matchAll(/<link[^>]*>/g)) {
+    const tag = m[0];
+    if (!tag.includes('as="font"') || !tag.includes('rel="preload"')) continue;
+    const href = tag.match(/href="([^"]+\.woff2)"/)?.[1];
+    if (href) preloaded.add(href.split('/').pop());
   }
-}
+
+  return { locale, codepoints, preloaded };
+});
 
 /** Resolve each codepoint through each stack; the first covering face wins. */
-const resolved = new Map(); // fileName → { face, reasons:Set<string> }
-const record = (face, reason) => {
-  if (!resolved.has(face.fileName)) resolved.set(face.fileName, { face, reasons: new Set() });
-  resolved.get(face.fileName).reasons.add(reason);
-};
+function resolvePage(page) {
+  const resolved = new Map(); // fileName → { face, reasons:Set<string> }
+  const record = (face, reason) => {
+    if (!resolved.has(face.fileName)) resolved.set(face.fileName, { face, reasons: new Set() });
+    resolved.get(face.fileName).reasons.add(reason);
+  };
 
-for (const stack of stacks) {
-  for (const cp of codepoints) {
-    for (const family of stack) {
-      const faces = facesByFamily.get(family);
-      if (!faces) continue;
-      const hit = faces.find((f) => covers(f, cp));
-      if (hit) {
-        record(hit, `U+${cp.toString(16).toUpperCase().padStart(4, '0')} on page`);
-        break; // first family in the stack wins — exactly what a browser does
+  for (const stack of stacks) {
+    for (const cp of page.codepoints) {
+      for (const family of stack) {
+        const faces = facesByFamily.get(family);
+        if (!faces) continue;
+        const hit = faces.find((f) => covers(f, cp));
+        if (hit) {
+          record(hit, `U+${cp.toString(16).toUpperCase().padStart(4, '0')} on page`);
+          break; // first family in the stack wins — exactly what a browser does
+        }
       }
     }
   }
-}
 
-// Preloaded faces are fetched regardless of glyph need.
-for (const family of facesByFamily.keys()) {
-  for (const face of facesByFamily.get(family)) {
-    if (preloaded.has(face.fileName)) record(face, 'preloaded (fetched unconditionally)');
+  // Preloaded faces are fetched regardless of glyph need.
+  for (const family of facesByFamily.keys()) {
+    for (const face of facesByFamily.get(family)) {
+      if (page.preloaded.has(face.fileName)) record(face, 'preloaded (fetched unconditionally)');
+    }
   }
+
+  return resolved;
 }
 
-/* ── 6. Report ─────────────────────────────────────────────────────────── */
 const allFaces = [...facesByFamily.values()].flat();
-let total = 0;
-const rows = allFaces.map((face) => {
-  const hit = resolved.get(face.fileName);
-  if (hit) total += face.bytes;
-  return { face, fetched: Boolean(hit), why: hit ? [...hit.reasons].slice(0, 2).join(' · ') : 'no codepoint on this page needs it' };
-});
-
 const short = (n) => (n.length > 44 ? `${n.slice(0, 20)}…${n.slice(-20)}` : n);
 
-console.log('\n  Font payload audit — home page (the first load a visitor actually pays for)\n');
-for (const r of rows.sort((a, b) => Number(b.fetched) - Number(a.fetched) || b.face.bytes - a.face.bytes)) {
-  const kb = (r.face.bytes / 1024).toFixed(1).padStart(6);
-  console.log(`  ${r.fetched ? '▣ fetched' : '· skipped'} ${kb} KB  ${short(r.face.fileName)}`);
-  console.log(`              ${r.why}`);
+/* ── 6. Report ─────────────────────────────────────────────────────────── */
+console.log('\n  Font payload audit — every prerendered locale, measured separately\n');
+console.log(`  Stacks : ${stacks.length} (--df-font-sans / -num / -bn)   Budget : ${budgetKB} KB\n`);
+
+const results = pages.map((page) => {
+  const resolved = resolvePage(page);
+  let total = 0;
+  for (const face of allFaces) if (resolved.has(face.fileName)) total += face.bytes;
+  return { page, resolved, total };
+});
+
+const worst = results.reduce((a, b) => (b.total > a.total ? b : a));
+const overBudget = results.filter((r) => r.total > budgetBytes);
+
+for (const { page, resolved, total } of results.sort((a, b) => b.total - a.total)) {
+  const pct = ((total / budgetBytes) * 100).toFixed(0);
+  const flag = total > budgetBytes ? '✗' : '✓';
+  console.log(`  ── /${page.locale === '(default)' ? '' : page.locale} — ${(total / 1024).toFixed(1)} KB (${pct}%) ${flag}`);
+  const rows = allFaces
+    .map((face) => ({ face, hit: resolved.get(face.fileName) }))
+    .sort((a, b) => Number(Boolean(b.hit)) - Number(Boolean(a.hit)) || b.face.bytes - a.face.bytes);
+  for (const { face, hit } of rows) {
+    const kb = (face.bytes / 1024).toFixed(1).padStart(6);
+    console.log(`     ${hit ? '▣' : '·'} ${kb} KB  ${short(face.fileName)}`);
+    if (hit) console.log(`                ${[...hit.reasons].slice(0, 2).join(' · ')}`);
+  }
+  console.log('');
 }
 
-const pct = ((total / budgetBytes) * 100).toFixed(0);
-console.log(`\n  ${'─'.repeat(64)}`);
-console.log(`  Stacks measured          : ${stacks.length} (--df-font-sans / -num / -bn)`);
-console.log(`  First-paint font payload : ${(total / 1024).toFixed(1)} KB`);
-console.log(`  Budget (font.budgetKB)   : ${budgetKB} KB   →  ${pct}% used`);
+console.log(`  ${'─'.repeat(64)}`);
+console.log(`  Worst locale             : /${worst.page.locale === '(default)' ? '' : worst.page.locale} at ${(worst.total / 1024).toFixed(1)} KB`);
+console.log(`  Budget (font.budgetKB)   : ${budgetKB} KB`);
 
-if (total > budgetBytes) {
-  console.error(`\n✗ Font budget gate FAILED — over by ${((total - budgetBytes) / 1024).toFixed(1)} KB.`);
-  console.error('  Remedies: set preload:false, drop a weight, narrow a unicode-range,');
+if (overBudget.length > 0) {
+  console.error(`\n✗ Font budget gate FAILED — ${overBudget.length} locale(s) over budget:`);
+  for (const r of overBudget) {
+    console.error(`    /${r.page.locale}: ${(r.total / 1024).toFixed(1)} KB (over by ${((r.total - budgetBytes) / 1024).toFixed(1)} KB)`);
+  }
+  console.error('\n  Remedies: set preload:false, drop a weight, narrow a unicode-range,');
   console.error('  or move the glyph to a purpose-built subset (see app/fonts/README.md).');
   console.error('  Do not raise font.budgetKB without a recorded decision — it is a performance contract.\n');
   process.exit(1);
 }
 
-console.log('  ✓ within budget\n');
+console.log('  ✓ every locale within budget\n');

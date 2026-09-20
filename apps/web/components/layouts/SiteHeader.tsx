@@ -1,29 +1,39 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/cn';
-import { Logo } from './Logo';
-import { ButtonLink } from '../ui/Button';
 
-const NAV_ITEMS = [
-  { label: 'Rates', href: '/rates', hint: 'TDS · VDS · VAT · Income tax' },
-  { label: 'Tools', href: '/tools', hint: '13 free calculators' },
-  { label: 'Services', href: '/services', hint: '9 professional service lines' },
-  { label: 'Industries', href: '/industries', hint: 'Manufacturing to e-commerce' },
-  { label: 'Insights', href: '/insights', hint: 'Explainers and updates' },
+import { cn } from '@/lib/cn';
+import { localeHref, type Locale } from '@/lib/i18n';
+import type { Dictionary } from '@/lib/dictionary';
+import { ButtonLink } from '../ui/Button';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { Logo } from './Logo';
+
+/** Route definitions are locale-independent; only their labels are translated. */
+const NAV_ROUTES = [
+  { key: 'rates', href: '/rates' },
+  { key: 'tools', href: '/tools' },
+  { key: 'services', href: '/services' },
+  { key: 'industries', href: '/industries' },
+  { key: 'insights', href: '/insights' },
 ] as const;
+
+interface SiteHeaderProps {
+  locale: Locale;
+  dict: Dictionary;
+}
 
 /**
  * Site header — blueprint §2.3.
  *
- * Phase 1 scope: the shell, the real navigation model, the mobile panel and the
- * primary conversion CTA. The mega-panels (DB-driven "popular right now" rates,
- * tool search) arrive with the rate hub in Phase 3, and the ⌘K command palette
- * with the search service in Phase 2.
+ * Phase 1 scope: the shell, the real navigation model, the mobile panel, the
+ * language switcher and the primary conversion CTA. The mega-panels (DB-driven
+ * "popular right now" rates, tool search) arrive with the rate hub in Phase 3,
+ * and the ⌘K command palette with the search service in Phase 2.
  *
  * Behaviour: transparent over the hero, opaque + hairline after 24px of scroll.
  */
-export function SiteHeader() {
+export function SiteHeader({ locale, dict }: SiteHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -51,10 +61,19 @@ export function SiteHeader() {
     };
   }, [menuOpen]);
 
+  const navItems = NAV_ROUTES.map((route) => ({
+    ...route,
+    label: dict.nav[route.key].label,
+    hint: dict.nav[route.key].hint,
+    localizedHref: localeHref(locale, route.href),
+  }));
+
   return (
     <>
+      {/* The skip link is the first thing a keyboard user reaches. It must be
+          translated: its whole purpose is to be found and read under pressure. */}
       <a href="#main" className="df-sr-only df-skip-link">
-        Skip to main content
+        {dict.common.skipToContent}
       </a>
 
       <header
@@ -66,16 +85,16 @@ export function SiteHeader() {
         )}
       >
         <div className="df-container df-container-wide flex h-[72px] items-center justify-between gap-6">
-          <a href="/" className="shrink-0 no-underline" aria-label="DhakaFin home">
+          <a href={localeHref(locale, '/')} className="shrink-0 no-underline" aria-label={dict.common.homeLabel}>
             <Logo />
           </a>
 
-          <nav aria-label="Primary" className="hidden lg:block">
+          <nav aria-label={dict.common.primaryNav} className="hidden lg:block">
             <ul className="flex items-center gap-1">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <li key={item.href}>
                   <a
-                    href={item.href}
+                    href={item.localizedHref}
                     title={item.hint}
                     className={cn(
                       'inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-muted no-underline',
@@ -96,28 +115,37 @@ export function SiteHeader() {
               type="button"
               disabled
               aria-disabled="true"
-              title="Command palette arrives with the search service (Phase 2)"
+              title={dict.common.searchSoon}
               className={cn(
-                'hidden h-9 items-center gap-2 rounded-lg border border-[var(--df-color-border)] px-3 text-xs text-muted lg:inline-flex',
+                'hidden h-9 items-center gap-2 rounded-lg border border-[var(--df-color-border)] px-3 text-xs text-muted xl:inline-flex',
                 'cursor-not-allowed opacity-60'
               )}
             >
               <span aria-hidden="true">⌕</span>
-              Search
+              {dict.common.search}
               <kbd className="df-num ml-1 rounded border border-[var(--df-color-border-quiet)] px-1.5 py-0.5 text-[10px]">
                 ⌘K
               </kbd>
             </button>
 
+            <LanguageSwitcher
+              current={locale}
+              labels={{
+                languageLabel: dict.common.languageLabel,
+                switchTo: dict.common.switchTo,
+              }}
+              className="hidden sm:flex"
+            />
+
             <a
               href="/sign-in"
-              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted no-underline transition-colors hover:text-[var(--df-color-text-strong)] sm:inline-flex"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted no-underline transition-colors hover:text-[var(--df-color-text-strong)] md:inline-flex"
             >
-              Sign in
+              {dict.common.signIn}
             </a>
 
-            <ButtonLink href="/book-consultation" size="sm" className="hidden sm:inline-flex">
-              Book a Consultation
+            <ButtonLink href="/book-consultation" size="sm" className="hidden lg:inline-flex">
+              {dict.common.bookConsultation}
             </ButtonLink>
 
             <button
@@ -125,7 +153,7 @@ export function SiteHeader() {
               onClick={() => setMenuOpen(true)}
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
-              aria-label="Open navigation menu"
+              aria-label={dict.common.openMenu}
               className="grid h-10 w-10 place-items-center rounded-lg border border-[var(--df-color-border)] text-[var(--df-color-text)] lg:hidden"
             >
               <span aria-hidden="true" className="flex flex-col gap-1">
@@ -145,14 +173,14 @@ export function SiteHeader() {
           className="fixed inset-0 z-[var(--df-z-index-overlay)] flex flex-col bg-void lg:hidden"
           role="dialog"
           aria-modal="true"
-          aria-label="Navigation"
+          aria-label={dict.common.mobileNav}
         >
           <div className="df-container flex h-[72px] shrink-0 items-center justify-between">
             <Logo />
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
-              aria-label="Close navigation menu"
+              aria-label={dict.common.closeMenu}
               className="grid h-10 w-10 place-items-center rounded-lg border border-[var(--df-color-border)]"
               autoFocus
             >
@@ -160,16 +188,16 @@ export function SiteHeader() {
             </button>
           </div>
 
-          <nav aria-label="Mobile" className="df-container flex-1 overflow-y-auto py-6">
+          <nav aria-label={dict.common.mobileNav} className="df-container flex-1 overflow-y-auto py-6">
             <ul className="space-y-1">
-              {NAV_ITEMS.map((item, index) => (
+              {navItems.map((item, index) => (
                 <li
                   key={item.href}
                   className="animate-[df-rise_var(--df-duration-slow)_var(--ease-out)_both]"
                   style={{ animationDelay: `${index * 40}ms` }}
                 >
                   <a
-                    href={item.href}
+                    href={item.localizedHref}
                     onClick={() => setMenuOpen(false)}
                     className="flex flex-col rounded-xl border border-[var(--df-color-border-quiet)] px-4 py-3.5 no-underline"
                   >
@@ -180,18 +208,29 @@ export function SiteHeader() {
               ))}
             </ul>
 
-            <div className="mt-6 space-y-3">
+            {/* The language switcher sits above the fold of the mobile panel —
+                a Bengali speaker must not have to scroll to find their language. */}
+            <div className="mt-6">
+              <LanguageSwitcher
+                current={locale}
+                labels={{
+                  languageLabel: dict.common.languageLabel,
+                  switchTo: dict.common.switchTo,
+                }}
+                className="mb-4"
+              />
+            </div>
+
+            <div className="space-y-3">
               <ButtonLink href="/book-consultation" size="lg" fullWidth>
-                Book a Consultation
+                {dict.common.bookConsultation}
               </ButtonLink>
               <ButtonLink href="/sign-in" variant="secondary" size="lg" fullWidth>
-                Sign in to the platform
+                {dict.common.signIn}
               </ButtonLink>
             </div>
 
-            <p className="mt-8 text-xs leading-relaxed text-muted">
-              General information based on published NBR sources — not professional advice for your specific case.
-            </p>
+            <p className="mt-8 text-xs leading-relaxed text-muted">{dict.common.disclaimer}</p>
           </nav>
         </div>
       ) : null}

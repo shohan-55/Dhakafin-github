@@ -1,12 +1,26 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+
+import { getDictionary } from '@/lib/dictionary';
+
 /**
  * Route-level loading state — a skeleton that mirrors the real hero layout so the
  * page has zero layout shift when content arrives (blueprint §5.14.2: never a
  * bare spinner for more than 300ms).
+ *
+ * The only string here is the screen-reader announcement, and it must be in the
+ * reader's language — an English "Loading" read aloud on the Bengali site is the
+ * first thing a blind user would hear. Like `error.tsx`, this is a client
+ * boundary with no route params, so the locale comes from the pathname.
  */
 export default function Loading() {
+  const pathname = usePathname();
+  const locale = pathname === '/bn' || pathname?.startsWith('/bn/') ? 'bn' : 'en';
+
   return (
     <div className="df-container df-container-wide py-24" aria-busy="true" aria-live="polite">
-      <span className="df-sr-only">Loading page content…</span>
+      <span className="df-sr-only">{getDictionary(locale).states.loading.label}…</span>
 
       <div className="df-shimmer h-4 w-40 rounded" />
 
