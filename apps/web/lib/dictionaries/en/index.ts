@@ -10,12 +10,14 @@ import { chrome } from './chrome';
 import { home } from './home';
 import { states } from './states';
 import { services } from './services';
+import { tools } from './tools';
 
 export const en = {
   ...chrome,
   home,
   states,
   services,
+  tools,
 };
 
 /**

@@ -24,6 +24,8 @@
  * Sources: blueprint §5.5.1 (inventory and formulas), §5.5.2 (shared shell).
  */
 
+import type { ServiceSlug } from './services';
+
 export const toolSlugs = [
   'tds-calculator',
   'vds-calculator',
@@ -50,8 +52,12 @@ export interface ToolEntry {
   /** Hub position, 01–13. */
   order: number;
   category: ToolCategoryId;
-  /** The service this tool most naturally hands off to. */
-  crossSell: string;
+  /**
+   * The service this tool most naturally hands off to. Typed as a service slug,
+   * so the cross-sell link cannot point at a service that does not exist — and
+   * the service dictionary can be indexed without a cast.
+   */
+  crossSell: ServiceSlug;
   /**
    * Rate families resolved from the rate source for the selected date.
    * Empty for tools that compute from the user's own figures only — those must

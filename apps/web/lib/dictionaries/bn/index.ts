@@ -10,10 +10,14 @@ import { chrome } from './chrome';
 import { home } from './home';
 import { states } from './states';
 import { services } from './services';
+import { tools } from './tools';
 
-export const bn = {
+import type { Dictionary } from '../en';
+
+export const bn: Dictionary = {
   ...chrome,
   home,
   states,
   services,
+  tools,
 };

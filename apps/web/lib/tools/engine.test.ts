@@ -21,9 +21,13 @@ import {
   cashFlow,
   depreciation,
   margin,
+  payroll,
+  profit,
   roi,
   roundTaka,
   toNumber,
+  vat,
+  withholding,
   workingCapital,
 } from './engine.ts';
 import { isRateFree, resolveRate, todayIso, type RateResolution } from '../rates.ts';

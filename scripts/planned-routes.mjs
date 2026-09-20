@@ -19,6 +19,8 @@
  * so a route listed once here is exempt in both English and Bengali.
  */
 export const plannedRoutes = [
+  // ── Free tools — §5.5, BUILT in DF-P2-011. Re-add nothing here. ──────────
+
   // ── Regulatory intelligence — §5.4, Phase 3 data, Phase 2 shell ──────────
   { href: '/rates', task: 'DF-P3-001', what: 'Rate hub landing' },
   { href: '/rates/tds', task: 'DF-P3-002', what: 'TDS rate family' },
@@ -28,22 +30,6 @@ export const plannedRoutes = [
   { href: '/rates/corporate-tax', task: 'DF-P3-002', what: 'Corporate-tax family' },
   { href: '/sro', task: 'DF-P3-005', what: 'SRO library' },
   { href: '/compliance-calendar', task: 'DF-P2-015', what: 'Public compliance calendar' },
-
-  // ── Free tools — §5.5, thirteen calculators on one shell ─────────────────
-  { href: '/tools', task: 'DF-P2-011', what: 'Tools hub' },
-  { href: '/tools/tds-calculator', task: 'DF-P2-011', what: 'TDS calculator' },
-  { href: '/tools/vds-calculator', task: 'DF-P2-011', what: 'VDS calculator' },
-  { href: '/tools/vat-calculator', task: 'DF-P2-011', what: 'VAT calculator' },
-  { href: '/tools/income-tax-calculator', task: 'DF-P2-011', what: 'Income-tax calculator' },
-  { href: '/tools/corporate-tax-calculator', task: 'DF-P2-011', what: 'Corporate-tax calculator' },
-  { href: '/tools/profit-calculator', task: 'DF-P2-011', what: 'Profit calculator' },
-  { href: '/tools/profit-margin-calculator', task: 'DF-P2-011', what: 'Profit-margin calculator' },
-  { href: '/tools/break-even-calculator', task: 'DF-P2-011', what: 'Break-even calculator' },
-  { href: '/tools/roi-calculator', task: 'DF-P2-011', what: 'ROI calculator' },
-  { href: '/tools/cash-flow-calculator', task: 'DF-P2-011', what: 'Cash-flow and runway calculator' },
-  { href: '/tools/cost-efficiency-calculator', task: 'DF-P2-011', what: 'Cost-efficiency leakage estimator' },
-  { href: '/tools/payroll-calculator', task: 'DF-P2-011', what: 'Payroll cost calculator' },
-  { href: '/tools/working-capital-calculator', task: 'DF-P2-011', what: 'Working-capital calculator' },
 
   // ── Industry pages — DF-P2-043, template from §5.13.1 ────────────────────
   { href: '/industries', task: 'DF-P2-043', what: 'Industries hub' },

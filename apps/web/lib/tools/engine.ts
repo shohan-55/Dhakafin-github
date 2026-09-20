@@ -571,3 +571,308 @@ export function roi(input: RoiInput): RoiResult {
     notes,
   };
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Withholding  ·  §5.5.1 #1 and #2
+   TDS and VDS are the same arithmetic on different instruments, so they are one
+   function. The rate is always supplied by the caller — see `lib/rates.ts` for
+   why this engine never knows a rate.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+export interface WithholdingInput {
+  amount: number;
+  /** Percentage, supplied by the caller. 0 is a valid rate; absent is not. */
+  ratePercent: number;
+  /** Optional: an amount already deducted, to reconcile against a document. */
+  alreadyDeducted?: number;
+}
+
+export interface WithholdingResult extends CalcResult {
+  deduction: number;
+  netPayable: number;
+  effectiveRatePercent: number;
+  /** Present only when `alreadyDeducted` was supplied. */
+  difference: number | null;
+}
+
+/**
+ * A withholding deduction: TDS on a payment, VDS on a service bill.
+ *
+ * The one non-obvious behaviour is `effectiveRatePercent`. When reconciling
+ * against a document, the amount actually withheld divided by the gross is the
+ * only figure that explains a mismatch, and it is routinely different from the
+ * headline rate — because of a threshold applying to part of the payment, or
+ * because the deduction was computed on an amount that already excluded VAT.
+ * Showing it turns "the numbers don't match" into "the rate applied was 4.17%".
+ */
+export function withholding(input: WithholdingInput): WithholdingResult {
+  const amount = Math.max(0, input.amount);
+  const rate = Math.max(0, input.ratePercent);
+  const deduction = roundTaka(amount * (rate / 100));
+  const netPayable = roundTaka(amount - deduction);
+  const effectiveRatePercent = amount > 0 ? round2((deduction / amount) * 100) : 0;
+
+  const difference =
+    input.alreadyDeducted === undefined ? null : roundTaka(deduction - input.alreadyDeducted);
+
+  const notes: string[] = [];
+  if (rate === 0) notes.push('rate-not-supplied');
+  if (difference !== null && difference !== 0) notes.push('does-not-reconcile');
+
+  return {
+    primary: deduction,
+    deduction,
+    netPayable,
+    effectiveRatePercent,
+    difference,
+    steps: [
+      { label: 'Deduction', expression: 'amount × rate ÷ 100', value: deduction },
+      { label: 'Net payable', expression: 'amount − deduction', value: netPayable },
+      { label: 'Effective rate', expression: 'deduction ÷ amount × 100', value: effectiveRatePercent },
+    ],
+    notes,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VAT  ·  §5.5.1 #3
+   Exclusive and inclusive directions, and input credit.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+export type VatMode = 'exclusive' | 'inclusive';
+
+export interface VatInput {
+  mode: VatMode;
+  amount: number;
+  ratePercent: number;
+  /** Eligible input VAT to offset, e.g. from purchases. */
+  inputCredit?: number;
+}
+
+export interface VatResult extends CalcResult {
+  base: number;
+  vat: number;
+  total: number;
+  netPayable: number;
+}
+
+/**
+ * VAT in both directions, with input credit.
+ *
+ * The direction is the whole tool. Entering a VAT-inclusive invoice total into
+ * the exclusive form overstates the tax by the tax — a 15% error on a 15% rate,
+ * and one of the most common mistakes in a Mushak 9.1 reconciliation. The mode
+ * is therefore an explicit, required choice rather than something inferred from
+ * the size of the number.
+ *
+ * Net payable is floored at zero. A credit balance is carried forward under the
+ * rules rather than refunded at the counter, so printing a negative "payable"
+ * would suggest money is coming back when it is not.
+ */
+export function vat(input: VatInput): VatResult {
+  const amount = Math.max(0, input.amount);
+  const rate = Math.max(0, input.ratePercent);
+  const credit = Math.max(0, input.inputCredit ?? 0);
+
+  let base: number;
+  let vatAmount: number;
+  let total: number;
+
+  if (input.mode === 'inclusive') {
+    base = roundTaka(amount / (1 + rate / 100));
+    total = roundTaka(amount);
+    vatAmount = roundTaka(total - base);
+  } else {
+    base = roundTaka(amount);
+    vatAmount = roundTaka(base * (rate / 100));
+    total = roundTaka(base + vatAmount);
+  }
+
+  const net = vatAmount - credit;
+  const netPayable = Math.max(0, net);
+
+  const notes: string[] = [];
+  if (rate === 0) notes.push('rate-not-supplied');
+  if (net < 0) notes.push('credit-carried-forward');
+
+  return {
+    primary: vatAmount,
+    base,
+    vat: vatAmount,
+    total,
+    netPayable,
+    steps: [
+      {
+        label: 'Taxable base',
+        expression: input.mode === 'inclusive' ? 'gross ÷ (1 + rate)' : 'as entered',
+        value: base,
+      },
+      {
+        label: 'VAT',
+        expression: input.mode === 'inclusive' ? 'gross − base' : 'base × rate',
+        value: vatAmount,
+      },
+      { label: 'Input credit applied', expression: 'eligible input VAT', value: credit },
+      { label: 'Net payable', expression: 'VAT − input credit, floored at zero', value: netPayable },
+    ],
+    notes,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Profit  ·  §5.5.1 #6
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+export interface ProfitInput {
+  revenue: number;
+  costOfGoods: number;
+  operatingExpenses: number;
+}
+
+export interface ProfitResult extends CalcResult {
+  grossProfit: number;
+  operatingProfit: number;
+  grossMarginPercent: number;
+  operatingMarginPercent: number;
+  /** True when cost of goods exceeds revenue — the gross loss case. */
+  grossLoss: boolean;
+}
+
+/**
+ * A three-line profit and loss.
+ *
+ * Gross and operating margin are reported separately because they fail
+ * differently. A healthy gross margin with a negative operating margin is an
+ * overhead problem; a negative gross margin is a pricing or input-cost problem,
+ * and no amount of overhead discipline fixes it. Collapsing them into one "net
+ * margin" figure hides which conversation the business needs to have.
+ */
+export function profit(input: ProfitInput): ProfitResult {
+  const revenue = Math.max(0, input.revenue);
+  const cogs = Math.max(0, input.costOfGoods);
+  const opex = Math.max(0, input.operatingExpenses);
+
+  const grossProfit = roundTaka(revenue - cogs);
+  const operatingProfit = roundTaka(grossProfit - opex);
+  const grossMarginPercent = revenue > 0 ? round2((grossProfit / revenue) * 100) : 0;
+  const operatingMarginPercent = revenue > 0 ? round2((operatingProfit / revenue) * 100) : 0;
+
+  const notes: string[] = [];
+  if (grossProfit < 0) notes.push('gross-loss');
+  else if (operatingProfit < 0) notes.push('operating-loss');
+
+  return {
+    primary: operatingProfit,
+    grossProfit,
+    operatingProfit,
+    grossMarginPercent,
+    operatingMarginPercent,
+    grossLoss: grossProfit < 0,
+    steps: [
+      { label: 'Gross profit', expression: 'revenue − cost of goods', value: grossProfit },
+      { label: 'Gross margin', expression: 'gross profit ÷ revenue × 100', value: grossMarginPercent },
+      { label: 'Operating profit', expression: 'gross profit − operating expenses', value: operatingProfit },
+      {
+        label: 'Operating margin',
+        expression: 'operating profit ÷ revenue × 100',
+        value: operatingMarginPercent,
+      },
+    ],
+    notes,
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Payroll cost  ·  §5.5.1 #12
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+export interface PayrollInput {
+  headcount: number;
+  grossPerHead: number;
+  /** Total allowances per head across the month. */
+  allowancesPerHead: number;
+  /** Total overtime per head, already at the overtime rate. */
+  overtimePerHead: number;
+  /** Optional: the rate applied to the taxable portion. Supplied, never assumed. */
+  tdsRatePercent?: number;
+  /** Optional: employer contribution rate. Supplied, never assumed. */
+  employerContributionPercent?: number;
+}
+
+export interface PayrollResult extends CalcResult {
+  /** What the employee is contractually owed, before any deduction. */
+  grossPay: number;
+  allowances: number;
+  overtime: number;
+  totalTaxablePayroll: number;
+  tds: number;
+  employerContribution: number;
+  /** What actually leaves the bank: everything above the salary lines. */
+  totalMonthlyCost: number;
+  totalAnnualCost: number;
+  costPerHead: number;
+}
+
+/**
+ * Fully-loaded monthly payroll cost.
+ *
+ * The distinction that matters to a business owner is `grossPay` versus
+ * `totalMonthlyCost`. Budgeting on the salary figures is the classic
+ * small-business cash-flow error: statutory contributions and the overtime that
+ * actually gets worked are both real, and both are invisible in a headcount ×
+ * gross salary estimate.
+ *
+ * `tds` is withheld from the employee, not added to the employer's cost, so it
+ * is reported but deliberately excluded from `totalMonthlyCost`. Employer
+ * contribution is added, because it is the employer's money.
+ */
+export function payroll(input: PayrollInput): PayrollResult {
+  const headcount = Math.max(0, Math.floor(input.headcount));
+  const grossPerHead = Math.max(0, input.grossPerHead);
+  const allowancesPerHead = Math.max(0, input.allowancesPerHead);
+  const overtimePerHead = Math.max(0, input.overtimePerHead);
+
+  const grossPay = roundTaka(headcount * grossPerHead);
+  const allowances = roundTaka(headcount * allowancesPerHead);
+  const overtime = roundTaka(headcount * overtimePerHead);
+  const totalTaxablePayroll = roundTaka(grossPay + allowances + overtime);
+
+  const tds =
+    input.tdsRatePercent === undefined
+      ? 0
+      : roundTaka(totalTaxablePayroll * (input.tdsRatePercent / 100));
+  const employerContribution =
+    input.employerContributionPercent === undefined
+      ? 0
+      : roundTaka(totalTaxablePayroll * (input.employerContributionPercent / 100));
+
+  const totalMonthlyCost = roundTaka(totalTaxablePayroll + employerContribution);
+  const totalAnnualCost = roundTaka(totalMonthlyCost * 12);
+
+  const notes: string[] = [];
+  if (headcount === 0) notes.push('no-headcount');
+  if (input.tdsRatePercent === undefined) notes.push('tds-not-supplied');
+  if (input.employerContributionPercent === undefined) notes.push('contribution-not-supplied');
+
+  return {
+    primary: totalMonthlyCost,
+    grossPay,
+    allowances,
+    overtime,
+    totalTaxablePayroll,
+    tds,
+    employerContribution,
+    totalMonthlyCost,
+    totalAnnualCost,
+    costPerHead: headcount > 0 ? roundTaka(totalMonthlyCost / headcount) : 0,
+    steps: [
+      { label: 'Gross salary', expression: 'headcount × gross per head', value: grossPay },
+      { label: 'Allowances', expression: 'headcount × allowances per head', value: allowances },
+      { label: 'Overtime', expression: 'headcount × overtime per head', value: overtime },
+      { label: 'Taxable payroll', expression: 'gross + allowances + overtime', value: totalTaxablePayroll },
+      { label: 'Employer contribution', expression: 'taxable payroll × contribution rate', value: employerContribution },
+      { label: 'Total monthly cost', expression: 'taxable payroll + employer contribution', value: totalMonthlyCost },
+    ],
+    notes,
+  };
+}
