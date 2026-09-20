@@ -1,0 +1,152 @@
+{
+  "$schema": "https://design-tokens.org/schema.json",
+  "$description": "DhakaFin Design Tokens — v1.0. Single source of truth. Build script generates tokens.css (CSS custom properties), tailwind.tokens.js (@theme), tokens.ts (typed constants for JS/Three.js). NEVER hardcode a hex, size or duration in a component. Dark is the default theme; light and lite-tier overrides are declared at the bottom.",
+  "color": {
+    "void":      { "value": "#020b0a", "type": "color", "comment": "Base background — Ocean Void" },
+    "voidDeep":  { "value": "#010807", "type": "color", "comment": "Canvas floor under WebGL" },
+    "slateDeep": { "value": "#041312", "type": "color", "comment": "Alternate section background" },
+    "surface1":  { "value": "#061715", "type": "color", "comment": "Card/panel base (glass composite target)" },
+    "surface2":  { "value": "#0a1f1c", "type": "color", "comment": "Raised: popovers, menus" },
+    "surface3":  { "value": "#0f2a26", "type": "color", "comment": "Highest elevation: modals, command palette" },
+    "glassTint": { "value": "rgba(8,30,27,0.65)", "type": "color", "comment": "Paired with blur.glass + hairline border" },
+    "sea": {
+      "700": { "value": "#0d9488", "type": "color", "contrast": { "onVoid": "5.32:1", "usage": "large text (>=19px bold), borders, fills, icons only — NOT small body text" } },
+      "600": { "value": "#0f9e93", "type": "color", "contrast": { "onVoid": "~5.9:1" } },
+      "500": { "value": "#14b8a6", "type": "color", "contrast": { "onVoid": "8.00:1", "note": "PRIMARY BRAND. Button text on sea-500 MUST be void (#020b0a) = 8.00:1. White on sea-500 = 2.49:1 FAIL." } },
+      "400": { "value": "#2dd4bf", "type": "color", "contrast": { "onVoid": "10.69:1", "note": "Focus ring, hover glow, KPI accents" } },
+      "300": { "value": "#5eead4", "type": "color", "contrast": { "onVoid": "13.46:1", "note": "Glow, data streams, sparkline tips" } },
+      "200": { "value": "#99f6e4", "type": "color", "contrast": { "onVoid": "~15:1" } }
+    },
+    "seaTint08": { "value": "rgba(20,184,166,0.08)", "type": "color", "comment": "Row hover / selected node fill" },
+    "seaTint16": { "value": "rgba(20,184,166,0.16)", "type": "color", "comment": "Chips, badges, active nav pill" },
+    "seaBorder": { "value": "rgba(45,212,191,0.18)", "type": "color", "comment": "Default hairline border" },
+    "seaBorderHover": { "value": "rgba(94,234,212,0.50)", "type": "color" },
+    "seaGlow": { "value": "rgba(45,212,191,0.35)", "type": "color", "comment": "Max 2 glows per viewport" },
+    "cyan":     { "value": "#22d3ee", "type": "color", "comment": "Data streams, secondary charts. Never CTA, never legal text" },
+    "cyanDim":  { "value": "#0891b2", "type": "color" },
+    "gold":     { "value": "#d97706", "type": "color", "contrast": { "onVoid": "6.25:1" }, "comment": "Regulatory / SRO / alert accent" },
+    "goldBright": { "value": "#fbbf24", "type": "color", "contrast": { "onVoid": "11.93:1" }, "comment": "Small-text gold, effective-date pills" },
+    "violetDusk": { "value": "#7c6cf0", "type": "color", "comment": "AI surfaces ONLY, <=10% coverage" },
+    "text":       { "value": "#e2e8f0", "type": "color", "contrast": { "onVoid": "16.15:1" } },
+    "textStrong": { "value": "#f8fafc", "type": "color", "contrast": { "onVoid": "19.03:1" } },
+    "muted":      { "value": "#94a3b8", "type": "color", "contrast": { "onVoid": "7.76:1" } },
+    "muted2":     { "value": "#64748b", "type": "color", "contrast": { "onVoid": "4.18:1" }, "$restricted": "Decorative only, or >=19px bold. FAILS AA for normal body text." },
+    "ok":     { "value": "#34d399", "type": "color", "contrast": { "onVoid": "9.9:1" } },
+    "okDeep": { "value": "#10b981", "type": "color" },
+    "warn":   { "value": "#fbbf24", "type": "color", "contrast": { "onVoid": "11.9:1" } },
+    "risk":   { "value": "#fb923c", "type": "color", "contrast": { "onVoid": "9.0:1" } },
+    "danger": { "value": "#f87171", "type": "color", "contrast": { "onVoid": "7.6:1" } },
+    "info":   { "value": "#2dd4bf", "type": "color" },
+    "series": {
+      "1": { "value": "#2dd4bf" }, "2": { "value": "#22d3ee" }, "3": { "value": "#d97706" },
+      "4": { "value": "#94a3b8" }, "5": { "value": "#f87171" }, "6": { "value": "#7c6cf0" }
+    }
+  },
+  "gradient": {
+    "ocean":    { "value": "linear-gradient(160deg, #020b0a 0%, #041312 55%, #06231f 100%)" },
+    "sealine":  { "value": "linear-gradient(90deg, transparent, #14b8a6, #2dd4bf, transparent)", "comment": "Animated for data streams" },
+    "depth":    { "value": "radial-gradient(120% 80% at 50% 0%, rgba(20,184,166,0.14), transparent 60%)" },
+    "metal":    { "value": "linear-gradient(135deg, #1c2b2a 0%, #0b1817 40%, #16302c 70%, #0a1615 100%)" },
+    "focus":    { "value": "linear-gradient(90deg, #5eead4, #22d3ee)" }
+  },
+  "font": {
+    "sans": { "value": "'Plus Jakarta Sans', 'Hind Siliguri', system-ui, -apple-system, sans-serif" },
+    "num":  { "value": "'Space Grotesk', 'Plus Jakarta Sans', ui-monospace, monospace" },
+    "bn":   { "value": "'Hind Siliguri', 'Plus Jakarta Sans', sans-serif" },
+    "serif":{ "value": "'Newsreader', Georgia, serif", "comment": "Insights long-form only" },
+    "mono": { "value": "'JetBrains Mono', ui-monospace, monospace" },
+    "budgetKB": { "value": 180, "type": "number", "comment": "Total self-hosted woff2, latin+bengali subsets" }
+  },
+  "fontSize": {
+    "display":  { "value": "clamp(44px, 6vw, 88px)", "lineHeight": "0.98", "letterSpacing": "-0.03em", "weight": 800 },
+    "h1":       { "value": "clamp(36px, 4.6vw, 60px)", "lineHeight": "1.05", "letterSpacing": "-0.02em", "weight": 700 },
+    "h2":       { "value": "clamp(28px, 3.4vw, 42px)", "lineHeight": "1.12", "letterSpacing": "-0.015em", "weight": 700 },
+    "h3":       { "value": "clamp(22px, 2.4vw, 30px)", "lineHeight": "1.2", "letterSpacing": "-0.01em", "weight": 600 },
+    "h4":       { "value": "clamp(18px, 1.8vw, 22px)", "lineHeight": "1.3", "weight": 600 },
+    "bodyLg":   { "value": "clamp(17px, 1.5vw, 19px)", "lineHeight": "1.65", "weight": 400 },
+    "body":     { "value": "clamp(15px, 1.3vw, 16px)", "lineHeight": "1.7", "weight": 400 },
+    "sm":       { "value": "clamp(13px, 1.1vw, 14px)", "lineHeight": "1.6", "weight": 400 },
+    "xs":       { "value": "clamp(11px, 0.9vw, 12px)", "lineHeight": "1.5", "weight": 500 },
+    "metricXl": { "value": "clamp(32px, 4vw, 52px)", "lineHeight": "1.0", "letterSpacing": "-0.02em", "weight": 500, "font": "num", "features": "tabular-nums" },
+    "metric":   { "value": "clamp(22px, 2.6vw, 32px)", "lineHeight": "1.05", "weight": 500, "font": "num", "features": "tabular-nums" },
+    "metricSm": { "value": "clamp(16px, 1.7vw, 20px)", "lineHeight": "1.1", "weight": 500, "font": "num", "features": "tabular-nums" },
+    "overline": { "value": "clamp(10px, 0.9vw, 12px)", "lineHeight": "1.2", "letterSpacing": "0.14em", "weight": 600, "transform": "uppercase" }
+  },
+  "space": {
+    "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "20px", "6": "24px", "8": "32px",
+    "10": "40px", "12": "48px", "16": "64px", "20": "80px", "24": "96px", "30": "128px", "38": "160px", "48": "200px"
+  },
+  "radius": { "sm": "8px", "md": "12px", "lg": "16px", "xl": "20px", "2xl": "28px", "full": "9999px" },
+  "container": {
+    "content": "1200px", "wide": "1440px", "reading": "720px",
+    "gutterMobile": "20px", "gutterTablet": "32px", "gutterDesktop": "48px"
+  },
+  "breakpoint": { "xs": "360px", "sm": "480px", "md": "768px", "lg": "1024px", "xl": "1280px", "2xl": "1536px" },
+  "duration": { "1": "120ms", "2": "200ms", "3": "320ms", "4": "560ms", "5": "900ms" },
+  "ease": {
+    "out":   "cubic-bezier(0.16, 1, 0.3, 1)",
+    "inOut": "cubic-bezier(0.65, 0, 0.35, 1)",
+    "spring":"cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "linear":"linear"
+  },
+  "blur": { "glass": "16px", "overlay": "24px", "heavy": "32px" },
+  "elevation": {
+    "1": "0 1px 2px rgba(0,0,0,0.40)",
+    "2": "0 4px 16px rgba(0,0,0,0.45)",
+    "3": "0 12px 32px rgba(0,0,0,0.50)",
+    "4": "0 24px 64px rgba(0,0,0,0.60)",
+    "glow": "0 0 32px rgba(45,212,191,0.25)"
+  },
+  "zIndex": { "canvas": 0, "grid": 1, "context": 10, "element": 20, "overlay": 100, "system": 1000 },
+  "focusRing": { "value": "0 0 0 2px var(--void), 0 0 0 4px var(--sea-400)" },
+  "touch": { "minTarget": "44px", "minSeparation": "8px" },
+  "motion": {
+    "staggerChildren": "40ms-70ms (max 8 items)",
+    "revealThreshold": "0.2",
+    "scrollScrubMax": "2 pinned sections per page",
+    "forbidden": ["parallax on text", "autoplaying carousels", "bounce/elastic on data", "custom cursors over data tables", "background video loops"]
+  },
+  "experienceTiers": {
+    "ultra":    { "webgl": "full", "dprMax": 2, "particles": "high", "postProcessing": "lite", "pinnedScroll": true, "spotlights": true },
+    "high":     { "webgl": "full", "dprMax": 1.5, "particles": "medium", "postProcessing": false, "pinnedScroll": true, "spotlights": true },
+    "balanced": { "webgl": "simplified", "dprMax": 1.0, "particles": "low", "postProcessing": false, "pinnedScroll": false, "spotlights": false },
+    "lite":     { "webgl": "none", "blur": "none", "motion": "instant", "note": "Triggered by low-end device, saveData, reduced-motion, WebGL unavailable, or the user's 'Reduce effects' toggle. Must be fully functional." }
+  },
+  "themeOverrides": {
+    "light": {
+      "void": "#f7faf9", "surface1": "#ffffff", "surface2": "#f1f6f4", "surface3": "#ffffff",
+      "text": "#0b1f1c", "textStrong": "#06120f", "muted": "#4b6a65",
+      "seaBorder": "rgba(13,148,136,0.20)", "border": "#d7e5e2",
+      "buttonPrimaryBg": "#0f766e", "buttonPrimaryText": "#ffffff",
+      "gold": "#a16207",
+      "note": "Light theme is for printed reports/invoices, PDF exports, explicit user choice. Portal defaults to dark."
+    },
+    "lite": {
+      "blur": { "glass": "0px", "overlay": "0px", "heavy": "0px" },
+      "elevation": { "glow": "none" },
+      "duration": { "1": "80ms", "2": "100ms", "3": "120ms", "4": "120ms", "5": "150ms" },
+      "note": "Solid surfaces instead of glass; glow removed; all durations capped at 150ms."
+    }
+  },
+  "formatting": {
+    "currencySymbol": "৳",
+    "grouping": "lakh-crore (12,34,567) — Intl.NumberFormat('en-IN') wrapper + custom compact",
+    "compact": { "thousand": "K", "lakh": "L", "crore": "Cr" },
+    "fiscalYearFormat": "FY 2025–26",
+    "dateFormat": "DD MMM YYYY",
+    "dateFormatBn": "DD MMMM YYYY (Bangla month names)",
+    "defaultLocale": "en",
+    "supportedLocales": ["en", "bn-BD"]
+  },
+  "accessibility": {
+    "target": "WCAG 2.2 AA (AAA where feasible for text)",
+    "lockedPairs": [
+      { "fg": "#020b0a", "bg": "#14b8a6", "ratio": "8.00:1", "use": "Primary button" },
+      { "fg": "#ffffff", "bg": "#14b8a6", "ratio": "2.49:1", "use": "FORBIDDEN" },
+      { "fg": "#e2e8f0", "bg": "#020b0a", "ratio": "16.15:1", "use": "Body text" },
+      { "fg": "#94a3b8", "bg": "#020b0a", "ratio": "7.76:1", "use": "Secondary text" },
+      { "fg": "#64748b", "bg": "#020b0a", "ratio": "4.18:1", "use": "Decorative only" },
+      { "fg": "#fbbf24", "bg": "#020b0a", "ratio": "11.93:1", "use": "Regulatory badge text" }
+    ]
+  }
+}
