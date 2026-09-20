@@ -31,12 +31,6 @@ export const plannedRoutes = [
   { href: '/sro', task: 'DF-P3-005', what: 'SRO library' },
   { href: '/compliance-calendar', task: 'DF-P2-015', what: 'Public compliance calendar' },
 
-  // ── Industry pages — DF-P2-043, template from §5.13.1 ────────────────────
-  { href: '/industries', task: 'DF-P2-043', what: 'Industries hub' },
-  { href: '/industries/manufacturing', task: 'DF-P2-043', what: 'Manufacturing' },
-  { href: '/industries/trading', task: 'DF-P2-043', what: 'Trading and distribution' },
-  { href: '/industries/ecommerce', task: 'DF-P2-043', what: 'E-commerce' },
-
   // ── Static core pages — DF-P2-025 ────────────────────────────────────────
   { href: '/about', task: 'DF-P2-025', what: 'About' },
   { href: '/team', task: 'DF-P2-025', what: 'Team' },

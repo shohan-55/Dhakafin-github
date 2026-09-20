@@ -9,6 +9,7 @@
 import { chrome } from './chrome';
 import { home } from './home';
 import { states } from './states';
+import { industries } from './industries';
 import { services } from './services';
 import { tools } from './tools';
 
@@ -19,5 +20,6 @@ export const bn: Dictionary = {
   home,
   states,
   services,
+  industries,
   tools,
 };
