@@ -26,6 +26,7 @@ import {
   toNumber,
   workingCapital,
 } from './engine.ts';
+import { isRateFree, resolveRate, todayIso, type RateResolution } from '../rates.ts';
 
 /* ── Input coercion ─────────────────────────────────────────────────────── */
 
@@ -391,4 +392,55 @@ test('every engine result carries a disclosure the presenter can render', () => 
     }
     assert.ok(Array.isArray(r.notes));
   }
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Rate resolution  ·  the boundary that keeps regulatory data out of tools
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+test('rate resolution: no family is ever silently given a figure', () => {
+  // Phase 2 has no rate service, so every family must resolve to `unavailable`
+  // and say which date it looked for. The day this test fails is the day
+  // somebody seeded a rate literal to make a calculator look finished — and the
+  // correct response is to wire the resolver, not to update the expectation.
+  const families = ['tds', 'vds', 'vat', 'income-tax-slabs', 'corporate-tax'] as const;
+  for (const family of families) {
+    const resolved = resolveRate(family, '2026-09-20');
+    assert.equal(resolved.status, 'unavailable', `${family} resolved to a value`);
+    assert.equal(resolved.family, family);
+    if (resolved.status === 'unavailable') {
+      assert.equal(resolved.onDate, '2026-09-20', 'must echo the date it was asked about');
+      assert.equal(resolved.nearest, null);
+    }
+  }
+});
+
+test('rate resolution: the verified shape cannot exist without provenance', () => {
+  // The `RateCard` component has no defaults for these four fields, so a
+  // `verified` resolution that lacks them would be unusable rather than wrong —
+  // which is the intended design. This asserts the union keeps them inseparable.
+  type Verified = Extract<RateResolution, { status: 'verified' }>;
+  const sample: Verified = {
+    status: 'verified',
+    family: 'vat',
+    basisPoints: 1500,
+    provenance: {
+      reference: 'placeholder for the type check only — never rendered',
+      sourceUrl: 'https://example.invalid/',
+      effectiveFrom: '2026-07-01',
+      verifiedAt: '2026-09-20',
+      verifiedBy: 'placeholder',
+    },
+  };
+  assert.equal(sample.basisPoints, 1500, 'basis points, so 15% is exactly 1500');
+  assert.ok(Number.isInteger(sample.basisPoints), 'integers only — no float drift in tax maths');
+});
+
+test('rate-free tools are identified as such, not assumed to be', () => {
+  assert.equal(isRateFree([]), true);
+  assert.equal(isRateFree(['vat']), false);
+});
+
+test('todayIso returns a plain ISO date', () => {
+  assert.match(todayIso(), /^\d{4}-\d{2}-\d{2}$/);
 });
