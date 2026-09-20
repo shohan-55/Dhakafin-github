@@ -35,7 +35,6 @@ export const plannedRoutes = [
   { href: '/about', task: 'DF-P2-025', what: 'About' },
   { href: '/team', task: 'DF-P2-025', what: 'Team' },
   { href: '/clients', task: 'DF-P2-025', what: 'Clients and case studies' },
-  { href: '/pricing', task: 'DF-P2-025', what: 'Pricing' },
   { href: '/security', task: 'DF-P2-025', what: 'Security and data handling' },
   { href: '/contact', task: 'DF-P2-025', what: 'Contact' },
   { href: '/editorial-policy', task: 'DF-P2-025', what: 'Editorial and verification policy' },

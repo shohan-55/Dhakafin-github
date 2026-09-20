@@ -11,6 +11,7 @@ import { home } from './home';
 import { states } from './states';
 import { costEfficiency } from './cost-efficiency';
 import { industries } from './industries';
+import { pricing } from './pricing';
 import { services } from './services';
 import { tools } from './tools';
 
@@ -22,6 +23,7 @@ export const bn: Dictionary = {
   states,
   services,
   industries,
+  pricing,
   tools,
   costEfficiency,
 };
